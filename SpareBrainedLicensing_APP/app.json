@@ -2,7 +2,7 @@
   "id": "5ddd2a5e-1b5f-47b4-b655-88d2c2a9b382",
   "name": "Spare Brained Licensing",
   "publisher": "Stefan Maron Consulting",
-  "version": "25.0.0.0",
+  "version": "25.1.0.0",
   "brief": "This library helps other Extensions verify a current subscription license.",
   "description": "This library helps other Extensions verify a current subscription license.",
   "privacyStatement": "https://stefanmaron.com/privacystatement/",
@@ -40,6 +40,7 @@
   "target": "Cloud",
   "runtime": "14.0",
   "features": [
-    "TranslationFile", "NoImplicitWith"
+    "TranslationFile",
+    "NoImplicitWith"
   ]
 }
