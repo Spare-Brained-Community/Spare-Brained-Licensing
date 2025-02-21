@@ -1,8 +1,10 @@
 {
-  "country": "us",
+  "country": "w1",
   "appSourceCopMandatoryAffixes": [
     "SPB"
   ],
+  "rulesetFile": "SpareBrainedLicensing_APP/src/.rulesets/SPBLicensing.ruleset.json",
+  "enableExternalRulesets": true,
   "appFolders": [],
   "testFolders": [],
   "bcptTestFolders": []

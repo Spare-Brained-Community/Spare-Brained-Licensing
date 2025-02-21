@@ -1,10 +1,12 @@
 {
     "al.codeAnalyzers": [
-        "${AppSourceCop}",
-        "${CodeCop}",
-        "${UICop}"
+      "${CodeCop}",
+      "${UICop}",
+      "${PerTenantExtensionCop}",
+      "${AppSourceCop}",
+      "${analyzerFolder}BusinessCentral.LinterCop.dll"
     ],
     "CRS.ObjectNamePrefix": "SPBLIC ",
     "CRS.RemovePrefixFromFilename": true,
-    "al.ruleSetPath": "src\\.rulesets\\SPBLicensing.ruleset.json"
+    "al.ruleSetPath": "src/.rulesets/SPBLicensing.ruleset.json"
 }
