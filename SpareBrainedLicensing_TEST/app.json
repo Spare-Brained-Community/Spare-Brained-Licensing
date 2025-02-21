@@ -1,15 +1,15 @@
 {
     "id": "5981c6d1-08c0-4f7f-8457-26b3a9e8e43b",
     "name": "SBI License Test App",
-    "publisher": "Spare Brained Ideas AB",
+    "publisher": "Stefan Maron Consulting",
     "version": "23.0.0.0",
     "brief": "This library tests the license functionality of the AppSource app, Spare Brained Licensing",
     "description": "This library tests the license functionality of the AppSource app, Spare Brained Licensing",
-    "privacyStatement": "https://sparebrained.com/appsource/privacystatement",
-    "EULA": "https://sparebrained.com/appsource/eula",
-    "help": "https://sparebrained.com/support",
-    "contextSensitiveHelpUrl": "https://sparebrained.com/support",
-    "url": "https://sparebrained.com/appsource/licensing",
+    "privacyStatement": "https://stefanmaron.com/privacystatement/",
+    "EULA": "https://stefanmaron.com/eula/",
+    "help": "https://github.com/Spare-Brained-Community/Spare-Brained-Licensing/issues",
+    "contextSensitiveHelpUrl": "https://github.com/Spare-Brained-Community/Spare-Brained-Licensing/issues",
+    "url": "https://github.com/Spare-Brained-Community/Spare-Brained-Licensing",
     "logo": "",
     "dependencies": [
         {
