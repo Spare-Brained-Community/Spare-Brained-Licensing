@@ -27,6 +27,12 @@ codeunit 71033579 "SPBLIC Licensing Install"
         Evaluate(TestProductGuid, GumroadTestSubscriptionIdTok);
     end;
 
+    [Obsolete('Use GetLemonSqueezyTestAppId instead.')]
+    procedure GetLemongSqueezyTestAppId() TestProductGuid: Guid
+    begin
+        exit(GetLemonSqueezyTestAppId());
+    end;
+
     procedure GetLemonSqueezyTestAppId() TestProductGuid: Guid
     begin
         Evaluate(TestProductGuid, LemonSqueezyTestSubscriptionIdTok);
