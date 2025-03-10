@@ -12,7 +12,7 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         LemonSqueezyTestProductIdTok: Label '39128', Locked = true;
         LemonSqueezyTestProductKeyTok: Label 'CE2F02DE-657C-4F76-8F93-0E352C9A30B2', Locked = true;
         LemonSqueezyTestProductUrlTok: Label 'https://sparebrained.lemonsqueezy.com/checkout/buy/cab72f9c-add0-47b0-9a09-feb3b4ccf8e0', Locked = true;
-        LemonSqueezyVerifyAPITok: Label 'https://api.lemonsqueezy.com/v1/licenses/verify?license_key=%1&instance_id=%2', Comment = '%1 is the license key, %2 is the unique guid assigned by Lemon Squeezy for this installation, created during Activation.', Locked = true;
+        LemonSqueezyVerifyAPITok: Label 'https://api.lemonsqueezy.com/v1/licenses/validate?license_key=%1&instance_id=%2', Comment = '%1 is the license key, %2 is the unique guid assigned by Lemon Squeezy for this installation, created during Activation.', Locked = true;
 
     procedure CallAPIForActivation(var SPBExtensionLicense: Record "SPBLIC Extension License"; var ResponseBody: Text): Boolean
     var
