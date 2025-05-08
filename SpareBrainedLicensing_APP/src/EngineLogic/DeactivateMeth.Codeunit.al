@@ -22,7 +22,7 @@ codeunit 71033588 "SPBLIC Deactivate Meth"
         SPBLICIsoStoreManager.UpdateOrCreateIsoStorage(SPBExtensionLicense);
         Commit();  // if calling the API fails, the local should still be marked as deactivated
 
-        if not ByPlatform then begin
+        if ByPlatform then begin
             LicensePlatformV2 := SPBExtensionLicense."License Platform";
             if not LicensePlatformV2.CallAPIForDeactivation(SPBExtensionLicense, ResponseBody) then begin
                 if GuiAllowed() then

@@ -9,6 +9,7 @@ codeunit 71033589 "SPBLIC Environment Watcher"
         SPBLICDeactivateMeth: Codeunit "SPBLIC Deactivate Meth";
         GraceDaysMathTok: Label '<+%1D>', Locked = true;
     begin
+        SPBExtensionLicense.SetRange(Activated, true);
         if SPBExtensionLicense.FindSet(true) then
             repeat
                 if DestinationEnvironmentType = DestinationEnvironmentType::Sandbox then begin
