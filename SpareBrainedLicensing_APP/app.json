@@ -1,15 +1,15 @@
 {
   "id": "5ddd2a5e-1b5f-47b4-b655-88d2c2a9b382",
   "name": "Spare Brained Licensing",
-  "publisher": "Spare Brained Ideas AB",
-  "version": "23.0.0.0",
+  "publisher": "Stefan Maron Consulting",
+  "version": "25.4.0.0",
   "brief": "This library helps other Extensions verify a current subscription license.",
   "description": "This library helps other Extensions verify a current subscription license.",
-  "privacyStatement": "https://sparebrained.com/appsource/privacystatement",
-  "EULA": "https://sparebrained.com/appsource/eula",
-  "help": "https://sparebrained.com/support",
-  "contextSensitiveHelpUrl": "https://sparebrained.com/support",
-  "url": "https://sparebrained.com/appsource/licensing",
+  "privacyStatement": "https://stefanmaron.com/privacystatement/",
+  "EULA": "https://stefanmaron.com/eula/",
+  "help": "https://github.com/Spare-Brained-Community/Spare-Brained-Licensing/issues",
+  "contextSensitiveHelpUrl": "https://github.com/Spare-Brained-Community/Spare-Brained-Licensing/issues",
+  "url": "https://github.com/Spare-Brained-Community/Spare-Brained-Licensing",
   "logo": "./logo/AppSource-SpareBrainedLicensing-350x350.png",
   "dependencies": [],
   "screenshots": [],
@@ -21,7 +21,7 @@
     }
   ],
   "platform": "1.0.0.0",
-  "application": "23.0.0.0",
+  "application": "25.0.0.0",
   "idRanges": [
     {
       "from": 71033575,
@@ -38,9 +38,9 @@
     "includeSourceInSymbolFile": true
   },
   "target": "Cloud",
-  "runtime": "12.0",
+  "runtime": "14.0",
   "features": [
-    "TranslationFile", "NoImplicitWith"
-  ],
-  "applicationInsightsConnectionString": ""
+    "TranslationFile",
+    "NoImplicitWith"
+  ]
 }

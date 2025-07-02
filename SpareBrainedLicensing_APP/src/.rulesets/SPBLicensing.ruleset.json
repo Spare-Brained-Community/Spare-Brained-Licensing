@@ -1,26 +1,11 @@
 {
-  "name": "Licensing ruleset",
-  "description": "The ruleset to use for SBI Licensing",
-  "rules": [
-    {
-      "id": "AA0215",
-      "action": "Hidden",
-      "justification": "We are stripping the Affix from the filenames."
-    },
-    {
-      "id": "AA0072",
-      "action": "None",
-      "justification": "I need to use more generic variable names for easing cloning to a PTE."
-    },
-    {
-      "id": "AS0081",
-      "action": "Hidden",
-      "justification": "I use this to expose internals to Test app.  This warning is valid, but unhelpful."
-    },
-    {
-      "id": "AS0092",
-      "action": "Hidden",
-      "justification": "While correct, this insights key will be injected during build pipelines from Secrets.  This warning encourages storing a private key IN source code, which in my case, is public. Not good."
-    }
-  ]
+    "name": "Licensing ruleset",
+    "description": "The ruleset to use for SBI Licensing",
+    "includedRuleSets": [
+        {
+            "action": "Default",
+            "path": "https://raw.githubusercontent.com/StefanMaron/RulesetFiles/main/appsource.rulset.json"
+        }
+    ],
+    "rules": []
 }

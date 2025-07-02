@@ -1,9 +1,17 @@
 {
-  "country": "us",
+  "country": "w1",
   "appSourceCopMandatoryAffixes": [
     "SPB"
   ],
+  "rulesetFile": "SpareBrainedLicensing_APP/src/.rulesets/SPBLicensing.ruleset.json",
+  "enableExternalRulesets": true,
   "appFolders": [],
   "testFolders": [],
-  "bcptTestFolders": []
+  "bcptTestFolders": [],
+  "deliverToAppSource": {
+    "productId": "6908c20e-f581-4e53-8859-7c3015352eda",
+    "continuousDelivery": false,
+    "mainAppFolder": "SpareBrainedLicensing_APP"
+  },
+  "repoVersion": "1.4"
 }
