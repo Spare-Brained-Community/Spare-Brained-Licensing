@@ -185,6 +185,17 @@ jobs:
           artifactsFolder: '.artifacts'
           deploymentEnvironmentsJson: ${{ needs.Initialization.outputs.deploymentEnvironmentsJson }}
 
+      - name: Deploy to Power Platform
+        if: env.type == 'PTE' && env.powerPlatformSolutionFolder != ''
+        uses: microsoft/AL-Go-Actions/DeployPowerPlatform@v5.2
+        env:
+          Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
+        with:
+          shell: powershell
+          environmentName: ${{ matrix.environment }}
+          artifactsFolder: '.artifacts'
+          deploymentEnvironmentsJson: ${{ needs.Initialization.outputs.deploymentEnvironmentsJson }}
+
   PostProcess:
     needs: [ Initialization, Deploy ]
     if: always()

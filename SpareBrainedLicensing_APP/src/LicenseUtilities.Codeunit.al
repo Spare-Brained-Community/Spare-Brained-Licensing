@@ -10,10 +10,10 @@ codeunit 71033575 "SPBLIC License Utilities"
 
     internal procedure GetTestProductKey(SPBExtensionLicense: Record "SPBLIC Extension License"): Text
     var
-        LicensePlatform: Interface "SPBLIC ILicenseCommunicator2";
+        LicenseProduct: Interface "SPBLIC IProduct";
     begin
-        LicensePlatform := SPBExtensionLicense."License Platform";
-        exit(LicensePlatform.GetTestProductKey());
+        LicenseProduct := SPBExtensionLicense."License Platform";
+        exit(LicenseProduct.GetTestProductKey());
     end;
 
     [Obsolete('Use new Events in SPBLIC Events codeunit.')]

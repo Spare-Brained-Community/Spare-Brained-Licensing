@@ -197,14 +197,14 @@ page 71033575 "SPBLIC Extension Licenses"
     var
         SPBLICDeactivateMeth: Codeunit "SPBLIC Deactivate Meth";
         DoDeactivation: Boolean;
-        LicensePlatform: Interface "SPBLIC ILicenseCommunicator2";
+        LicenseActivation: Interface "SPBLIC IActivation";
         DeactivationNotPossibleWarningQst: Label 'This will deactivate this license in this Business Central instance, but you will need to contact the Publisher to release the assigned license. \ \Are you sure you want to deactivate this license?';
         DeactivationPossibleQst: Label 'This will deactivate this license in this Business Central instance.\ \Are you sure you want to deactivate this license?';
     begin
-        LicensePlatform := SPBExtensionLicense."License Platform";
+        LicenseActivation := SPBExtensionLicense."License Platform";
 
         // Depending on the platform capabilities, we give the user a different message
-        if LicensePlatform.ClientSideDeactivationPossible(SPBExtensionLicense) then
+        if LicenseActivation.ClientSideDeactivationPossible(SPBExtensionLicense) then
             DoDeactivation := Confirm(DeactivationPossibleQst, false)
         else
             DoDeactivation := Confirm(DeactivationNotPossibleWarningQst, false);

@@ -1,4 +1,4 @@
-codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommunicator", "SPBLIC ILicenseCommunicator2"
+codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC IActivation", "SPBLIC IProduct"
 {
     var
         LemonSqueezyActivateAPITok: Label 'https://api.lemonsqueezy.com/v1/licenses/activate?license_key=%1&instance_name=%2', Comment = '%1 is the license key, %2 is just a label in the Lemon Squeezy list of Licenses', Locked = true;
@@ -166,7 +166,10 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         TempJsonBuffer.ReadFromText(ResponseBody);
 
         // Update the current Subscription record
-        SPBExtensionLicense.Validate(Activated, CurrentActiveStatus);
+        if CurrentActiveStatus then
+            SPBExtensionLicense.Validate("License State", Enum::"SPBLIC License State"::Active)
+        else
+            SPBExtensionLicense.Validate("License State", Enum::"SPBLIC License State"::Deactivated);
         TempJsonBuffer.GetPropertyValueAtPath(TempPlaceholder, 'created_at', 'license_key');
         Evaluate(SPBExtensionLicense."Created At", TempPlaceholder);
         TempJsonBuffer.GetPropertyValueAtPath(TempPlaceholder, 'expires_at', 'license_key');

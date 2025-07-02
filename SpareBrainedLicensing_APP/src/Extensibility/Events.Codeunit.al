@@ -26,7 +26,22 @@ codeunit 71033583 "SPBLIC Events"
 
     #region VersionEvents
     [IntegrationEvent(false, false)]
+    internal procedure OnBeforeVersionCheck(var SPBExtensionLicense: Record "SPBLIC Extension License"; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    internal procedure OnBeforeVersionCheckCall(var SPBExtensionLicense: Record "SPBLIC Extension License"; var ApiHttpRespMessage: HttpResponseMessage; var VersionResponseBody: Text; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
     internal procedure OnBeforeVersionCheckUpgradeAvailable(var SPBExtensionLicense: Record "SPBLIC Extension License"; var LatestVersion: Version; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    internal procedure OnAfterVersionCheckCall(var SPBExtensionLicense: Record "SPBLIC Extension License"; var ApiHttpRespMessage: HttpResponseMessage; var VersionResponseBody: Text)
     begin
     end;
 

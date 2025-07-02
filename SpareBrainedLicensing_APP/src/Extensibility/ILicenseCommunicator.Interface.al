@@ -1,5 +1,8 @@
 interface "SPBLIC ILicenseCommunicator"
 {
+    ObsoleteReason = 'Reorganization. Use IActivation instead for most activation related systems.';
+    ObsoleteState = Pending;
+
     procedure CallAPIForVerification(var SPBExtensionLicense: Record "SPBLIC Extension License"; var ResponseBody: Text; IncrementLicenseCount: Boolean) ResultOK: Boolean;
 
     procedure ReportPossibleMisuse(SPBExtensionLicense: Record "SPBLIC Extension License");

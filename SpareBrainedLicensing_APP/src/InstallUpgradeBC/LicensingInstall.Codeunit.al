@@ -27,7 +27,7 @@ codeunit 71033579 "SPBLIC Licensing Install"
         Evaluate(TestProductGuid, GumroadTestSubscriptionIdTok);
     end;
 
-    [Obsolete('Use GetLemonSqueezyTestAppId instead.')]
+    [Obsolete('Use GetLemonSqueezyTestAppId().  This version was a typo.')]
     procedure GetLemongSqueezyTestAppId() TestProductGuid: Guid
     begin
         exit(GetLemonSqueezyTestAppId());
@@ -42,7 +42,7 @@ codeunit 71033579 "SPBLIC Licensing Install"
     var
         SPBExtensionLicense: Record "SPBLIC Extension License";
         TestProductGuid: Guid;
-        LicensePlatform: Interface "SPBLIC ILicenseCommunicator2";
+        LicenseProduct: Interface "SPBLIC IProduct";
         TestLicenseNameTok: Label '%1 Test Subscription', Comment = '%1 is the Licensing Extension name.';
         AppInfo: ModuleInfo;
     begin
@@ -58,13 +58,13 @@ codeunit 71033579 "SPBLIC Licensing Install"
         SPBExtensionLicense."Extension App Id" := AppInfo.Id;
         SPBExtensionLicense."Extension Name" := StrSubstNo(TestLicenseNameTok, AppInfo.Name);
         SPBExtensionLicense."License Platform" := WhichLicensePlatform;
-        LicensePlatform := SPBExtensionLicense."License Platform";
+        LicenseProduct := SPBExtensionLicense."License Platform";
         SPBExtensionLicense."Submodule Name" := CopyStr(UpperCase(Format(WhichLicensePlatform)), 1, MaxStrLen(SPBExtensionLicense."Submodule Name"));
 
-        SPBExtensionLicense."Product Code" := CopyStr(LicensePlatform.GetTestProductId(), 1, MaxStrLen(SPBExtensionLicense."Product Code"));
-        SPBExtensionLicense."Product URL" := CopyStr(LicensePlatform.GetTestProductUrl(), 1, MaxStrLen(SPBExtensionLicense."Product URL"));
-        SPBExtensionLicense."Support URL" := CopyStr(LicensePlatform.GetTestSupportUrl(), 1, MaxStrLen(SPBExtensionLicense."Support URL"));
-        SPBExtensionLicense."Billing Support Email" := CopyStr(LicensePlatform.GetTestBillingEmail(), 1, MaxStrLen(SPBExtensionLicense."Billing Support Email"));
+        SPBExtensionLicense."Product Code" := CopyStr(LicenseProduct.GetTestProductId(), 1, MaxStrLen(SPBExtensionLicense."Product Code"));
+        SPBExtensionLicense."Product URL" := CopyStr(LicenseProduct.GetTestProductUrl(), 1, MaxStrLen(SPBExtensionLicense."Product URL"));
+        SPBExtensionLicense."Support URL" := CopyStr(LicenseProduct.GetTestSupportUrl(), 1, MaxStrLen(SPBExtensionLicense."Support URL"));
+        SPBExtensionLicense."Billing Support Email" := CopyStr(LicenseProduct.GetTestBillingEmail(), 1, MaxStrLen(SPBExtensionLicense."Billing Support Email"));
         SPBExtensionLicense.Modify();
     end;
 }

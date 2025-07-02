@@ -191,11 +191,11 @@ page 71033576 "SPBLIC License Activation"
 
     trigger OnOpenPage()
     var
-        LicensePlatform: Interface "SPBLIC ILicenseCommunicator";
+        LicenseProduct: Interface "SPBLIC IProduct";
     begin
         LicenseLinkText := LicenseLinkUriTok;
-        LicensePlatform := Rec."License Platform";
-        LicenseFormatHintText := LicensePlatform.SampleKeyFormatText();
+        LicenseProduct := Rec."License Platform";
+        LicenseFormatHintText := LicenseProduct.SampleKeyFormatText();
         Step := Step::Start;
         EnableControls();
     end;
