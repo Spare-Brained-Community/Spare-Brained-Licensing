@@ -21,27 +21,27 @@ codeunit 71033587 "SPBLIC Activate Meth"
 
     local procedure CheckPlatformCanActivate(var SPBExtensionLicense: Record "SPBLIC Extension License"; var ResponseBody: Text) ActivationSuccess: Boolean
     var
-        LicensePlatform: Interface "SPBLIC ILicenseCommunicator";
-        LicensePlatformV2: Interface "SPBLIC ILicenseCommunicator2";
+        LicenseActivation: Interface "SPBLIC IActivation";
+        LicenseProduct: Interface "SPBLIC IProduct";
         ActivationFailureErr: Label 'An error occurred validating the license.  Contact %1 for assistance', Comment = '%1 is the App Publisher';
         NoRemainingUsesErr: Label 'There are no remaining uses of that license key to assign to this installation.';
         AppInfo: ModuleInfo;
     begin
-        LicensePlatform := SPBExtensionLicense."License Platform";
-        LicensePlatformV2 := SPBExtensionLicense."License Platform";
+        LicenseActivation := SPBExtensionLicense."License Platform";
+        LicenseProduct := SPBExtensionLicense."License Platform";
         // We'll want the App info for events / errors:
         NavApp.GetModuleInfo(SPBExtensionLicense."Extension App Id", AppInfo);
 
-        if LicensePlatformV2.CallAPIForActivation(SPBExtensionLicense, ResponseBody) then begin
-            if LicensePlatformV2.ClientSideLicenseCount(SPBExtensionLicense) then begin
-                if LicensePlatform.CheckAPILicenseCount(SPBExtensionLicense, ResponseBody) then
+        if LicenseActivation.CallAPIForActivation(SPBExtensionLicense, ResponseBody) then begin
+            if LicenseActivation.ClientSideLicenseCount(SPBExtensionLicense) then begin
+                if LicenseActivation.CheckAPILicenseCount(SPBExtensionLicense, ResponseBody) then
                     ActivationSuccess := true
                 else
                     Error(NoRemainingUsesErr)
             end else
                 // if the Activation is Server Side, then the activation would have failed on a count issue
                 ActivationSuccess := true;
-            LicensePlatform.PopulateSubscriptionFromResponse(SPBExtensionLicense, ResponseBody);
+            LicenseActivation.PopulateSubscriptionFromResponse(SPBExtensionLicense, ResponseBody);
         end else
             // In case of a malformed Implementation where the user is given no errors by the API call CU, we'll have a failsafe one here
             Error(ActivationFailureErr, AppInfo.Publisher);
@@ -60,7 +60,7 @@ codeunit 71033587 "SPBLIC Activate Meth"
         if (SPBExtensionLicense."Subscription End Date" <> 0DT) and
           (SPBExtensionLicense."Subscription End Date" < CurrentDateTime)
         then begin
-            SPBExtensionLicense.Activated := false;
+            SPBExtensionLicense.Validate("License State", SPBExtensionLicense."License State"::Active);
             SPBExtensionLicense.Modify();
             Commit();
             SPBLICEvents.OnAfterActivationFailure(SPBExtensionLicense, AppInfo);
@@ -73,7 +73,7 @@ codeunit 71033587 "SPBLIC Activate Meth"
 
         // Now pop the details into IsolatedStorage
         SPBLICIsoStoreManager.UpdateOrCreateIsoStorage(SPBExtensionLicense);
-        exit(SPBExtensionLicense.Activated);
+        exit(SPBExtensionLicense.IsActive());
     end;
 
     local procedure OnAfterActivate(var SPBExtensionLicense: Record "SPBLIC Extension License");

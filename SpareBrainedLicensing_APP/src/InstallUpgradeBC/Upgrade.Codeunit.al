@@ -15,6 +15,10 @@ codeunit 71033581 "SPBLIC Upgrade"
             Performv21Upgrade();
             UpgradeTag.SetUpgradeTag(v21ReasonLbl);
         end;
+        if not UpgradeTag.HasUpgradeTag(v23ReasonLbl) then begin
+            Performv23Upgrade();
+            UpgradeTag.SetUpgradeTag(v23ReasonLbl);
+        end;
         SPBLICTelemetry.LicensingAppUpgraded();
     end;
 
@@ -46,16 +50,33 @@ codeunit 71033581 "SPBLIC Upgrade"
         SPBLicensingInstall.PerformInstallOfTestSubscriptions();
     end;
 
+    local procedure Performv23Upgrade()
+    var
+        SPBExtensionLicense: Record "SPBLIC Extension License";
+        SPBLicensingInstall: Codeunit "SPBLIC Licensing Install";
+        AppInfo: ModuleInfo;
+    begin
+        // Removing any older Subscriptions that was just for Gumroad
+        NavApp.GetCurrentModuleInfo(AppInfo);
+        SPBExtensionLicense.SetRange("Extension App Id", AppInfo.Id);
+        SPBExtensionLicense.DeleteAll();
+
+        // To using the submodule system to test whatever platforms
+        SPBLicensingInstall.PerformInstallOfTestSubscriptions();
+    end;
+
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Upgrade Tag", 'OnGetPerDatabaseUpgradeTags', '', false, false)]
     local procedure OnGetPerDatabaseUpgradeTags(var PerDatabaseUpgradeTags: List of [Code[250]]);
     begin
         PerDatabaseUpgradeTags.Add(v20ReasonLbl);
         PerDatabaseUpgradeTags.Add(v21ReasonLbl);
+        PerDatabaseUpgradeTags.Add(v23ReasonLbl);
     end;
 
 
     var
         v20ReasonLbl: Label 'SBI-V20-20220430', Locked = true;
         v21ReasonLbl: Label 'SBILicensing-V21-20230212', Locked = true;
+        v23ReasonLbl: Label 'SBILicensing-V23-20240601', Locked = true;
 }
