@@ -26,7 +26,7 @@ codeunit 71033588 "SPBLIC Deactivate Meth"
             LicensePlatformV2 := SPBExtensionLicense."License Platform";
             if not LicensePlatformV2.CallAPIForDeactivation(SPBExtensionLicense, ResponseBody) then begin
                 if GuiAllowed() then
-                    Error(DeactivationProblemErr, AppInfo.Publisher);
+                    Error(DeactivationProblemErr, AppInfo.Publisher());
             end else
                 DeactivationSuccess := true;
             SPBLICTelemetry.LicensePlatformDeactivation(SPBExtensionLicense);

@@ -15,7 +15,7 @@ codeunit 71033589 "SPBLIC Environment Watcher"
                 if DestinationEnvironmentType = DestinationEnvironmentType::Sandbox then begin
                     // Reset all licenses to Sandbox grace
                     if SPBExtensionLicense."Sandbox Grace Days" <> 0 then
-                        SPBExtensionLicense."Trial Grace End Date" := CalcDate(StrSubstNo(GraceDaysMathTok, SPBExtensionLicense."Sandbox Grace Days"), Today);
+                        SPBExtensionLicense."Trial Grace End Date" := CalcDate(StrSubstNo(GraceDaysMathTok, SPBExtensionLicense."Sandbox Grace Days"), Today());
                     SPBLICDeactivateMeth.Deactivate(SPBExtensionLicense, false);
                 end else
                     // Deactivate the licenses in general

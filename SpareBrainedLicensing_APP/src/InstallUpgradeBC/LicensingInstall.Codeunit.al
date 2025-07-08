@@ -55,8 +55,8 @@ codeunit 71033579 "SPBLIC Licensing Install"
             SPBExtensionLicense.Insert(true);
         end;
 
-        SPBExtensionLicense."Extension App Id" := AppInfo.Id;
-        SPBExtensionLicense."Extension Name" := StrSubstNo(TestLicenseNameTok, AppInfo.Name);
+        SPBExtensionLicense."Extension App Id" := AppInfo.Id();
+        SPBExtensionLicense."Extension Name" := StrSubstNo(TestLicenseNameTok, AppInfo.Name());
         SPBExtensionLicense."License Platform" := WhichLicensePlatform;
         LicensePlatform := SPBExtensionLicense."License Platform";
         SPBExtensionLicense."Submodule Name" := CopyStr(UpperCase(Format(WhichLicensePlatform)), 1, MaxStrLen(SPBExtensionLicense."Submodule Name"));

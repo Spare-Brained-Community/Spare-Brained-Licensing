@@ -9,17 +9,17 @@ codeunit 71033583 "SPBLIC Events"
 
     #region ActiveCheckEvents
     [IntegrationEvent(false, false)]
-    internal procedure OnAfterCheckActiveBasic(var SPBExtensionLicense: Record "SPBLIC Extension License"; IsActive: Boolean);
+    internal procedure OnAfterCheckActiveBasic(var SPBExtensionLicense: Record "SPBLIC Extension License"; IsActive: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    internal procedure OnAfterCheckActiveBasicFailure(SubscriptionId: Guid; SubmoduleName: Text[100]; FailureReason: Text);
+    internal procedure OnAfterCheckActiveBasicFailure(SubscriptionId: Guid; SubmoduleName: Text[100]; FailureReason: Text)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    internal procedure OnAfterCheckActiveFailure(var SPBExtensionLicense: Record "SPBLIC Extension License"; IsActive: Boolean; FailureReason: Text);
+    internal procedure OnAfterCheckActiveFailure(var SPBExtensionLicense: Record "SPBLIC Extension License"; IsActive: Boolean; FailureReason: Text)
     begin
     end;
     #endregion ActiveCheckEvents

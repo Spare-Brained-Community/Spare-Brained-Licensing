@@ -39,7 +39,7 @@ codeunit 71033581 "SPBLIC Upgrade"
     begin
         // Removing any older Subscriptions that was just for Gumroad
         NavApp.GetCurrentModuleInfo(AppInfo);
-        SPBExtensionLicense.SetRange("Extension App Id", AppInfo.Id);
+        SPBExtensionLicense.SetRange("Extension App Id", AppInfo.Id());
         SPBExtensionLicense.DeleteAll();
 
         // To using the submodule system to test whatever platforms
@@ -48,7 +48,7 @@ codeunit 71033581 "SPBLIC Upgrade"
 
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Upgrade Tag", 'OnGetPerDatabaseUpgradeTags', '', false, false)]
-    local procedure OnGetPerDatabaseUpgradeTags(var PerDatabaseUpgradeTags: List of [Code[250]]);
+    local procedure OnGetPerDatabaseUpgradeTags(var PerDatabaseUpgradeTags: List of [Code[250]])
     begin
         PerDatabaseUpgradeTags.Add(v20ReasonLbl);
         PerDatabaseUpgradeTags.Add(v21ReasonLbl);

@@ -11,7 +11,7 @@ codeunit 71033580 "SPBLIC IsoStore Manager"
         SPBIsoStoreManager: Codeunit "SPBLIC IsoStore Manager";
         YesterdayDateTime: DateTime;
     begin
-        SPBIsoStoreManager.SetAppValue(SPBExtensionLicense, 'lastUpdated', Format(CurrentDateTime, 0, 9));
+        SPBIsoStoreManager.SetAppValue(SPBExtensionLicense, 'lastUpdated', Format(CurrentDateTime(), 0, 9));
         SPBIsoStoreManager.SetAppValue(SPBExtensionLicense, 'endDate', Format(SPBExtensionLicense."Subscription End Date", 0, 9));
         SPBIsoStoreManager.SetAppValue(SPBExtensionLicense, 'active', Format(SPBExtensionLicense.Activated, 0, 9));
         SPBIsoStoreManager.SetAppValue(SPBExtensionLicense, 'preactivationDays', Format(SPBExtensionLicense."Sandbox Grace Days", 0, 9));

@@ -32,13 +32,13 @@ codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommu
     begin
         // We REQUIRE HTTP access, so we'll force it on, regardless of Sandbox
         NavApp.GetCurrentModuleInfo(AppInfo);
-        if NAVAppSetting.Get(AppInfo.Id) then begin
+        if NAVAppSetting.Get(AppInfo.Id()) then begin
             if not NAVAppSetting."Allow HttpClient Requests" then begin
                 NAVAppSetting."Allow HttpClient Requests" := true;
                 NAVAppSetting.Modify();
             end
         end else begin
-            NAVAppSetting."App ID" := AppInfo.Id;
+            NAVAppSetting."App ID" := AppInfo.Id();
             NAVAppSetting."Allow HttpClient Requests" := true;
             NAVAppSetting.Insert();
         end;
@@ -48,16 +48,16 @@ codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommu
         ApiHttpRequestMessage.Method('POST');
 
         if not ApiHttpClient.Send(ApiHttpRequestMessage, ApiHttpResponseMessage) then begin
-            if ApiHttpResponseMessage.IsBlockedByEnvironment then
+            if ApiHttpResponseMessage.IsBlockedByEnvironment() then
                 Error(EnvironmentBlockErr)
             else
-                Error(WebCallErr, ApiHttpResponseMessage.HttpStatusCode, ApiHttpResponseMessage.ReasonPhrase, ApiHttpResponseMessage.Content);
+                Error(WebCallErr, ApiHttpResponseMessage.HttpStatusCode(), ApiHttpResponseMessage.ReasonPhrase(), ApiHttpResponseMessage.Content());
         end else
             if ApiHttpResponseMessage.IsSuccessStatusCode() then begin
-                ApiHttpResponseMessage.Content.ReadAs(ResponseBody);
+                ApiHttpResponseMessage.Content().ReadAs(ResponseBody);
                 exit(true);
             end else
-                Error(WebCallErr, ApiHttpResponseMessage.HttpStatusCode, ApiHttpResponseMessage.ReasonPhrase, ApiHttpResponseMessage.Content);
+                Error(WebCallErr, ApiHttpResponseMessage.HttpStatusCode(), ApiHttpResponseMessage.ReasonPhrase(), ApiHttpResponseMessage.Content());
     end;
 
     procedure CallAPIForDeactivation(var SPBExtensionLicense: Record "SPBLIC Extension License"; var ResponseBody: Text) ResultOK: Boolean
@@ -88,7 +88,7 @@ codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommu
         GumroadJson.ReadFrom(ResponseBody);
         GumroadJson.Get('success', GumroadToken);
         if not GumroadToken.AsValue().AsBoolean() then
-            Error(ActivationFailureErr, AppInfo.Publisher);
+            Error(ActivationFailureErr, AppInfo.Publisher());
         GumroadJson.Get('purchase', GumroadToken);
 
         TempJsonBuffer.ReadFromText(ResponseBody);
@@ -109,14 +109,14 @@ codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommu
         SPBExtensionLicense.CalculateEndDate();
     end;
 
-    procedure ClientSideDeactivationPossible(var SPBExtensionLicense: Record "SPBLIC Extension License"): Boolean;
+    procedure ClientSideDeactivationPossible(var SPBExtensionLicense: Record "SPBLIC Extension License"): Boolean
     begin
         // Gumroad only allows this using an API key, which is unique to each Publisher.  At this time,
         // I can't support the safe storage of that information 
         exit(false);
     end;
 
-    procedure ClientSideLicenseCount(var SPBExtensionLicense: Record "SPBLIC Extension License"): Boolean;
+    procedure ClientSideLicenseCount(var SPBExtensionLicense: Record "SPBLIC Extension License"): Boolean
     begin
         exit(true);
     end;
@@ -140,7 +140,7 @@ codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommu
         GumroadJson.Get('success', GumroadToken);
         if not GumroadToken.AsValue().AsBoolean() then begin
             NavApp.GetModuleInfo(SPBExtensionLicense."Extension App Id", AppInfo);
-            Error(GumroadErr, AppInfo.Publisher);
+            Error(GumroadErr, AppInfo.Publisher());
         end;
         GumroadJson.Get('purchase', GumroadToken);
 

@@ -4,11 +4,9 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         LemonSqueezyActivateAPITok: Label 'https://api.lemonsqueezy.com/v1/licenses/activate?license_key=%1&instance_name=%2', Comment = '%1 is the license key, %2 is just a label in the Lemon Squeezy list of Licenses', Locked = true;
 #pragma warning disable AA0240
         LemonSqueezyBillingEmailTok: Label 'support@sparebrained.com', Locked = true;
-#pragma warning restore AA0240
-        LemonSqueezyDeactivateAPITok: Label 'https://api.lemonsqueezy.com/v1/licenses/deactivate?license_key=%1&instance_id=%2', Comment = '%1 is the license key, %2 is the unique guid assigned by Lemon Squeezy for this installation, created during Activation.', Locked = true;
-#pragma warning disable AA0240
         LemonSqueezySupportUrlTok: Label 'support@sparebrained.com', Locked = true;
 #pragma warning restore AA0240
+        LemonSqueezyDeactivateAPITok: Label 'https://api.lemonsqueezy.com/v1/licenses/deactivate?license_key=%1&instance_id=%2', Comment = '%1 is the license key, %2 is the unique guid assigned by Lemon Squeezy for this installation, created during Activation.', Locked = true;
         LemonSqueezyTestProductIdTok: Label '39128', Locked = true;
         LemonSqueezyTestProductKeyTok: Label 'CE2F02DE-657C-4F76-8F93-0E352C9A30B2', Locked = true;
         LemonSqueezyTestProductUrlTok: Label 'https://sparebrained.lemonsqueezy.com/checkout/buy/cab72f9c-add0-47b0-9a09-feb3b4ccf8e0', Locked = true;
@@ -73,13 +71,13 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
     begin
         // We REQUIRE HTTP access, so we'll force it on, regardless of Sandbox
         NavApp.GetCurrentModuleInfo(AppInfo);
-        if NAVAppSetting.Get(AppInfo.Id) then begin
+        if NAVAppSetting.Get(AppInfo.Id()) then begin
             if not NAVAppSetting."Allow HttpClient Requests" then begin
                 NAVAppSetting."Allow HttpClient Requests" := true;
                 NAVAppSetting.Modify();
             end
         end else begin
-            NAVAppSetting."App ID" := AppInfo.Id;
+            NAVAppSetting."App ID" := AppInfo.Id();
             NAVAppSetting."Allow HttpClient Requests" := true;
             NAVAppSetting.Insert();
         end;
@@ -88,16 +86,16 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         ApiHttpRequestMessage.Method('POST');
 
         if not ApiHttpClient.Send(ApiHttpRequestMessage, ApiHttpResponseMessage) then begin
-            if ApiHttpResponseMessage.IsBlockedByEnvironment then
+            if ApiHttpResponseMessage.IsBlockedByEnvironment() then
                 Error(EnvironmentBlockErr)
             else
-                Error(WebCallErr, ApiHttpResponseMessage.HttpStatusCode, ApiHttpResponseMessage.ReasonPhrase, ApiHttpResponseMessage.Content);
+                Error(WebCallErr, ApiHttpResponseMessage.HttpStatusCode(), ApiHttpResponseMessage.ReasonPhrase(), ApiHttpResponseMessage.Content());
         end else
             if ApiHttpResponseMessage.IsSuccessStatusCode() then begin
-                ApiHttpResponseMessage.Content.ReadAs(ResponseBody);
+                ApiHttpResponseMessage.Content().ReadAs(ResponseBody);
                 exit(true);
             end else
-                Error(WebCallErr, ApiHttpResponseMessage.HttpStatusCode, ApiHttpResponseMessage.ReasonPhrase, ApiHttpResponseMessage.Content);
+                Error(WebCallErr, ApiHttpResponseMessage.HttpStatusCode(), ApiHttpResponseMessage.ReasonPhrase(), ApiHttpResponseMessage.Content());
     end;
 
     local procedure ValidateLicenseIdInfo(var SPBExtensionLicense: Record "SPBLIC Extension License")
@@ -135,7 +133,7 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         LSqueezyToken: JsonToken;
         CommunicationFailureErr: Label 'An error occurred communicating with the licensing platform.  Contact %1 for assistance', Comment = '%1 is the App Publisher';
         AppInfo: ModuleInfo;
-        SqueezyReponseType: Option " ",Activation,Validation,Deactivation;
+        SqueezyResponseType: Option " ",Activation,Validation,Deactivation;
         TempPlaceholder: Text;
     begin
         // This is a generic function to process all Responses, regardless of Activation, Validation, or Deactivation
@@ -145,23 +143,23 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         case true of
             LSqueezyJson.Get('activated', LSqueezyToken):
                 begin
-                    SqueezyReponseType := SqueezyReponseType::Activation;
+                    SqueezyResponseType := SqueezyResponseType::Activation;
                     CurrentActiveStatus := LSqueezyToken.AsValue().AsBoolean();
                 end;
             LSqueezyJson.Get('valid', LSqueezyToken):
                 begin
-                    SqueezyReponseType := SqueezyReponseType::Validation;
+                    SqueezyResponseType := SqueezyResponseType::Validation;
                     CurrentActiveStatus := LSqueezyToken.AsValue().AsBoolean();
                 end;
             LSqueezyJson.Get('deactivated', LSqueezyToken):
                 begin
-                    SqueezyReponseType := SqueezyReponseType::Deactivation;
+                    SqueezyResponseType := SqueezyResponseType::Deactivation;
                     // We flip. If deactivated is true, then it's not active.
                     CurrentActiveStatus := not LSqueezyToken.AsValue().AsBoolean();
                 end;
         end;
-        if SqueezyReponseType = SqueezyReponseType::" " then
-            Error(CommunicationFailureErr, AppInfo.Publisher);
+        if SqueezyResponseType = SqueezyResponseType::" " then
+            Error(CommunicationFailureErr, AppInfo.Publisher());
 
         TempJsonBuffer.ReadFromText(ResponseBody);
 
@@ -178,7 +176,7 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         SPBExtensionLicense.CalculateEndDate();
 
         // Lemon Squeezy relies on having storage of the "instance ID" to verify an instance is still active
-        if SqueezyReponseType = SqueezyReponseType::Activation then begin
+        if SqueezyResponseType = SqueezyResponseType::Activation then begin
             TempJsonBuffer.GetPropertyValueAtPath(TempPlaceholder, 'id', '*instance*');
             SPBExtensionLicense."Licensing ID" := CopyStr(TempPlaceholder, 1, MaxStrLen(SPBExtensionLicense."Licensing ID"));
             InstanceInfo.Add('id', TempPlaceholder);
@@ -190,13 +188,13 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         end;
     end;
 
-    procedure ClientSideDeactivationPossible(var SPBExtensionLicense: Record "SPBLIC Extension License"): Boolean;
+    procedure ClientSideDeactivationPossible(var SPBExtensionLicense: Record "SPBLIC Extension License"): Boolean
     begin
         // LemonSqueezy allows self-unregistration of an instance of a license 
         exit(true);
     end;
 
-    procedure ClientSideLicenseCount(var SPBExtensionLicense: Record "SPBLIC Extension License"): Boolean;
+    procedure ClientSideLicenseCount(var SPBExtensionLicense: Record "SPBLIC Extension License"): Boolean
     begin
         exit(false);
     end;

@@ -62,14 +62,14 @@ codeunit 71033585 "SPBLIC Check Active Meth"
                     // -1 days grace for a Sandbox means it's unlimited use in sandboxes, even if not activated.
                     exit(true)
                 else
-                    GraceEndDate := Today - 1;
-            if (GraceEndDate = Today) and GuiAllowed then
+                    GraceEndDate := Today() - 1;
+            if (GraceEndDate = Today()) and GuiAllowed() then
                 Message(GraceExpiringMsg, SPBExtensionLicense."Extension Name");
 
             // if the subscription isn't active, and we're not in the grace period, then we're not Active
-            if GraceEndDate < Today then
+            if GraceEndDate < Today() then
                 SPBEvents.OnAfterCheckActiveFailure(SPBExtensionLicense, false, StrSubstNo(GracePeriodExpiredTok, GraceEndDate));
-            exit(GraceEndDate >= Today);
+            exit(GraceEndDate >= Today());
         end;
 
         if SPBIsoStoreManager.GetAppValue(SPBExtensionLicense, 'lastCheckDate', IsoStorageValue) then
@@ -81,11 +81,11 @@ codeunit 71033585 "SPBLIC Check Active Meth"
                 SPBExtensionLicense.Modify();
             end;
             SPBLICVersionCheck.DoVersionCheck(SPBExtensionLicense);
-            SPBIsoStoreManager.SetAppValue(SPBExtensionLicense, 'lastCheckDate', Format(CurrentDateTime, 0, 9));
+            SPBIsoStoreManager.SetAppValue(SPBExtensionLicense, 'lastCheckDate', Format(CurrentDateTime(), 0, 9));
         end;
 
         // if the subscription ran out
-        if (SPBExtensionLicense."Subscription End Date" < CurrentDateTime) and
+        if (SPBExtensionLicense."Subscription End Date" < CurrentDateTime()) and
           (SPBExtensionLicense."Subscription End Date" <> 0DT)
         then begin
             SPBEvents.OnAfterCheckActiveFailure(SPBExtensionLicense, false, StrSubstNo(SubscriptionExpiredTok, SPBExtensionLicense."Subscription End Date"));

@@ -30,7 +30,12 @@
 		"CRS.FileNamePattern": "<ObjectNameShort>.<ObjectTypeShortPascalCase>.al",
 		"CRS.FileNamePatternExtensions": "<ObjectNameShort>.<ObjectTypeShortPascalCase>.al",
 		"CRS.FileNamePatternPageCustomizations": "<ObjectNameShort>.<ObjectTypeShortPascalCase>.al",
-		"CRS.OnSaveAlFileAction": "Rename"
+		"CRS.OnSaveAlFileAction": "Rename",
+		"cSpell.words": [
+			"Gumroad",
+			"SPBLIC",
+			"Squeezy"
+		]
 	},
 	"launch": {
 		"version": "0.2.0",

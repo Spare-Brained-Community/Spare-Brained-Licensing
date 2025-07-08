@@ -34,7 +34,7 @@ codeunit 71033576 "SPBLIC Extension Registration"
         forceUpdate: Boolean)
     begin
         RegisterExtension(AppInfo,
-        AppInfo.Id,
+        AppInfo.Id(),
         '',
         newProductCode,
         newProductUrl,
@@ -89,7 +89,7 @@ codeunit 71033576 "SPBLIC Extension Registration"
         SPBLICTelemetry: Codeunit "SPBLIC Telemetry";
         GraceEndDate: Date;
         GraceDays: Integer;
-        PlusDaysTok: Label '<+%1D>', Comment = '%1 is the number of days ';
+        PlusDaysTok: Label '<+%1D>', Comment = '%1 is the number of days ', Locked = true;
     begin
         if minimumLicensingAppVersion > Version.Create('1.0.0.0') then
             CheckSupportedVersion(minimumLicensingAppVersion);
@@ -99,14 +99,14 @@ codeunit 71033576 "SPBLIC Extension Registration"
         else
             GraceDays := daysAllowedBeforeActivationSandbox;
         if GraceDays > 0 then
-            GraceEndDate := CalcDate(StrSubstNo(PlusDaysTok, daysAllowedBeforeActivationProd), Today)
+            GraceEndDate := CalcDate(StrSubstNo(PlusDaysTok, daysAllowedBeforeActivationProd), Today())
         else
-            GraceEndDate := Today;
+            GraceEndDate := Today();
 
         if (SPBExtensionLicense.Get(SubModuleId)) then begin
             if forceUpdate then begin
                 SPBExtensionLicense."Submodule Name" := SubModuleName;
-                SPBExtensionLicense."Extension Name" := CopyStr(AppInfo.Name, 1, MaxStrLen(SPBExtensionLicense."Extension Name"));
+                SPBExtensionLicense."Extension Name" := CopyStr(AppInfo.Name(), 1, MaxStrLen(SPBExtensionLicense."Extension Name"));
                 SPBExtensionLicense."Product Code" := newProductCode;
                 SPBExtensionLicense."Product URL" := newProductUrl;
                 SPBExtensionLicense."Support URL" := newSupportUrl;
@@ -120,8 +120,8 @@ codeunit 71033576 "SPBLIC Extension Registration"
         end else begin
             SPBExtensionLicense."Entry Id" := SubModuleId;
             SPBExtensionLicense."Submodule Name" := SubModuleName;
-            SPBExtensionLicense."Extension App Id" := AppInfo.Id;
-            SPBExtensionLicense."Extension Name" := CopyStr(AppInfo.Name, 1, MaxStrLen(SPBExtensionLicense."Extension Name"));
+            SPBExtensionLicense."Extension App Id" := AppInfo.Id();
+            SPBExtensionLicense."Extension Name" := CopyStr(AppInfo.Name(), 1, MaxStrLen(SPBExtensionLicense."Extension Name"));
             SPBExtensionLicense."Product Code" := newProductCode;
             SPBExtensionLicense."Product URL" := newProductUrl;
             SPBExtensionLicense."Support URL" := newSupportUrl;
@@ -134,7 +134,7 @@ codeunit 71033576 "SPBLIC Extension Registration"
             SPBExtensionLicense."License Platform" := licensePlatform;
             SPBExtensionLicense.Insert(true);
         end;
-        SPBIsoStoreManager.SetAppValue(SPBExtensionLicense, 'installDate', Format(CurrentDateTime, 0, 9));
+        SPBIsoStoreManager.SetAppValue(SPBExtensionLicense, 'installDate', Format(CurrentDateTime(), 0, 9));
         SPBIsoStoreManager.SetAppValue(SPBExtensionLicense, 'preactivationDays', Format(GraceDays));
         SPBLICTelemetry.NewExtensionRegistered(SPBExtensionLicense);
     end;
@@ -145,8 +145,8 @@ codeunit 71033576 "SPBLIC Extension Registration"
         AppInfo: ModuleInfo;
     begin
         NavApp.GetCurrentModuleInfo(AppInfo);
-        if AppInfo.AppVersion < minVersion then
-            Error(VersionUpdateRequiredErr, AppInfo.Name, minVersion);
+        if AppInfo.AppVersion() < minVersion then
+            Error(VersionUpdateRequiredErr, AppInfo.Name(), minVersion);
     end;
 
     [Obsolete('Use SPB Check Active method codeunit instead.')]
