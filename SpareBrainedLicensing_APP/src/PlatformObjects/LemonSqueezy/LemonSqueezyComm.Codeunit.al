@@ -1,3 +1,12 @@
+namespace SPB.PlatformObjects.LemonSqueezy;
+
+using SPB.Extensibility;
+using SPB.Extensibility.ApiKey;
+using SPB.Storage;
+using System.Environment;
+using System.Environment.Configuration;
+using System.IO;
+
 codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommunicator", "SPBLIC ILicenseCommunicator2", "SPBLIC IUsageIntegration"
 {
     var

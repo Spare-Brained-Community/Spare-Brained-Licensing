@@ -1,8 +1,14 @@
+namespace SPB.InstallUpgradeBC;
+
+using SPB.EngineLogic;
+using SPB.Storage;
+using System.Environment;
+
 codeunit 71033589 "SPBLIC Environment Watcher"
 {
     Access = Internal;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Environment Triggers", 'OnAfterCopyEnvironmentPerDatabase', '', false, false)]
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Environment Triggers", OnAfterCopyEnvironmentPerDatabase, '', false, false)]
     local procedure DeactivateLicensesWhenEnvironmentCopied(DestinationEnvironmentType: Option Production,Sandbox)
     var
         SPBExtensionLicense: Record "SPBLIC Extension License";

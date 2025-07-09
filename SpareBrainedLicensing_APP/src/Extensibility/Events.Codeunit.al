@@ -1,3 +1,7 @@
+namespace SPB.Extensibility;
+
+using SPB.Storage;
+
 codeunit 71033583 "SPBLIC Events"
 {
     #region UIEvents

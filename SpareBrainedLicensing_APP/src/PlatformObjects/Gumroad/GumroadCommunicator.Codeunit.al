@@ -1,3 +1,12 @@
+namespace SPB.PlatformObjects.Gumroad;
+
+using SPB;
+using SPB.Extensibility;
+using SPB.Storage;
+using SPB.Utilities;
+using System.Environment.Configuration;
+using System.IO;
+
 codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommunicator", "SPBLIC ILicenseCommunicator2", "SPBLIC IUsageIntegration"
 {
 

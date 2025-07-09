@@ -1,3 +1,8 @@
+namespace SPB.Storage;
+
+using System.Environment;
+using System.Security.Encryption;
+
 codeunit 71033580 "SPBLIC IsoStore Manager"
 {
     // Utility Codeunit

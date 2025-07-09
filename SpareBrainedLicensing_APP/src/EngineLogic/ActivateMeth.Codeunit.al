@@ -1,3 +1,9 @@
+namespace SPB.EngineLogic;
+
+using SPB.Extensibility;
+using SPB.Storage;
+using SPB.Telemetry;
+
 codeunit 71033587 "SPBLIC Activate Meth"
 {
     Access = Internal;

@@ -1,3 +1,11 @@
+namespace SPB.Callables;
+
+using SPB.Extensibility;
+using SPB.Extensibility.ApiKey;
+using SPB.Storage;
+using SPB.Telemetry;
+using System.Environment;
+
 /// <summary>
 /// This codeunit is for properly registering Extensions into the Licensing system. 
 /// </summary>

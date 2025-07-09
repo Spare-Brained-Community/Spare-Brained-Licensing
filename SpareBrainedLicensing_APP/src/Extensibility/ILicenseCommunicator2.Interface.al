@@ -1,3 +1,7 @@
+namespace SPB.Extensibility;
+
+using SPB.Storage;
+
 interface "SPBLIC ILicenseCommunicator2"
 {
     procedure CallAPIForActivation(var SPBExtensionLicense: Record "SPBLIC Extension License"; var ResponseBody: Text) ResultOK: Boolean

@@ -1,3 +1,8 @@
+namespace SPB.EngineLogic;
+
+using SPB.Extensibility;
+using SPB.Storage;
+
 codeunit 71033597 "SPBLIC LogUsageMeth"
 {
     Access = Internal;

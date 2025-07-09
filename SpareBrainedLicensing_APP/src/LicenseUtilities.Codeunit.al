@@ -1,3 +1,8 @@
+namespace SPB.Utilities;
+
+using SPB.Extensibility;
+using SPB.Storage;
+
 codeunit 71033575 "SPBLIC License Utilities"
 {
     internal procedure GetTestProductAppId(): Guid

@@ -1,3 +1,11 @@
+namespace SPB.Storage;
+
+using SPB;
+using SPB.Extensibility;
+using SPB.Extensibility.ApiKey;
+using SPB.UserInterface;
+using SPB.Utilities;
+
 table 71033575 "SPBLIC Extension License"
 {
     Caption = 'Extension License';

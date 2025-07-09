@@ -1,3 +1,7 @@
+namespace SPB.Extensibility;
+
+using SPB.Storage;
+
 interface "SPBLIC ILicenseCommunicator"
 {
     procedure CallAPIForVerification(var SPBExtensionLicense: Record "SPBLIC Extension License"; var ResponseBody: Text; IncrementLicenseCount: Boolean) ResultOK: Boolean

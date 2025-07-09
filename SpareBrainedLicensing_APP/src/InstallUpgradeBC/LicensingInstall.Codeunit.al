@@ -1,3 +1,11 @@
+namespace SPB.InstallUpgradeBC;
+
+using SPB.Extensibility;
+using SPB.Storage;
+using SPB.Telemetry;
+using System.Environment;
+using System.Upgrade;
+
 codeunit 71033579 "SPBLIC Licensing Install"
 {
     Subtype = Install;

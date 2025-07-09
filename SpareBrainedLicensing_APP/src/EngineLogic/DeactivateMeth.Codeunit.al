@@ -1,3 +1,9 @@
+namespace SPB.EngineLogic;
+
+using SPB.Extensibility;
+using SPB.Storage;
+using SPB.Telemetry;
+
 codeunit 71033588 "SPBLIC Deactivate Meth"
 {
     internal procedure Deactivate(var SPBExtensionLicense: Record "SPBLIC Extension License"; ByPlatform: Boolean) DeactivationSuccess: Boolean

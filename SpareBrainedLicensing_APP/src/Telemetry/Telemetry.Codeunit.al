@@ -1,3 +1,7 @@
+namespace SPB.Telemetry;
+
+using SPB.Storage;
+
 codeunit 71033590 "SPBLIC Telemetry"
 {
     Access = Internal;

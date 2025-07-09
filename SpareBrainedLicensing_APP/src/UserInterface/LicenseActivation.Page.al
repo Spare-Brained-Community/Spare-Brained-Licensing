@@ -1,3 +1,11 @@
+namespace SPB.UserInterface;
+
+using SPB;
+using SPB.EngineLogic;
+using SPB.Extensibility;
+using SPB.Storage;
+using SPB.Utilities;
+
 page 71033576 "SPBLIC License Activation"
 {
 

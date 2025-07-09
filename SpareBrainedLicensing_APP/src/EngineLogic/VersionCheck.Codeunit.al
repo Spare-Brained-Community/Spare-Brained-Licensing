@@ -1,3 +1,11 @@
+namespace SPB.EngineLogic;
+
+using Microsoft.Foundation.Task;
+using SPB.Extensibility;
+using SPB.Storage;
+using SPB.Telemetry;
+using SPB.UserInterface;
+
 codeunit 71033586 "SPBLIC Version Check"
 {
     Access = Internal;

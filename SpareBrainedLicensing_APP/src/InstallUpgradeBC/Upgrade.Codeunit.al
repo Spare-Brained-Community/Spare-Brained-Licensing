@@ -1,3 +1,9 @@
+namespace SPB.InstallUpgradeBC;
+
+using SPB.Storage;
+using SPB.Telemetry;
+using System.Upgrade;
+
 codeunit 71033581 "SPBLIC Upgrade"
 {
     Subtype = Upgrade;
@@ -47,7 +53,7 @@ codeunit 71033581 "SPBLIC Upgrade"
     end;
 
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Upgrade Tag", 'OnGetPerDatabaseUpgradeTags', '', false, false)]
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Upgrade Tag", OnGetPerDatabaseUpgradeTags, '', false, false)]
     local procedure OnGetPerDatabaseUpgradeTags(var PerDatabaseUpgradeTags: List of [Code[250]])
     begin
         PerDatabaseUpgradeTags.Add(v20ReasonLbl);

@@ -1,3 +1,10 @@
+namespace SPB.EngineLogic;
+
+using SPB.Extensibility;
+using SPB.Storage;
+using SPB.Telemetry;
+using System.Environment;
+
 codeunit 71033585 "SPBLIC Check Active Meth"
 {
     Access = Internal;

@@ -1,3 +1,9 @@
+namespace SPB.Callables;
+
+using SPB.EngineLogic;
+using SPB.Extensibility;
+using SPB.Storage;
+
 /// <summary>
 /// This Codeunit is for checking basic active/inactive functions to be used by 3rd parties wanting to validate
 /// if a license is active.  Two main options exist at this time - with or without Submodule functionality.

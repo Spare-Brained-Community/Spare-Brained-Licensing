@@ -1,3 +1,9 @@
+namespace SPB.UserInterface;
+
+using SPB.EngineLogic;
+using SPB.Extensibility;
+using SPB.Storage;
+
 page 71033575 "SPBLIC Extension Licenses"
 {
 

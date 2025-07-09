@@ -1,3 +1,9 @@
+namespace SPB.Callables;
+
+using SPB.EngineLogic;
+using SPB.Extensibility;
+using SPB.Storage;
+
 /// <summary>
 /// This codeunit is used to log usage of a submodule for a specific subscription.
 /// It checks if the subscription is active and logs the usage if it is.
