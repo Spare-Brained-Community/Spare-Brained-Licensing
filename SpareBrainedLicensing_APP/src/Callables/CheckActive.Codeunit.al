@@ -37,6 +37,26 @@ codeunit 71033584 "SPBLIC Check Active"
     /// <summary>
     /// This function takes an App ID and Submodule Name and checks if it is active or not, along with if the user should be shown errors if Inactive.
     /// </summary>
+    /// <param name="SubmoduleId">This should be the submodule to check for</param>
+    /// <param name="InactiveShowError">If the extension is Inactive, should the user be shown an error?</param>
+    /// <returns></returns>
+    [InherentPermissions(PermissionObjectType::TableData, Database::"SPBLIC Extension License", 'R', InherentPermissionsScope::Both)]
+    procedure CheckBasicSubmodule(SubmoduleId: Guid; InactiveShowError: Boolean) IsActive: Boolean
+    var
+        SPBExtensionLicense: Record "SPBLIC Extension License";
+        SPBEvents: Codeunit "SPBLIC Events";
+    begin
+        if not SPBExtensionLicense.Get(SubmoduleId) then begin
+            SPBEvents.OnAfterCheckActiveBasicFailure(SPBExtensionLicense."Extension App Id", SPBExtensionLicense."Submodule Name", StrSubstNo(FailureToFindSubscriptionTok, SPBExtensionLicense.GetFilters()));
+            Error(NoSubscriptionFoundErr, SPBExtensionLicense."Extension App Id", SPBExtensionLicense."Submodule Name");
+        end;
+
+        IsActive := DoCheckBasic(SPBExtensionLicense, InactiveShowError);
+    end;
+
+    /// <summary>
+    /// This function takes an App ID and Submodule Name and checks if it is active or not, along with if the user should be shown errors if Inactive.
+    /// </summary>
     /// <param name="SubscriptionId">This should be the App ID</param>
     /// <param name="SubmoduleName">This should be the submodule to check for</param>
     /// <param name="InactiveShowError">If the extension is Inactive, should the user be shown an error?</param>
@@ -46,7 +66,6 @@ codeunit 71033584 "SPBLIC Check Active"
     var
         SPBExtensionLicense: Record "SPBLIC Extension License";
         SPBEvents: Codeunit "SPBLIC Events";
-        NoSubscriptionFoundErr: Label 'No License was found in the Licenses list for SubscriptionId: %1 with Submodule name: %2', Comment = '%1 is the ID of the App. %2 is the Submodule.';
     begin
         SPBExtensionLicense.SetRange("Extension App Id", SubscriptionId);
         SPBExtensionLicense.SetRange("Submodule Name", SubmoduleName);
@@ -72,4 +91,5 @@ codeunit 71033584 "SPBLIC Check Active"
 
     var
         FailureToFindSubscriptionTok: Label 'Unable to find Subscription Entry (Filters %1)', Locked = true;
+        NoSubscriptionFoundErr: Label 'No License was found in the Licenses list for SubscriptionId: %1 with Submodule name: %2', Comment = '%1 is the ID of the App. %2 is the Submodule.';
 }

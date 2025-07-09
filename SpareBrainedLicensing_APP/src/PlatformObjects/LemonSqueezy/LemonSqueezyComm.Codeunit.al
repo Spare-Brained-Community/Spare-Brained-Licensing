@@ -70,14 +70,26 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         exit(CallLemonSqueezy(ResponseBody, DeactivateAPI, SPBExtensionLicense.ApiKeyProvider));
     end;
 
+    local procedure CallLemonSqueezy(var ResponseBody: Text; Method: Text; LemonSqueezyRequestUri: Text; ApiKeyProvider: Interface "SPBLIC IApiKeyProvider"): Boolean
+    var
+        RequestBody: JsonObject;
+    begin
+        exit(CallLemonSqueezy(ResponseBody, Method, LemonSqueezyRequestUri, ApiKeyProvider, RequestBody));
+    end;
+
+    local procedure CallLemonSqueezy(var ResponseBody: Text; LemonSqueezyRequestUri: Text; ApiKeyProvider: Interface "SPBLIC IApiKeyProvider"; RequestBody: JsonObject): Boolean
+    begin
+        exit(CallLemonSqueezy(ResponseBody, 'POST', LemonSqueezyRequestUri, ApiKeyProvider, RequestBody));
+    end;
+
     local procedure CallLemonSqueezy(var ResponseBody: Text; LemonSqueezyRequestUri: Text; ApiKeyProvider: Interface "SPBLIC IApiKeyProvider"): Boolean
     var
         RequestBody: JsonObject;
     begin
-        exit(CallLemonSqueezy(ResponseBody, LemonSqueezyRequestUri, ApiKeyProvider, RequestBody));
+        exit(CallLemonSqueezy(ResponseBody, 'POST', LemonSqueezyRequestUri, ApiKeyProvider, RequestBody));
     end;
 
-    local procedure CallLemonSqueezy(var ResponseBody: Text; LemonSqueezyRequestUri: Text; ApiKeyProvider: Interface "SPBLIC IApiKeyProvider"; RequestBody: JsonObject): Boolean
+    local procedure CallLemonSqueezy(var ResponseBody: Text; Method: Text; LemonSqueezyRequestUri: Text; ApiKeyProvider: Interface "SPBLIC IApiKeyProvider"; RequestBody: JsonObject): Boolean
     var
         NAVAppSetting: Record "NAV App Setting";
         ApiHttpClient: HttpClient;
@@ -114,7 +126,7 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         end;
 
         ApiHttpRequestMessage.SetRequestUri(LemonSqueezyRequestUri);
-        ApiHttpRequestMessage.Method('POST');
+        ApiHttpRequestMessage.Method(Method);
 
         if not ApiHttpClient.Send(ApiHttpRequestMessage, ApiHttpResponseMessage) then begin
             if ApiHttpResponseMessage.IsBlockedByEnvironment() then
@@ -299,10 +311,10 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         Clear(TempToken);
         Clear(JObject);
 
-        this.CallLemonSqueezy(ResponseBody, SubscriptionApi, SPBExtensionLicense.ApiKeyProvider);
+        this.CallLemonSqueezy(ResponseBody, 'GET', SubscriptionApi, SPBExtensionLicense.ApiKeyProvider);
         JObject.ReadFrom(ResponseBody);
-        if JObject.SelectToken('$data[0].attributes.first_subscription_item.id', TempToken) then
-            SPBExtensionLicense."Subscription Item Id" := TempToken.AsValue().AsInteger();
+        JObject.SelectToken('$.data[0].attributes.first_subscription_item.id', TempToken);
+        SPBExtensionLicense."Subscription Item Id" := TempToken.AsValue().AsInteger();
     end;
 
     procedure LogUsageIncrement(var SPBExtensionLicense: Record "SPBLIC Extension License"; UsageCount: Integer): Boolean
