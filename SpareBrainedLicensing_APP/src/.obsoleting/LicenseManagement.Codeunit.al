@@ -1,8 +1,12 @@
+namespace SPB.Obsoleting;
+
+using SPB.Storage;
+
 codeunit 71033578 "SPBLIC License Management"
 {
-    Permissions = tabledata "SPBLIC Extension License" = RIM;
-    ObsoleteState = Pending;
     ObsoleteReason = 'Refactored to new Method Codeunits and separate Event wrapper.';
+    ObsoleteState = Pending;
+    Permissions = tabledata "SPBLIC Extension License" = RIM;
 
     [Obsolete('Use new Events in SPBLIC Events codeunit.')]
     [IntegrationEvent(false, false)]

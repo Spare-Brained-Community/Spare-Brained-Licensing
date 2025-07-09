@@ -1,3 +1,11 @@
+namespace SPB.InstallUpgradeBC;
+
+using SPB.Extensibility;
+using SPB.Storage;
+using SPB.Telemetry;
+using System.Environment;
+using System.Upgrade;
+
 codeunit 71033579 "SPBLIC Licensing Install"
 {
     Subtype = Install;
@@ -17,7 +25,11 @@ codeunit 71033579 "SPBLIC Licensing Install"
     end;
 
     procedure PerformInstallOfTestSubscriptions()
+    var
+        EnvironmentInformation: Codeunit "Environment Information";
     begin
+        if EnvironmentInformation.IsProduction() then
+            exit;
         AddTestProduct(Enum::"SPBLIC License Platform"::Gumroad, GumroadTestSubscriptionIdTok);
         AddTestProduct(Enum::"SPBLIC License Platform"::LemonSqueezy, LemonSqueezyTestSubscriptionIdTok);
     end;
@@ -55,8 +67,8 @@ codeunit 71033579 "SPBLIC Licensing Install"
             SPBExtensionLicense.Insert(true);
         end;
 
-        SPBExtensionLicense."Extension App Id" := AppInfo.Id;
-        SPBExtensionLicense."Extension Name" := StrSubstNo(TestLicenseNameTok, AppInfo.Name);
+        SPBExtensionLicense."Extension App Id" := AppInfo.Id();
+        SPBExtensionLicense."Extension Name" := StrSubstNo(TestLicenseNameTok, AppInfo.Name());
         SPBExtensionLicense."License Platform" := WhichLicensePlatform;
         LicensePlatform := SPBExtensionLicense."License Platform";
         SPBExtensionLicense."Submodule Name" := CopyStr(UpperCase(Format(WhichLicensePlatform)), 1, MaxStrLen(SPBExtensionLicense."Submodule Name"));

@@ -1,3 +1,8 @@
+namespace SPB.Utilities;
+
+using SPB.Extensibility;
+using SPB.Storage;
+
 codeunit 71033575 "SPBLIC License Utilities"
 {
     internal procedure GetTestProductAppId(): Guid
@@ -5,7 +10,7 @@ codeunit 71033575 "SPBLIC License Utilities"
         AppInfo: ModuleInfo;
     begin
         NavApp.GetCurrentModuleInfo(AppInfo);
-        exit(AppInfo.Id);
+        exit(AppInfo.Id());
     end;
 
     internal procedure GetTestProductKey(SPBExtensionLicense: Record "SPBLIC Extension License"): Text
