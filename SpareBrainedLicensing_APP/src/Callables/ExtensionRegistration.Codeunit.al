@@ -167,10 +167,15 @@ codeunit 71033576 "SPBLIC Extension Registration"
             GraceDays := daysAllowedBeforeActivationProd
         else
             GraceDays := daysAllowedBeforeActivationSandbox;
-        if GraceDays > 0 then
-            GraceEndDate := CalcDate(StrSubstNo(PlusDaysTok, daysAllowedBeforeActivationProd), Today())
-        else
-            GraceEndDate := Today();
+
+        case true of
+            GraceDays > 0:
+                GraceEndDate := CalcDate(StrSubstNo(PlusDaysTok, daysAllowedBeforeActivationProd), Today());
+            GraceDays = 0:
+                GraceEndDate := Today();
+            GraceDays < 0:
+                GraceEndDate := Today() - 1;// No Grace period, so set to yesterday
+        end;
 
         if (SPBExtensionLicense.Get(SubModuleId)) then begin
             if forceUpdate then begin
