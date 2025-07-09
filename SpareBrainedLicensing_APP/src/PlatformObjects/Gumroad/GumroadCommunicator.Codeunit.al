@@ -1,4 +1,4 @@
-codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommunicator", "SPBLIC ILicenseCommunicator2"
+codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommunicator", "SPBLIC ILicenseCommunicator2", "SPBLIC IUsageIntegration"
 {
 
     var
@@ -13,6 +13,7 @@ codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommu
         GumroadTestProductKeyTok: Label '21E2339D-F24D4A92-9813B4F2-8ABA083C', Locked = true;
         GumroadTestProductUrlTok: Label 'https://sparebrained.gumroad.com/l/SBILicensingTest', Locked = true;
         GumroadVerifyAPITok: Label 'https://api.gumroad.com/v2/licenses/verify?product_permalink=%1&license_key=%2&increment_uses_count=%3', Comment = '%1 %2 %3', Locked = true;
+        UsageBaseBillingNotSupportedErr: Label 'Gumroad does not support Usage based billing.';
 
     procedure CallAPIForActivation(var SPBExtensionLicense: Record "SPBLIC Extension License"; var ResponseBody: Text) ResultOK: Boolean
     begin
@@ -185,5 +186,20 @@ codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommu
     [IntegrationEvent(false, false)]
     local procedure OnAfterThrowPossibleMisuse(SPBExtensionLicense: Record "SPBLIC Extension License")
     begin
+    end;
+
+    procedure PopulateSubscriptionItemIdFromAPI(var SPBExtensionLicense: Record "SPBLIC Extension License"; var ResponseBody: Text): Integer
+    begin
+
+    end;
+
+    procedure LogUsageIncrement(var SPBExtensionLicense: Record "SPBLIC Extension License"; UsageCount: Integer): Boolean
+    begin
+        Error(UsageBaseBillingNotSupportedErr);
+    end;
+
+    procedure LogUsageSet(var SPBExtensionLicense: Record "SPBLIC Extension License"; UsageCount: Integer): Boolean
+    begin
+        Error(UsageBaseBillingNotSupportedErr);
     end;
 }

@@ -83,6 +83,67 @@ codeunit 71033576 "SPBLIC Extension Registration"
         licensePlatform: Enum "SPBLIC License Platform";
         forceUpdate: Boolean)
     var
+        ApiKeyProvider: Enum "SPBLIC ApiKeyProvider";
+    begin
+        RegisterExtension(AppInfo,
+        SubModuleId,
+        SubModuleName,
+        newProductCode,
+        newProductUrl,
+        newSupportUrl,
+        newBillingEmail,
+        newVersionURL,
+        newUpdateNewsURL,
+        daysAllowedBeforeActivationProd,
+        daysAllowedBeforeActivationSandbox,
+        minimumLicensingAppVersion,
+        licensePlatform,
+        forceUpdate,
+        false,
+        0,
+        ApiKeyProvider);
+    end;
+
+    /// <summary>
+    /// This function with an appalling number of parameters allows Extensions to register as License, this one using an optional Submodule functionality, allowing licensing parts of an Extension, or more complex scenarios.
+    /// </summary>
+    /// <param name="AppInfo">The ModuleInfo of the Extension</param>
+    /// <param name="SubModuleId">Unique GUID for the Submodule, so you can future-proof against name changes</param>
+    /// <param name="SubModuleName">The Display name of the submodule</param>
+    /// <param name="newProductCode">The unique Product Code relevant for the Licensing Platform.</param>
+    /// <param name="newProductUrl">The unique Product URL for the Licensing Platform.</param>
+    /// <param name="newSupportUrl">A URL for users looking for support info. This should be a page on your site with product information.</param>
+    /// <param name="newBillingEmail">An email to contact about any invoicing/payment questions.</param>
+    /// <param name="newVersionURL">An optional URL to check for a version string (x.x.x.x).</param>
+    /// <param name="newUpdateNewsURL">An optional URL to check for update news information.</param>
+    /// <param name="daysAllowedBeforeActivationProd">In an On-Premises or Cloud Production environment, how many days may an extension work before requiring activation.</param>
+    /// <param name="daysAllowedBeforeActivationSandbox">In a Cloud Sandbox environment, how many days may an extension work before requiring activation.</param>
+    /// <param name="minimumLicensingAppVersion">Since the licensing app has versions too, what minimum version of the Licensing App is required</param>
+    /// <param name="licensePlatform">Which platform should be used.  Out of box options are Gumroad and LemonSqueezy, though it may be extended.</param>
+    /// <param name="forceUpdate">This setting forces changes over any existing record in the Licensing app to ensure new information updates are pushed in.</param>
+    /// <param name="isUsageBased">If true, this license is usage based, meaning it will be billed based on usage. If false, it is a standard license.</param>
+    /// <param name="storeId">The ID of the store to register the extension with.</param>
+    /// <param name="apiKeyProvider">The API Key Provider to use for this extension. This is used to retrieve the API key for the store.</param>
+    [InherentPermissions(PermissionObjectType::TableData, Database::"SPBLIC Extension License", 'RIM', InherentPermissionsScope::Both)]
+    procedure RegisterExtension(
+        AppInfo: ModuleInfo;
+        SubModuleId: Guid;
+        SubModuleName: Text[100];
+        newProductCode: Text[100];
+        newProductUrl: Text[250];
+        newSupportUrl: Text[250];
+        newBillingEmail: Text[250];
+        newVersionURL: Text[250];
+        newUpdateNewsURL: Text[250];
+        daysAllowedBeforeActivationProd: Integer;
+        daysAllowedBeforeActivationSandbox: Integer;
+        minimumLicensingAppVersion: Version;
+        licensePlatform: Enum "SPBLIC License Platform";
+        forceUpdate: Boolean;
+        isUsageBased: Boolean;
+        storeId: Integer;
+        apiKeyProvider: Enum "SPBLIC ApiKeyProvider")
+    var
         SPBExtensionLicense: Record "SPBLIC Extension License";
         EnvironmentInformation: Codeunit "Environment Information";
         SPBIsoStoreManager: Codeunit "SPBLIC IsoStore Manager";
@@ -115,6 +176,9 @@ codeunit 71033576 "SPBLIC Extension Registration"
                 SPBExtensionLicense."Update News URL" := newUpdateNewsURL;
                 SPBExtensionLicense."Sandbox Grace Days" := daysAllowedBeforeActivationSandbox;
                 SPBExtensionLicense."License Platform" := licensePlatform;
+                SPBExtensionLicense."Store Id" := storeId;
+                SPBExtensionLicense.ApiKeyProvider := apiKeyProvider;
+                SPBExtensionLicense.IsUsageBased := isUsageBased;
                 SPBExtensionLicense.Modify();
             end;
         end else begin
@@ -132,8 +196,12 @@ codeunit 71033576 "SPBLIC Extension Registration"
             SPBExtensionLicense."Trial Grace End Date" := GraceEndDate;
             SPBExtensionLicense."Sandbox Grace Days" := daysAllowedBeforeActivationSandbox;
             SPBExtensionLicense."License Platform" := licensePlatform;
+            SPBExtensionLicense."Store Id" := storeId;
+            SPBExtensionLicense.ApiKeyProvider := apiKeyProvider;
+            SPBExtensionLicense.IsUsageBased := isUsageBased;
             SPBExtensionLicense.Insert(true);
         end;
+
         SPBIsoStoreManager.SetAppValue(SPBExtensionLicense, 'installDate', Format(CurrentDateTime(), 0, 9));
         SPBIsoStoreManager.SetAppValue(SPBExtensionLicense, 'preactivationDays', Format(GraceDays));
         SPBLICTelemetry.NewExtensionRegistered(SPBExtensionLicense);

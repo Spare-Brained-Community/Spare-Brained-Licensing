@@ -41,6 +41,14 @@ codeunit 71033580 "SPBLIC IsoStore Manager"
         IsolatedStorage.Set(StrSubstNo(NameMapTok, SPBExtensionLicense."Entry Id", StoreName), StoreValue, DataScope::Module);
     end;
 
+    internal procedure SetAppValue(SPBExtensionLicense: Record "SPBLIC Extension License"; StoreName: Text; StoreValue: SecretText)
+    begin
+        if not IsolatedStorage.Contains(SPBExtensionLicense."Entry Id") then
+            IsolatedStorage.Set(SPBExtensionLicense."Entry Id", '', DataScope::Module);
+
+        IsolatedStorage.Set(StrSubstNo(NameMapTok, SPBExtensionLicense."Entry Id", StoreName), StoreValue, DataScope::Module);
+    end;
+
     internal procedure GetAppValue(SPBExtensionLicense: Record "SPBLIC Extension License"; StoreName: Text; var ReturnValue: Text) Found: Boolean
     begin
         Found := IsolatedStorage.Get(StrSubstNo(NameMapTok, SPBExtensionLicense."Entry Id", StoreName), DataScope::Module, ReturnValue);

@@ -78,6 +78,7 @@ codeunit 71033585 "SPBLIC Check Active Meth"
             if LicensePlatform.CallAPIForVerification(SPBExtensionLicense, ResponseBody, false) then begin
                 // This may update the End Dates - note: may or may not call .Modify
                 LicensePlatform.PopulateSubscriptionFromResponse(SPBExtensionLicense, ResponseBody);
+                // TODO: Save OrderID/Subscription Object from API if usage based billing is active
                 SPBExtensionLicense.Modify();
             end;
             SPBLICVersionCheck.DoVersionCheck(SPBExtensionLicense);

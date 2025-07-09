@@ -52,7 +52,7 @@ codeunit 71033584 "SPBLIC Check Active"
         IsActive := DoCheckBasic(SPBExtensionLicense, InactiveShowError);
     end;
 
-    local procedure DoCheckBasic(var SPBExtensionLicense: Record "SPBLIC Extension License"; InactiveShowError: Boolean): Boolean
+    internal procedure DoCheckBasic(var SPBExtensionLicense: Record "SPBLIC Extension License"; InactiveShowError: Boolean): Boolean
     var
         SPBLICCheckActiveMeth: Codeunit "SPBLIC Check Active Meth";
         IsActive: Boolean;

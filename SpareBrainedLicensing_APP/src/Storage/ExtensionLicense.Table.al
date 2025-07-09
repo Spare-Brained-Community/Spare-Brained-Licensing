@@ -195,6 +195,63 @@ table 71033575 "SPBLIC Extension License"
             DataClassification = CustomerContent;
             Editable = false;
         }
+        field(50; IsUsageBased; Boolean)
+        {
+            AllowInCustomizations = Always;
+            Caption = 'Is Usage Based';
+            DataClassification = SystemMetadata;
+            Editable = false;
+            ToolTip = 'Indicates if this Extension is usage based, meaning it will be billed based on usage.';
+        }
+        field(60; "Store Id"; Integer)
+        {
+            AllowInCustomizations = Always;
+            Caption = 'Store Id';
+            DataClassification = SystemMetadata;
+            Editable = false;
+            ToolTip = 'The Store ID of the store where this Extension is registered.';
+        }
+        field(70; "Order Id"; Integer)
+        {
+            AllowInCustomizations = Always;
+            Caption = 'Order Id';
+            DataClassification = SystemMetadata;
+            Editable = false;
+            ToolTip = 'The Order ID of the order where this Extension is registered.';
+        }
+        field(80; "Order Item Id"; Integer)
+        {
+            AllowInCustomizations = Always;
+            Caption = 'Order Item Id';
+            DataClassification = SystemMetadata;
+            Editable = false;
+            ToolTip = 'The Order Item ID of the order item where this Extension is registered.';
+        }
+        field(90; "Product Id"; Integer)
+        {
+            AllowInCustomizations = Always;
+            Caption = 'Product Id';
+            DataClassification = SystemMetadata;
+            Editable = false;
+            ToolTip = 'The Product ID of the product where this Extension is registered.';
+        }
+        field(100; "Subscription Item Id"; Integer)
+        {
+            AllowInCustomizations = Always;
+            Caption = 'Subscription Item Id';
+            DataClassification = SystemMetadata;
+            Editable = false;
+            ToolTip = 'The Subscription Item ID of the subscription item where this Extension is registered.';
+        }
+        field(110; ApiKeyProvider; Enum "SPBLIC ApiKeyProvider")
+        {
+            AllowInCustomizations = Always;
+            Caption = 'API Key Provider';
+            DataClassification = SystemMetadata;
+            Editable = false;
+            ToolTip = 'The API Key Provider that is used to communicate with the License Platform.';
+        }
+
     }
     keys
     {
