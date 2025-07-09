@@ -17,7 +17,11 @@ codeunit 71033579 "SPBLIC Licensing Install"
     end;
 
     procedure PerformInstallOfTestSubscriptions()
+    var
+        EnvironmentInformation: Codeunit "Environment Information";
     begin
+        if EnvironmentInformation.IsProduction() then
+            exit;
         AddTestProduct(Enum::"SPBLIC License Platform"::Gumroad, GumroadTestSubscriptionIdTok);
         AddTestProduct(Enum::"SPBLIC License Platform"::LemonSqueezy, LemonSqueezyTestSubscriptionIdTok);
     end;
