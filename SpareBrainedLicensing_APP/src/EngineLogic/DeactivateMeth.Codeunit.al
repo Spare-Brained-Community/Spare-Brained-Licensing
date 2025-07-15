@@ -6,6 +6,10 @@ using SPB.Telemetry;
 
 codeunit 71033588 "SPBLIC Deactivate Meth"
 {
+    Access = Public;
+    Permissions =
+        tabledata "SPBLIC Extension License" = RM;
+
     internal procedure Deactivate(var SPBExtensionLicense: Record "SPBLIC Extension License"; ByPlatform: Boolean) DeactivationSuccess: Boolean
     begin
         DoDeactivate(SPBExtensionLicense, ByPlatform);

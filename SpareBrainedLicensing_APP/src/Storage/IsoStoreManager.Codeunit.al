@@ -5,6 +5,8 @@ using System.Security.Encryption;
 
 codeunit 71033580 "SPBLIC IsoStore Manager"
 {
+    Access = Public;
+
     // Utility Codeunit
     var
         CryptographyManagement: Codeunit "Cryptography Management";

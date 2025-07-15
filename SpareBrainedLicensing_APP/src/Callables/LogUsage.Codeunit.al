@@ -10,9 +10,12 @@ using SPB.Storage;
 /// </summary>
 codeunit 71033598 "SPBLIC LogUsage"
 {
+    Access = Public;
+    InherentPermissions = X;
 
     var
         FailureToFindSubscriptionTok: Label 'Unable to find Subscription Entry (Filters %1)', Locked = true;
+        NoSubscriptionFoundErr: Label 'No License was found in the Licenses list for Subscription %1 with Submodule name: %2', Comment = '%1 is the ID of the App. %2 is the Submodule.';
 
     /// <summary>
     /// This function logs usage for a specific subscription and submodule.
@@ -27,13 +30,32 @@ codeunit 71033598 "SPBLIC LogUsage"
     var
         SPBExtensionLicense: Record "SPBLIC Extension License";
         SPBEvents: Codeunit "SPBLIC Events";
-        NoSubscriptionFoundErr: Label 'No License was found in the Licenses list for Subscription %1 with Submodule name: %2', Comment = '%1 is the ID of the App. %2 is the Submodule.';
     begin
         SPBExtensionLicense.SetRange("Extension App Id", SubscriptionId);
         SPBExtensionLicense.SetRange("Submodule Name", SubmoduleName);
         if not SPBExtensionLicense.FindFirst() then begin
             SPBEvents.OnAfterLogUsageFailure(SubscriptionId, SubmoduleName, StrSubstNo(FailureToFindSubscriptionTok, SPBExtensionLicense.GetFilters()));
             Error(NoSubscriptionFoundErr, SubscriptionId, SubmoduleName);
+        end;
+        exit(DoLogUsage(SPBExtensionLicense, UsageCount, InactiveShowError));
+    end;
+
+    /// <summary>
+    /// This function logs usage for a specific submodule by its ID.
+    /// </summary>
+    /// <param name="SubmoduleId">This should be the ID of the submodule</param>
+    /// <param name="UsageCount">This should be the number to increment by</param>
+    /// <param name="InactiveShowError">If the extension is Inactive, should the user be shown an error?</param>
+    /// <returns></returns>
+    [InherentPermissions(PermissionObjectType::TableData, Database::"SPBLIC Extension License", 'R', InherentPermissionsScope::Both)]
+    procedure LogUsage(SubmoduleId: Guid; UsageCount: Integer; InactiveShowError: Boolean): Boolean
+    var
+        SPBExtensionLicense: Record "SPBLIC Extension License";
+        SPBEvents: Codeunit "SPBLIC Events";
+    begin
+        if not SPBExtensionLicense.Get(SubmoduleId) then begin
+            SPBEvents.OnAfterLogUsageFailure(SPBExtensionLicense."Extension App Id", SPBExtensionLicense."Submodule Name", StrSubstNo(FailureToFindSubscriptionTok, SPBExtensionLicense.GetFilters()));
+            Error(NoSubscriptionFoundErr, SPBExtensionLicense."Extension App Id", SPBExtensionLicense."Submodule Name");
         end;
         exit(DoLogUsage(SPBExtensionLicense, UsageCount, InactiveShowError));
     end;
@@ -66,13 +88,32 @@ codeunit 71033598 "SPBLIC LogUsage"
     var
         SPBExtensionLicense: Record "SPBLIC Extension License";
         SPBEvents: Codeunit "SPBLIC Events";
-        NoSubscriptionFoundErr: Label 'No License was found in the Licenses list for Subscription %1 with Submodule name: %2', Comment = '%1 is the ID of the App. %2 is the Submodule.';
     begin
         SPBExtensionLicense.SetRange("Extension App Id", SubscriptionId);
         SPBExtensionLicense.SetRange("Submodule Name", SubmoduleName);
         if not SPBExtensionLicense.FindFirst() then begin
             SPBEvents.OnAfterLogUsageFailure(SubscriptionId, SubmoduleName, StrSubstNo(FailureToFindSubscriptionTok, SPBExtensionLicense.GetFilters()));
             Error(NoSubscriptionFoundErr, SubscriptionId, SubmoduleName);
+        end;
+        exit(DoSetUsage(SPBExtensionLicense, Quantity, InactiveShowError));
+    end;
+
+    /// <summary>
+    /// This function sets the usage for a specific submodule by its ID.
+    /// </summary>
+    /// <param name="SubmoduleId">This should be the ID of the submodule</param>
+    /// <param name="Quantity">This should be the quantity to log</param>
+    /// <param name="InactiveShowError">If the extension is Inactive, should the user be shown an error?</param>
+    /// <returns></returns>
+    [InherentPermissions(PermissionObjectType::TableData, Database::"SPBLIC Extension License", 'R', InherentPermissionsScope::Both)]
+    procedure SetUsage(SubmoduleId: Guid; Quantity: Integer; InactiveShowError: Boolean): Boolean
+    var
+        SPBExtensionLicense: Record "SPBLIC Extension License";
+        SPBEvents: Codeunit "SPBLIC Events";
+    begin
+        if not SPBExtensionLicense.Get(SubmoduleId) then begin
+            SPBEvents.OnAfterLogUsageFailure(SPBExtensionLicense."Extension App Id", SPBExtensionLicense."Submodule Name", StrSubstNo(FailureToFindSubscriptionTok, SPBExtensionLicense.GetFilters()));
+            Error(NoSubscriptionFoundErr, SPBExtensionLicense."Extension App Id", SPBExtensionLicense."Submodule Name");
         end;
         exit(DoSetUsage(SPBExtensionLicense, Quantity, InactiveShowError));
     end;

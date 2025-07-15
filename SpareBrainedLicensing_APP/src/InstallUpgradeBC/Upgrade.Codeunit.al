@@ -6,6 +6,9 @@ using System.Upgrade;
 
 codeunit 71033581 "SPBLIC Upgrade"
 {
+    Access = Public;
+    Permissions =
+        tabledata "SPBLIC Extension License" = RMD;
     Subtype = Upgrade;
 
     trigger OnUpgradePerDatabase()

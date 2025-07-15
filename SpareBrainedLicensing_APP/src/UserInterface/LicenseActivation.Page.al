@@ -8,9 +8,9 @@ using SPB.Utilities;
 
 page 71033576 "SPBLIC License Activation"
 {
-
     ApplicationArea = All;
     Caption = 'Licensing Activation Wizard';
+    Extensible = true;
     PageType = NavigatePage;
     SourceTable = "SPBLIC Extension License";
 
@@ -20,7 +20,9 @@ page 71033576 "SPBLIC License Activation"
         {
             group(Step1)
             {
+                ShowCaption = false;
                 Visible = Step1Visible;
+
                 group(WelcomeText)
                 {
                     Caption = 'This is the Activation Wizard for the Licensing system.';
@@ -53,6 +55,7 @@ page 71033576 "SPBLIC License Activation"
             }
             group(Step2)
             {
+                ShowCaption = false;
                 Visible = Step2Visible;
 
                 group(LicenseKeyInstruction)
@@ -73,6 +76,7 @@ page 71033576 "SPBLIC License Activation"
             }
             group(Step2Test)
             {
+                ShowCaption = false;
                 Visible = Step2TestVisible;
 
                 group(TestPathLicenseKeyInstruction)
@@ -109,7 +113,9 @@ page 71033576 "SPBLIC License Activation"
             }
             group(Step3)
             {
+                ShowCaption = false;
                 Visible = Step3Visible;
+
                 group(ActivationResultsPageText)
                 {
                     Caption = 'Activation Results';

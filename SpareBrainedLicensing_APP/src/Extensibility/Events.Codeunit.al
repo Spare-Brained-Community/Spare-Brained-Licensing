@@ -4,6 +4,8 @@ using SPB.Storage;
 
 codeunit 71033583 "SPBLIC Events"
 {
+    Access = Public;
+
     #region UIEvents
     [IntegrationEvent(false, false)]
     internal procedure OnBeforeLaunchProductUrl(var SPBExtensionLicense: Record "SPBLIC Extension License"; var IsHandled: Boolean)

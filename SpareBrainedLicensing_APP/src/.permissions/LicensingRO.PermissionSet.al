@@ -13,6 +13,7 @@ using SPB.Utilities;
 
 permissionset 71033576 "SPBLIC Licensing RO"
 {
+    Access = Public;
     Assignable = true;
     Caption = 'SPBLIC Licensing RO', MaxLength = 30;
     Permissions = table "SPBLIC Extension License" = X,

@@ -8,10 +8,12 @@ using SPB.Utilities;
 
 table 71033575 "SPBLIC Extension License"
 {
+    Access = Public;
     Caption = 'Extension License';
     DataClassification = AccountData;
     DataPerCompany = false;
     DrillDownPageId = "SPBLIC Extension Licenses";
+    Extensible = true;
     LookupPageId = "SPBLIC Extension Licenses";
 
     fields

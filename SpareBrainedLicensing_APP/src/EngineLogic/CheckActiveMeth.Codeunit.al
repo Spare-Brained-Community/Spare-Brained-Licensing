@@ -8,6 +8,8 @@ using System.Environment;
 codeunit 71033585 "SPBLIC Check Active Meth"
 {
     Access = Internal;
+    Permissions =
+        tabledata "SPBLIC Extension License" = RM;
 
     procedure CheckIfActive(var SPBExtensionLicense: Record "SPBLIC Extension License") IsActive: Boolean
     var
@@ -67,7 +69,7 @@ codeunit 71033585 "SPBLIC Check Active Meth"
             else
                 if (EnvironmentInformation.IsSandbox() and (IsoNumber < 0)) then
                     // -1 days grace for a Sandbox means it's unlimited use in sandboxes, even if not activated.
-                    exit(true)
+                    exit(false)
                 else
                     GraceEndDate := Today() - 1;
             if (GraceEndDate = Today()) and GuiAllowed() then

@@ -13,6 +13,7 @@ using SPB.Utilities;
 
 permissionset 71033575 "SPBLIC Licensing"
 {
+    Access = Public;
     Assignable = true;
     Caption = 'Spare Brained Licensing Admin', MaxLength = 30;
     Permissions = table "SPBLIC Extension License" = X,

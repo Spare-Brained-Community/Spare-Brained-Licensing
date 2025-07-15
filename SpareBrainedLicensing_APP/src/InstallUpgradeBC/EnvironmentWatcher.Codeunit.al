@@ -7,6 +7,8 @@ using System.Environment;
 codeunit 71033589 "SPBLIC Environment Watcher"
 {
     Access = Internal;
+    Permissions =
+        tabledata "SPBLIC Extension License" = R;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Environment Triggers", OnAfterCopyEnvironmentPerDatabase, '', false, false)]
     local procedure DeactivateLicensesWhenEnvironmentCopied(DestinationEnvironmentType: Option Production,Sandbox)

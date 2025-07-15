@@ -7,6 +7,8 @@ using SPB.Telemetry;
 codeunit 71033587 "SPBLIC Activate Meth"
 {
     Access = Internal;
+    Permissions =
+        tabledata "SPBLIC Extension License" = RM;
 
     internal procedure Activate(var SPBExtensionLicense: Record "SPBLIC Extension License") ActivationSuccess: Boolean
     var

@@ -11,6 +11,7 @@ using System.Environment;
 /// </summary>
 codeunit 71033576 "SPBLIC Extension Registration"
 {
+    Access = Public;
     /// <summary>
     /// This function with an appalling number of parameters allows Extensions to register as License.
     /// </summary>

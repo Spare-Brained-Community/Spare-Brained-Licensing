@@ -9,6 +9,8 @@ using System.IO;
 
 codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommunicator", "SPBLIC ILicenseCommunicator2", "SPBLIC IUsageIntegration"
 {
+    Access = Public;
+
     var
         LemonSqueezyActivateAPITok: Label 'https://api.lemonsqueezy.com/v1/licenses/activate?license_key=%1&instance_name=%2', Comment = '%1 is the license key, %2 is just a label in the Lemon Squeezy list of Licenses', Locked = true;
 #pragma warning disable AA0240
@@ -20,7 +22,7 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         LemonSqueezyTestProductKeyTok: Label 'CE2F02DE-657C-4F76-8F93-0E352C9A30B2', Locked = true;
         LemonSqueezyTestProductUrlTok: Label 'https://sparebrained.lemonsqueezy.com/checkout/buy/cab72f9c-add0-47b0-9a09-feb3b4ccf8e0', Locked = true;
         LemonSqueezySubscriptionsUrlTok: Label 'https://api.lemonsqueezy.com/v1/subscriptions?filter[store_id]=%1&filter[order_id]=%2&filter[order_item_id]=%3&filter[product_id]=%4', Locked = true, Comment = '%1 = Store ID, %2 = Order ID, %3 = Order Item ID, %4 = Product ID';
-        LemonSqueezyUsageRecordUrlTok: Label 'https://api.lemonsqueezy.com//v1/usage-records', Locked = true, Comment = 'This is the URL to the Usage Records API endpoint.';
+        LemonSqueezyUsageRecordUrlTok: Label 'https://api.lemonsqueezy.com/v1/usage-records', Locked = true, Comment = 'This is the URL to the Usage Records API endpoint.';
         LemonSqueezyVerifyAPITok: Label 'https://api.lemonsqueezy.com/v1/licenses/validate?license_key=%1&instance_id=%2', Comment = '%1 is the license key, %2 is the unique guid assigned by Lemon Squeezy for this installation, created during Activation.', Locked = true;
 
     procedure CallAPIForActivation(var SPBExtensionLicense: Record "SPBLIC Extension License"; var ResponseBody: Text): Boolean
@@ -321,7 +323,9 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
     var
         ResponseBody: Text;
     begin
-        // First, we'll crosscheck that the record's license_id matches the IsoStorage one for possible tamper checking
+        // Check if license is usage-based and subscription item ID is set
+        ValidateUsageBasedLicense(SPBExtensionLicense);
+        // crosscheck that the record's license_id matches the IsoStorage one for possible tamper checking
         ValidateLicenseIdInfo(SPBExtensionLicense);
 
         // When verifying the License, we have to pass the instance info that we stored on the record
@@ -332,12 +336,25 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
     var
         ResponseBody: Text;
     begin
-        // First, we'll crosscheck that the record's license_id matches the IsoStorage one for possible tamper checking
+        // Check if license is usage-based and subscription item ID is set
+        ValidateUsageBasedLicense(SPBExtensionLicense);
+        // crosscheck that the record's license_id matches the IsoStorage one for possible tamper checking
         ValidateLicenseIdInfo(SPBExtensionLicense);
 
         // When verifying the License, we have to pass the instance info that we stored on the record
-        exit(CallLemonSqueezy(ResponseBody, LemonSqueezyUsageRecordUrlTok, SPBExtensionLicense.ApiKeyProvider, BuildUsageContent(SPBExtensionLicense, UsageCount)));
+        exit(CallLemonSqueezy(ResponseBody, LemonSqueezyUsageRecordUrlTok, SPBExtensionLicense.ApiKeyProvider, BuildUsageContent(SPBExtensionLicense, UsageCount, 'set')));
+    end;
 
+    local procedure ValidateUsageBasedLicense(var SPBExtensionLicense: Record "SPBLIC Extension License")
+    var
+        LicenseNotUsageBasedErr: Label 'The License %1/%2 is not usage-based and cannot be used for usage tracking.', Comment = '%1 = the Extension Name, %2 = the Submodule Name';
+        SubscriptionItemIdMissingErr: Label 'Seems like the Subscription Item ID is missing for License %1/%2. This usually means that the License was not activated yet.', Comment = '%1 = the Extension Name, %2 = the Submodule Name';
+    begin
+        if not SPBExtensionLicense."IsUsageBased" then
+            Error(LicenseNotUsageBasedErr, SPBExtensionLicense."Extension Name", SPBExtensionLicense."Submodule Name");
+
+        if SPBExtensionLicense."Subscription Item Id" = 0 then
+            Error(SubscriptionItemIdMissingErr, SPBExtensionLicense."Extension Name", SPBExtensionLicense."Submodule Name");
     end;
 
     local procedure BuildUsageContent(var SPBExtensionLicense: Record "SPBLIC Extension License"; Quantity: Integer): JsonObject
@@ -351,9 +368,9 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
     /// <param name="Quantity">The quantity to track</param>
     /// <param name="Action">The action being performed, can be either "increment" or "set"</param>
     /// <returns></returns>
-    local procedure BuildUsageContent(var SPBExtensionLicense: Record "SPBLIC Extension License"; Quantity: Integer; Action: Text) Data: JsonObject
+    local procedure BuildUsageContent(var SPBExtensionLicense: Record "SPBLIC Extension License"; Quantity: Integer; Action: Text) Result: JsonObject
     var
-        Attributes, Relationships, SubscriptionItemData : JsonObject;
+        Attributes, Data, Relationships, SubscriptionItem, SubscriptionItemData : JsonObject;
         InvalidActionErr: Label 'Invalid action specified. Use "increment" or "set".';
     begin
         Data.Add('type', 'usage-records');
@@ -368,8 +385,10 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         end;
         Data.Add('attributes', Attributes);
         SubscriptionItemData.Add('type', 'subscription-items');
-        SubscriptionItemData.Add('id', SPBExtensionLicense."Subscription Item Id");
-        Relationships.Add('subscription-item', SubscriptionItemData);
+        SubscriptionItemData.Add('id', Format(SPBExtensionLicense."Subscription Item Id"));
+        SubscriptionItem.Add('data', SubscriptionItemData);
+        Relationships.Add('subscription-item', SubscriptionItem);
         Data.Add('relationships', Relationships);
+        Result.Add('data', Data);
     end;
 }

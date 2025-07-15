@@ -6,6 +6,7 @@ using SPB.Storage;
 codeunit 71033597 "SPBLIC LogUsageMeth"
 {
     Access = Internal;
+    InherentPermissions = X;
 
     procedure LogUsage(var SPBExtensionLicense: Record "SPBLIC Extension License"; UsageCount: Integer) Success: Boolean
     var

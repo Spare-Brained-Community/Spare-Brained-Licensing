@@ -9,6 +9,9 @@ using SPB.UserInterface;
 codeunit 71033586 "SPBLIC Version Check"
 {
     Access = Internal;
+    Permissions =
+        tabledata "SPBLIC Extension License" = RM,
+        tabledata "User Task" = RI;
 
     procedure DoVersionCheck(var SPBExtensionLicense: Record "SPBLIC Extension License")
     var

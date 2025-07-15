@@ -9,6 +9,7 @@ using System.IO;
 
 codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommunicator", "SPBLIC ILicenseCommunicator2", "SPBLIC IUsageIntegration"
 {
+    Access = Public;
 
     var
 #pragma warning disable AA0240

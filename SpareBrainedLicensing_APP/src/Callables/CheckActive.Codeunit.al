@@ -10,6 +10,7 @@ using SPB.Storage;
 /// </summary>
 codeunit 71033584 "SPBLIC Check Active"
 {
+    Access = Public;
     /// <summary>
     /// This function takes an App ID and checks if it is active or not, along with if the user should be shown errors if Inactive.
     /// </summary> 

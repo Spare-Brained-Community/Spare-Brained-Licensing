@@ -4,6 +4,7 @@ using SPB.Storage;
 
 codeunit 71033578 "SPBLIC License Management"
 {
+    InherentPermissions = X;
     ObsoleteReason = 'Refactored to new Method Codeunits and separate Event wrapper.';
     ObsoleteState = Pending;
     Permissions = tabledata "SPBLIC Extension License" = RIM;

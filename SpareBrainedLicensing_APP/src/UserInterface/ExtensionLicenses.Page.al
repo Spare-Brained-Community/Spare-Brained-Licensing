@@ -6,10 +6,10 @@ using SPB.Storage;
 
 page 71033575 "SPBLIC Extension Licenses"
 {
-
     ApplicationArea = All;
     Caption = 'Extension Licenses';
     Editable = false;
+    Extensible = true;
     PageType = List;
     SourceTable = "SPBLIC Extension License";
     UsageCategory = Administration;

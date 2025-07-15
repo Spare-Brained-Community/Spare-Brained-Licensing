@@ -5,6 +5,8 @@ using SPB.Storage;
 
 codeunit 71033575 "SPBLIC License Utilities"
 {
+    Access = Public;
+
     internal procedure GetTestProductAppId(): Guid
     var
         AppInfo: ModuleInfo;
