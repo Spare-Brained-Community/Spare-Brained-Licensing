@@ -3,6 +3,186 @@
   <file datatype="xml" source-language="en-US" target-language="de-DE" original="Spare Brained Licensing">
     <body>
       <group id="body">
+        <trans-unit id="Codeunit 3827207503 - NamedType 4016921347" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No License was found in the Licenses list for SubscriptionId: %1 with Submodule name: %2</source>
+          <target state="translated">Es wurde keine Lizenz in der Lizenzliste für die Abonnement-ID gefunden: %1 mit Name des Sub-Moduls: %2</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the ID of the App. %2 is the Submodule.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Check Active - NamedType NoSubscriptionFoundErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3827207503 - Method 788638224 - NamedType 345427010" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No License was found in the Licenses list for SubscriptionId: %1</source>
+          <target state="translated">Es wurde keine Lizenz in der Lizenzliste für die Abonnement-ID gefunden: %1</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the ID of the App.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Check Active - Method CheckBasic - NamedType NoSubFoundErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3827207503 - Method 430906001 - NamedType 4007641815" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The License for %1 is not Active.  Contact your system administrator to re-activate it.</source>
+          <target state="translated">Die Lizenz für %1 ist nicht aktiv.  Wenden Sie sich an Ihren Systemadministrator, um sie wieder zu aktivieren.</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the name of the Extension.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Check Active - Method DoCheckBasic - NamedType SubscriptionInactiveErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2609748313 - Method 2547612846 - NamedType 4286379137" size-unit="char" translate="yes" xml:space="preserve">
+          <source>To install this Extension, you need to update %1 to at least version %2.</source>
+          <target state="translated">Um diese Erweiterung zu installieren, müssen Sie %1 mindestens auf Version %2 aktualisieren.</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the name of licensing extension, %2 is the version number</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Extension Registration - Method CheckSupportedVersion - NamedType VersionUpdateRequiredErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1931101690 - NamedType 4016921347" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No License was found in the Licenses list for Subscription %1 with Submodule name: %2</source>
+          <target state="translated">Es wurde keine Lizenz in der Lizenzliste für Abonnement %1 mit Submodulname: %2 gefunden</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the ID of the App. %2 is the Submodule.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LogUsage - NamedType NoSubscriptionFoundErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 560441334 - Method 488700208 - NamedType 2571021891" size-unit="char" translate="yes" xml:space="preserve">
+          <source>An error occurred validating the license.  Contact %1 for assistance</source>
+          <target state="translated">Bei der Validierung der Lizenz ist ein Fehler aufgetreten.  Kontaktieren Sie %1 für Hilfe</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the App Publisher</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Activate Meth - Method CheckPlatformCanActivate - NamedType ActivationFailureErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 560441334 - Method 488700208 - NamedType 2597918364" size-unit="char" translate="yes" xml:space="preserve">
+          <source>There are no remaining uses of that license key to assign to this installation.</source>
+          <target state="translated">Es gibt keine weiteren Verwendungen dieses Lizenzschlüssels, die dieser Installation zugewiesen werden könnten.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Activate Meth - Method CheckPlatformCanActivate - NamedType NoRemainingUsesErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 560441334 - Method 2107568876 - NamedType 4258206074" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The License Key provided has already expired due to a Subscription End.  Contact %1 for assistance</source>
+          <target state="translated">Der angegebene Lizenzschlüssel ist aufgrund eines Abonnementendes bereits abgelaufen.  Kontaktieren Sie %1 für Unterstützung</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the App Publisher</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Activate Meth - Method DoActivationInLocalSystem - NamedType LicenseKeyExpiredErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 315386427 - Method 1532212514 - NamedType 1318374551" size-unit="char" translate="yes" xml:space="preserve">
+          <source>&lt;+%1D&gt;</source>
+          <target state="translated">&lt;+%1D&gt;</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the number of days</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Check Active Meth - Method DoCheckIfActive - NamedType DaysGraceTok</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 315386427 - Method 1532212514 - NamedType 3635804519" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Today is the last trial day for %1. Please purchase a License Key and Activate the subscription to continue use.</source>
+          <target state="translated">Heute ist der letzte Testtag für %1. Bitte erwerben Sie einen Lizenzschlüssel und aktivieren Sie das Abonnement, um es weiter zu nutzen.</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the name of the Extension</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Check Active Meth - Method DoCheckIfActive - NamedType GraceExpiringMsg</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1354941877 - Method 3272340085 - NamedType 1073361429" size-unit="char" translate="yes" xml:space="preserve">
+          <source>There was an issue in contacting the licensing server to deactivate this license.  Contact %1 for assistance.</source>
+          <target state="translated">Es gab ein Problem bei der Kontaktaufnahme mit dem Lizenzierungsserver, um diese Lizenz zu deaktivieren.  Kontaktieren Sie %1 für Hilfe.</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the App Publisher name</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Deactivate Meth - Method DoDeactivate - NamedType DeactivationProblemErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2130962757 - Method 2406779609 - NamedType 1913171376" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Update Extension: %1</source>
+          <target state="translated">Erweiterung aktualisieren: %1</target>
+          <note from="Developer" annotates="general" priority="2">%1 is Extension Name</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Version Check - Method DoVersionCheck - NamedType SubjectTok</note>
+        </trans-unit>
+        <trans-unit id="Enum 1909430229 - EnumValue 1009633233 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Gumroad</source>
+          <target state="translated">Gumroad</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum SPBLIC License Platform - EnumValue Gumroad - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1909430229 - EnumValue 1315004771 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>LemonSqueezy</source>
+          <target state="translated">LemonSqueezy</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum SPBLIC License Platform - EnumValue LemonSqueezy - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3327392388 - Method 875139600 - NamedType 3252658350" size-unit="char" translate="yes" xml:space="preserve">
+          <source>%1 Test Subscription</source>
+          <target state="translated">%1 Test-Abonnement</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the Licensing Extension name.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Licensing Install - Method AddTestProduct - NamedType TestLicenseNameTok</note>
+        </trans-unit>
+        <trans-unit id="PermissionSet 3713753643 - Property 2879900210" maxwidth="30" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Spare Brained Licensing Admin</source>
+          <target state="translated">Spare Brained Licensing Admin</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PermissionSet SPBLIC Licensing - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PermissionSet 12962568 - Property 2879900210" maxwidth="30" size-unit="char" translate="yes" xml:space="preserve">
+          <source>SPBLIC Licensing RO</source>
+          <target state="translated">SPBLIC Licensing RO</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PermissionSet SPBLIC Licensing RO - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 964202159 - NamedType 385219469" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The key will look like XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX.</source>
+          <target state="translated">Der Schlüssel sieht aus wie XXXXXXXX-XXXXXXXX-XXXXXXXXXX-XXXXXXXX.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Gumroad Communicator - NamedType GumroadKeyFormatTok</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 964202159 - NamedType 1516784335" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Gumroad does not support Usage based billing.</source>
+          <target state="translated">Gumroad unterstützt keine nutzungsabhängige Abrechnung.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Gumroad Communicator - NamedType UsageBaseBillingNotSupportedErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 964202159 - Method 572322412 - NamedType 2344834051" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Unable to communicate with the license server due to an environment block. Please resolve and try again.</source>
+          <target state="translated">Die Kommunikation mit dem Lizenzserver ist aufgrund einer Umgebungssperre nicht möglich. Bitte beheben Sie diese und versuchen Sie es erneut.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Gumroad Communicator - Method CallAPIForVerification - NamedType EnvironmentBlockErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 964202159 - Method 572322412 - NamedType 1832738441" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Unable to verify or activate license.\ %1: %2 \ %3</source>
+          <target state="translated">Lizenz kann nicht verifiziert oder aktiviert werden.\ %1: %2 \ %3</target>
+          <note from="Developer" annotates="general" priority="2">%1 %2 %3</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Gumroad Communicator - Method CallAPIForVerification - NamedType WebCallErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 964202159 - Method 2508294018 - NamedType 1515148142" size-unit="char" translate="yes" xml:space="preserve">
+          <source>An error occurred validating the license.  Contact %1 for assistance</source>
+          <target state="translated">Bei der Validierung der Lizenz ist ein Fehler aufgetreten.  Kontaktieren Sie %1 für Hilfe</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the App Publisher</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Gumroad Communicator - Method CheckAPILicenseCount - NamedType GumroadErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 964202159 - Method 2792865364 - NamedType 2571021891" size-unit="char" translate="yes" xml:space="preserve">
+          <source>An error occurred validating the license.  Contact %1 for assistance</source>
+          <target state="translated">Bei der Validierung der Lizenz ist ein Fehler aufgetreten.  Kontaktieren Sie %1 für Hilfe</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the App Publisher</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Gumroad Communicator - Method PopulateSubscriptionFromResponse - NamedType ActivationFailureErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3199230408 - Method 219013742 - NamedType 250751926" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Invalid action specified. Use "increment" or "set".</source>
+          <target state="translated">Ungültige Aktion angegeben. Verwenden Sie „inkrementieren“ oder „setzen“.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LemonSqueezy Comm. - Method BuildUsageContent - NamedType InvalidActionErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3199230408 - Method 1937264269 - NamedType 2344834051" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Unable to communicate with the license server due to an environment block. Please resolve and try again.</source>
+          <target state="translated">Die Kommunikation mit dem Lizenzserver ist aufgrund einer Umgebungssperre nicht möglich. Bitte beheben Sie diese und versuchen Sie es erneut.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LemonSqueezy Comm. - Method CallLemonSqueezy - NamedType EnvironmentBlockErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3199230408 - Method 1937264269 - NamedType 1832738441" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Unable to verify or activate license.\ %1: %2 \ %3</source>
+          <target state="translated">Lizenz kann nicht verifiziert oder aktiviert werden.\ %1: %2 \ %3</target>
+          <note from="Developer" annotates="general" priority="2">%1 %2 %3</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LemonSqueezy Comm. - Method CallLemonSqueezy - NamedType WebCallErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3199230408 - Method 2792865364 - NamedType 3707967943" size-unit="char" translate="yes" xml:space="preserve">
+          <source>An error occurred communicating with the licensing platform.  Contact %1 for assistance</source>
+          <target state="translated">Bei der Kommunikation mit der Lizenzierungsplattform ist ein Fehler aufgetreten.  Kontaktieren Sie %1 für Hilfe</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the App Publisher</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LemonSqueezy Comm. - Method PopulateSubscriptionFromResponse - NamedType CommunicationFailureErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3199230408 - Method 906692905 - NamedType 3887869495" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The key will look like XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX.</source>
+          <target state="translated">Der Schlüssel sieht aus wie XXXXXXXX-XXXX-XXXXXX-XXXXXXXXXXXX.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LemonSqueezy Comm. - Method SampleKeyFormatText - NamedType LemonSqueezyKeyFormatTok</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3199230408 - Method 2327657787 - NamedType 795351449" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The License %1/%2 is not usage-based and cannot be used for usage tracking.</source>
+          <target state="translated">Die Lizenz %1/%2 ist nicht nutzungsabhängig und kann nicht zur Nachverfolgung der Nutzung verwendet werden.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = the Extension Name, %2 = the Submodule Name</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LemonSqueezy Comm. - Method ValidateUsageBasedLicense - NamedType LicenseNotUsageBasedErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3199230408 - Method 2327657787 - NamedType 1585353238" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Seems like the Subscription Item ID is missing for License %1/%2. This usually means that the License was not activated yet.</source>
+          <target state="translated">Es scheint, dass die ID des Abonnementartikels für die Lizenz %1/%2 fehlt. Dies bedeutet normalerweise, dass die Lizenz noch nicht aktiviert wurde.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = the Extension Name, %2 = the Submodule Name</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LemonSqueezy Comm. - Method ValidateUsageBasedLicense - NamedType SubscriptionItemIdMissingErr</note>
+        </trans-unit>
         <trans-unit id="Table 275599767 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Extension License</source>
           <target state="translated">Erweiterungslizenz</target>
@@ -143,7 +323,7 @@
         </trans-unit>
         <trans-unit id="Table 275599767 - Field 2070199485 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>The Order ID of the order where this Extension is registered.</source>
-          <target state="translated">Die Bestell-ID der Bestellung, für die diese Erweiterung registriert ist.Q</target>
+          <target state="translated">Die Bestell-ID der Bestellung, für die diese Erweiterung registriert ist.</target>
           <note from="Developer" annotates="general" priority="2"/>
           <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Order Id - Property ToolTip</note>
         </trans-unit>
@@ -173,7 +353,7 @@
         </trans-unit>
         <trans-unit id="Table 275599767 - Field 459399738 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>The Product ID of the product where this Extension is registered.</source>
-          <target state="needs-translation"/>
+          <target state="translated">Die Produkt-ID des Produkts, für das diese Erweiterung registriert ist.</target>
           <note from="Developer" annotates="general" priority="2"/>
           <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Product Id - Property ToolTip</note>
         </trans-unit>
@@ -315,168 +495,6 @@
           <note from="Developer" annotates="general" priority="2"/>
           <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Version Check URL - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Codeunit 560441334 - Method 488700208 - NamedType 2571021891" size-unit="char" translate="yes" xml:space="preserve">
-          <source>An error occurred validating the license.  Contact %1 for assistance</source>
-          <target state="translated">Bei der Validierung der Lizenz ist ein Fehler aufgetreten.  Kontaktieren Sie %1 für Hilfe</target>
-          <note from="Developer" annotates="general" priority="2">%1 is the App Publisher</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Activate Meth - Method CheckPlatformCanActivate - NamedType ActivationFailureErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 560441334 - Method 488700208 - NamedType 2597918364" size-unit="char" translate="yes" xml:space="preserve">
-          <source>There are no remaining uses of that license key to assign to this installation.</source>
-          <target state="translated">Es gibt keine weiteren Verwendungen dieses Lizenzschlüssels, die dieser Installation zugewiesen werden könnten.</target>
-          <note from="Developer" annotates="general" priority="2"/>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Activate Meth - Method CheckPlatformCanActivate - NamedType NoRemainingUsesErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 560441334 - Method 2107568876 - NamedType 4258206074" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The License Key provided has already expired due to a Subscription End.  Contact %1 for assistance</source>
-          <target state="translated">Der angegebene Lizenzschlüssel ist aufgrund eines Abonnementendes bereits abgelaufen.  Kontaktieren Sie %1 für Unterstützung</target>
-          <note from="Developer" annotates="general" priority="2">%1 is the App Publisher</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Activate Meth - Method DoActivationInLocalSystem - NamedType LicenseKeyExpiredErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 3827207503 - Method 788638224 - NamedType 345427010" size-unit="char" translate="yes" xml:space="preserve">
-          <source>No License was found in the Licenses list for SubscriptionId: %1</source>
-          <target state="translated">Es wurde keine Lizenz in der Lizenzliste für die Abonnement-ID gefunden: %1</target>
-          <note from="Developer" annotates="general" priority="2">%1 is the ID of the App.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Check Active - Method CheckBasic - NamedType NoSubFoundErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 3827207503 - Method 766558854 - NamedType 4016921347" size-unit="char" translate="yes" xml:space="preserve">
-          <source>No License was found in the Licenses list for SubscriptionId: %1 with Submodule name: %2</source>
-          <target state="translated">Es wurde keine Lizenz in der Lizenzliste für Subscription Id: %1 mit Submodulname: %2</target>
-          <note from="Developer" annotates="general" priority="2">%1 is the ID of the App. %2 is the Submodule.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Check Active - Method CheckBasicSubmodule - NamedType NoSubscriptionFoundErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 3827207503 - Method 430906001 - NamedType 4007641815" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The License for %1 is not Active.  Contact your system administrator to re-activate it.</source>
-          <target state="translated">Die Lizenz für %1 ist nicht aktiv.  Wenden Sie sich an Ihren Systemadministrator, um sie wieder zu aktivieren.</target>
-          <note from="Developer" annotates="general" priority="2">%1 is the name of the Extension.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Check Active - Method DoCheckBasic - NamedType SubscriptionInactiveErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 315386427 - Method 1532212514 - NamedType 1318374551" size-unit="char" translate="yes" xml:space="preserve">
-          <source>&lt;+%1D&gt;</source>
-          <target state="translated">&lt;+%1D&gt;</target>
-          <note from="Developer" annotates="general" priority="2">%1 is the number of days</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Check Active Meth - Method DoCheckIfActive - NamedType DaysGraceTok</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 315386427 - Method 1532212514 - NamedType 3635804519" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Today is the last trial day for %1. Please purchase a License Key and Activate the subscription to continue use.</source>
-          <target state="translated">Heute ist der letzte Testtag für %1. Bitte erwerben Sie einen Lizenzschlüssel und aktivieren Sie das Abonnement, um es weiter zu nutzen.</target>
-          <note from="Developer" annotates="general" priority="2">%1 is the name of the Extension</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Check Active Meth - Method DoCheckIfActive - NamedType GraceExpiringMsg</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 1354941877 - Method 3272340085 - NamedType 1073361429" size-unit="char" translate="yes" xml:space="preserve">
-          <source>There was an issue in contacting the licensing server to deactivate this license.  Contact %1 for assistance.</source>
-          <target state="translated">Es gab ein Problem bei der Kontaktaufnahme mit dem Lizenzierungsserver, um diese Lizenz zu deaktivieren.  Kontaktieren Sie %1 für Hilfe.</target>
-          <note from="Developer" annotates="general" priority="2">%1 is the App Publisher name</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Deactivate Meth - Method DoDeactivate - NamedType DeactivationProblemErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2609748313 - Method 2547612846 - NamedType 4286379137" size-unit="char" translate="yes" xml:space="preserve">
-          <source>To install this Extension, you need to update %1 to at least version %2.</source>
-          <target state="translated">Um diese Erweiterung zu installieren, müssen Sie %1 mindestens auf Version %2 aktualisieren.</target>
-          <note from="Developer" annotates="general" priority="2">%1 is the name of licensing extension, %2 is the version number</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Extension Registration - Method CheckSupportedVersion - NamedType VersionUpdateRequiredErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 964202159 - NamedType 385219469" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The key will look like XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX.</source>
-          <target state="translated">Der Schlüssel sieht aus wie XXXXXXXX-XXXXXXXX-XXXXXXXXXX-XXXXXXXX.</target>
-          <note from="Developer" annotates="general" priority="2"/>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Gumroad Communicator - NamedType GumroadKeyFormatTok</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 964202159 - NamedType 1516784335" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Gumroad does not support Usage based billing.</source>
-          <target state="translated">Gumroad unterstützt keine nutzungsabhängige Abrechnung.</target>
-          <note from="Developer" annotates="general" priority="2"/>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Gumroad Communicator - NamedType UsageBaseBillingNotSupportedErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 964202159 - Method 572322412 - NamedType 2344834051" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Unable to communicate with the license server due to an environment block. Please resolve and try again.</source>
-          <target state="translated">Die Kommunikation mit dem Lizenzserver ist aufgrund einer Umgebungssperre nicht möglich. Bitte beheben Sie diese und versuchen Sie es erneut.</target>
-          <note from="Developer" annotates="general" priority="2"/>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Gumroad Communicator - Method CallAPIForVerification - NamedType EnvironmentBlockErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 964202159 - Method 572322412 - NamedType 1832738441" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Unable to verify or activate license.\ %1: %2 \ %3</source>
-          <target state="translated">Lizenz kann nicht verifiziert oder aktiviert werden.\ %1: %2 \ %3</target>
-          <note from="Developer" annotates="general" priority="2">%1 %2 %3</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Gumroad Communicator - Method CallAPIForVerification - NamedType WebCallErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 964202159 - Method 2508294018 - NamedType 1515148142" size-unit="char" translate="yes" xml:space="preserve">
-          <source>An error occurred validating the license.  Contact %1 for assistance</source>
-          <target state="translated">Bei der Validierung der Lizenz ist ein Fehler aufgetreten.  Kontaktieren Sie %1 für Hilfe</target>
-          <note from="Developer" annotates="general" priority="2">%1 is the App Publisher</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Gumroad Communicator - Method CheckAPILicenseCount - NamedType GumroadErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 964202159 - Method 2792865364 - NamedType 2571021891" size-unit="char" translate="yes" xml:space="preserve">
-          <source>An error occurred validating the license.  Contact %1 for assistance</source>
-          <target state="translated">Bei der Validierung der Lizenz ist ein Fehler aufgetreten.  Kontaktieren Sie %1 für Hilfe</target>
-          <note from="Developer" annotates="general" priority="2">%1 is the App Publisher</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Gumroad Communicator - Method PopulateSubscriptionFromResponse - NamedType ActivationFailureErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 3199230408 - Method 219013742 - NamedType 250751926" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Invalid action specified. Use "increment" or "set".</source>
-          <target state="translated">Ungültige Aktion angegeben. Verwenden Sie „inkrementieren“ oder „setzen“.</target>
-          <note from="Developer" annotates="general" priority="2"/>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LemonSqueezy Comm. - Method BuildUsageContent - NamedType InvalidActionErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 3199230408 - Method 1937264269 - NamedType 2344834051" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Unable to communicate with the license server due to an environment block. Please resolve and try again.</source>
-          <target state="translated">Die Kommunikation mit dem Lizenzserver ist aufgrund einer Umgebungssperre nicht möglich. Bitte beheben Sie diese und versuchen Sie es erneut.</target>
-          <note from="Developer" annotates="general" priority="2"/>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LemonSqueezy Comm. - Method CallLemonSqueezy - NamedType EnvironmentBlockErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 3199230408 - Method 1937264269 - NamedType 1832738441" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Unable to verify or activate license.\ %1: %2 \ %3</source>
-          <target state="translated">Lizenz kann nicht verifiziert oder aktiviert werden.\ %1: %2 \ %3</target>
-          <note from="Developer" annotates="general" priority="2">%1 %2 %3</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LemonSqueezy Comm. - Method CallLemonSqueezy - NamedType WebCallErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 3199230408 - Method 2792865364 - NamedType 3707967943" size-unit="char" translate="yes" xml:space="preserve">
-          <source>An error occurred communicating with the licensing platform.  Contact %1 for assistance</source>
-          <target state="translated">Bei der Kommunikation mit der Lizenzierungsplattform ist ein Fehler aufgetreten.  Kontaktieren Sie %1 für Hilfe</target>
-          <note from="Developer" annotates="general" priority="2">%1 is the App Publisher</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LemonSqueezy Comm. - Method PopulateSubscriptionFromResponse - NamedType CommunicationFailureErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 3199230408 - Method 906692905 - NamedType 3887869495" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The key will look like XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX.</source>
-          <target state="translated">Der Schlüssel sieht aus wie XXXXXXXX-XXXX-XXXXXX-XXXXXXXXXXXX.</target>
-          <note from="Developer" annotates="general" priority="2"/>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LemonSqueezy Comm. - Method SampleKeyFormatText - NamedType LemonSqueezyKeyFormatTok</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 3327392388 - NamedType 1018804737" size-unit="char" translate="yes" xml:space="preserve">
-          <source>b08c8cbe-ff20-4c38-9448-21e68b509e84</source>
-          <target state="translated">b08c8cbe-ff20-4c38-9448-21e68b509e84</target>
-          <note from="Developer" annotates="general" priority="2"/>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Licensing Install - NamedType GumroadTestSubscriptionIdTok</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 3327392388 - NamedType 3762490115" size-unit="char" translate="yes" xml:space="preserve">
-          <source>62922d07-87e2-4959-aece-2cacf9222e9b</source>
-          <target state="translated">62922d07-87e2-4959-aece-2cacf9222e9b</target>
-          <note from="Developer" annotates="general" priority="2"/>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Licensing Install - NamedType LemonSqueezyTestSubscriptionIdTok</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 3327392388 - Method 875139600 - NamedType 3252658350" size-unit="char" translate="yes" xml:space="preserve">
-          <source>%1 Test Subscription</source>
-          <target state="translated">%1 Test-Abonnement</target>
-          <note from="Developer" annotates="general" priority="2">%1 is the Licensing Extension name.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Licensing Install - Method AddTestProduct - NamedType TestLicenseNameTok</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 1931101690 - Method 4210580995 - NamedType 4016921347" size-unit="char" translate="yes" xml:space="preserve">
-          <source>No License was found in the Licenses list for Subscription %1 with Submodule name: %2</source>
-          <target state="translated">Es wurde keine Lizenz in der Lizenzliste für Abonnement %1 mit Submodulname: %2 gefunden</target>
-          <note from="Developer" annotates="general" priority="2">%1 is the ID of the App. %2 is the Submodule.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LogUsage - Method LogUsage - NamedType NoSubscriptionFoundErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 1931101690 - Method 3226952129 - NamedType 4016921347" size-unit="char" translate="yes" xml:space="preserve">
-          <source>No License was found in the Licenses list for Subscription %1 with Submodule name: %2</source>
-          <target state="translated">Es wurde keine Lizenz in der Lizenzliste für Abonnement %1 mit Submodulname: %2 gefunden</target>
-          <note from="Developer" annotates="general" priority="2">%1 is the ID of the App. %2 is the Submodule.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LogUsage - Method SetUsage - NamedType NoSubscriptionFoundErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2130962757 - Method 2406779609 - NamedType 1913171376" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Update Extension: %1</source>
-          <target state="translated">Erweiterung aktualisieren: %1</target>
-          <note from="Developer" annotates="general" priority="2">%1 is Extension Name</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Version Check - Method DoVersionCheck - NamedType SubjectTok</note>
-        </trans-unit>
         <trans-unit id="Page 1538692962 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Extension Licenses</source>
           <target state="translated">Erweiterungslizenzen</target>
@@ -557,7 +575,7 @@
         </trans-unit>
         <trans-unit id="Page 4006980220 - NamedType 3119195878" size-unit="char" translate="yes" xml:space="preserve">
           <source>Use Test Key</source>
-          <target state="needs-translation"/>
+          <target state="translated">Testschlüssel verwenden</target>
           <note from="Developer" annotates="general" priority="2"/>
           <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC License Activation - NamedType TestLicenseKeyOfferTok</note>
         </trans-unit>
@@ -638,30 +656,6 @@
           <target state="translated">Weiter</target>
           <note from="Developer" annotates="general" priority="2"/>
           <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC License Activation - Action ActionNext - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1909430229 - EnumValue 1009633233 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Gumroad</source>
-          <target state="translated">Gumroad</target>
-          <note from="Developer" annotates="general" priority="2"/>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum SPBLIC License Platform - EnumValue Gumroad - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 1909430229 - EnumValue 1315004771 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>LemonSqueezy</source>
-          <target state="translated">LemonSqueezy</target>
-          <note from="Developer" annotates="general" priority="2"/>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum SPBLIC License Platform - EnumValue LemonSqueezy - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="PermissionSet 3713753643 - Property 2879900210" maxwidth="30" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Spare Brained Licensing Admin</source>
-          <target state="translated">Spare Brained Licensing Admin</target>
-          <note from="Developer" annotates="general" priority="2"/>
-          <note from="Xliff Generator" annotates="general" priority="3">PermissionSet SPBLIC Licensing - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="PermissionSet 12962568 - Property 2879900210" maxwidth="30" size-unit="char" translate="yes" xml:space="preserve">
-          <source>SPBLIC Licensing RO</source>
-          <target state="translated">SPBLIC Licensing RO</target>
-          <note from="Developer" annotates="general" priority="2"/>
-          <note from="Xliff Generator" annotates="general" priority="3">PermissionSet SPBLIC Licensing RO - Property Caption</note>
         </trans-unit>
       </group>
     </body>
