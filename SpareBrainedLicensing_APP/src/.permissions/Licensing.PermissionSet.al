@@ -1,5 +1,19 @@
+namespace SPB.Permissions;
+
+using SPB.Callables;
+using SPB.EngineLogic;
+using SPB.Extensibility;
+using SPB.InstallUpgradeBC;
+using SPB.PlatformObjects.Gumroad;
+using SPB.PlatformObjects.LemonSqueezy;
+using SPB.Storage;
+using SPB.Telemetry;
+using SPB.UserInterface;
+using SPB.Utilities;
+
 permissionset 71033575 "SPBLIC Licensing"
 {
+    Access = Public;
     Assignable = true;
     Caption = 'Spare Brained Licensing Admin', MaxLength = 30;
     Permissions = table "SPBLIC Extension License" = X,

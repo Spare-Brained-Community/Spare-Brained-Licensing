@@ -1,5 +1,15 @@
+namespace SPB.EngineLogic;
+
+using SPB.Extensibility;
+using SPB.Storage;
+using SPB.Telemetry;
+
 codeunit 71033588 "SPBLIC Deactivate Meth"
 {
+    Access = Public;
+    Permissions =
+        tabledata "SPBLIC Extension License" = RM;
+
     internal procedure Deactivate(var SPBExtensionLicense: Record "SPBLIC Extension License"; ByPlatform: Boolean) DeactivationSuccess: Boolean
     begin
         DoDeactivate(SPBExtensionLicense, ByPlatform);
@@ -26,7 +36,7 @@ codeunit 71033588 "SPBLIC Deactivate Meth"
             LicensePlatformV2 := SPBExtensionLicense."License Platform";
             if not LicensePlatformV2.CallAPIForDeactivation(SPBExtensionLicense, ResponseBody) then begin
                 if GuiAllowed() then
-                    Error(DeactivationProblemErr, AppInfo.Publisher);
+                    Error(DeactivationProblemErr, AppInfo.Publisher());
             end else
                 DeactivationSuccess := true;
             SPBLICTelemetry.LicensePlatformDeactivation(SPBExtensionLicense);

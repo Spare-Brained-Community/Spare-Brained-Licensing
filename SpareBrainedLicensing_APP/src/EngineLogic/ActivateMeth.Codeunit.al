@@ -1,6 +1,14 @@
+namespace SPB.EngineLogic;
+
+using SPB.Extensibility;
+using SPB.Storage;
+using SPB.Telemetry;
+
 codeunit 71033587 "SPBLIC Activate Meth"
 {
     Access = Internal;
+    Permissions =
+        tabledata "SPBLIC Extension License" = RM;
 
     internal procedure Activate(var SPBExtensionLicense: Record "SPBLIC Extension License") ActivationSuccess: Boolean
     var
@@ -44,7 +52,7 @@ codeunit 71033587 "SPBLIC Activate Meth"
             LicensePlatform.PopulateSubscriptionFromResponse(SPBExtensionLicense, ResponseBody);
         end else
             // In case of a malformed Implementation where the user is given no errors by the API call CU, we'll have a failsafe one here
-            Error(ActivationFailureErr, AppInfo.Publisher);
+            Error(ActivationFailureErr, AppInfo.Publisher());
     end;
 
     local procedure DoActivationInLocalSystem(var SPBExtensionLicense: Record "SPBLIC Extension License"): Boolean
@@ -58,13 +66,13 @@ codeunit 71033587 "SPBLIC Activate Meth"
         NavApp.GetModuleInfo(SPBExtensionLicense."Extension App Id", AppInfo);
 
         if (SPBExtensionLicense."Subscription End Date" <> 0DT) and
-          (SPBExtensionLicense."Subscription End Date" < CurrentDateTime)
+          (SPBExtensionLicense."Subscription End Date" < CurrentDateTime())
         then begin
             SPBExtensionLicense.Activated := false;
             SPBExtensionLicense.Modify();
             Commit();
             SPBLICEvents.OnAfterActivationFailure(SPBExtensionLicense, AppInfo);
-            Error(LicenseKeyExpiredErr, AppInfo.Publisher);
+            Error(LicenseKeyExpiredErr, AppInfo.Publisher());
         end else begin
             SPBExtensionLicense.Modify();
             Commit();
@@ -76,7 +84,7 @@ codeunit 71033587 "SPBLIC Activate Meth"
         exit(SPBExtensionLicense.Activated);
     end;
 
-    local procedure OnAfterActivate(var SPBExtensionLicense: Record "SPBLIC Extension License");
+    local procedure OnAfterActivate(var SPBExtensionLicense: Record "SPBLIC Extension License")
     var
         SPBLICEvents: Codeunit "SPBLIC Events";
         AppInfo: ModuleInfo;

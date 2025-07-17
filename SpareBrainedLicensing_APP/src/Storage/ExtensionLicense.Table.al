@@ -1,9 +1,19 @@
+namespace SPB.Storage;
+
+using SPB;
+using SPB.Extensibility;
+using SPB.Extensibility.ApiKey;
+using SPB.UserInterface;
+using SPB.Utilities;
+
 table 71033575 "SPBLIC Extension License"
 {
+    Access = Public;
     Caption = 'Extension License';
     DataClassification = AccountData;
     DataPerCompany = false;
     DrillDownPageId = "SPBLIC Extension Licenses";
+    Extensible = true;
     LookupPageId = "SPBLIC Extension Licenses";
 
     fields
@@ -13,12 +23,14 @@ table 71033575 "SPBLIC Extension License"
             Caption = 'Entry Id';
             DataClassification = SystemMetadata;
             Editable = false;
+            ToolTip = 'This Guid is the Subscription Entry Id.';
         }
         field(2; "Extension Name"; Text[100])
         {
             Caption = 'Extension Name';
             DataClassification = SystemMetadata;
             Editable = false;
+            ToolTip = 'The name of the Extension that is registered to have a Subscription requirement.';
         }
         field(3; "Product Code"; Text[100])
         {
@@ -30,7 +42,7 @@ table 71033575 "SPBLIC Extension License"
             Caption = 'Activated';
             DataClassification = SystemMetadata;
             Editable = false;
-
+            ToolTip = 'Shows if this Extension has been Activated with a Product Key.';
             trigger OnValidate()
             begin
                 if Activated then begin
@@ -42,16 +54,19 @@ table 71033575 "SPBLIC Extension License"
         }
         field(5; "Installed At"; DateTime)
         {
+            AllowInCustomizations = Always;
             Caption = 'Installed At';
             Editable = false;
         }
         field(6; "Activated At"; DateTime)
         {
+            AllowInCustomizations = Always;
             Caption = 'Activated At';
             Editable = false;
         }
         field(7; "License Key"; Text[50])
         {
+            AllowInCustomizations = Always;
             Caption = 'License Key';
             DataClassification = CustomerContent;
             Editable = false;
@@ -59,42 +74,50 @@ table 71033575 "SPBLIC Extension License"
         }
         field(8; "Activated By"; Guid)
         {
+            AllowInCustomizations = Always;
             Caption = 'Activated By';
             DataClassification = EndUserIdentifiableInformation;
             Editable = false;
         }
         field(9; "Subscription End Date"; DateTime)
         {
+            AllowInCustomizations = Always;
             Caption = 'Subscription End Date';
             Editable = false;
         }
         field(10; "Created At"; DateTime)
         {
+            AllowInCustomizations = Always;
             Caption = 'Created At';
             Editable = false;
         }
         field(11; "Subscription Ended At"; DateTime)
         {
+            AllowInCustomizations = Always;
             Caption = 'Subscription Ended At';
             Editable = false;
         }
         field(12; "Subscription Cancelled At"; DateTime)
         {
+            AllowInCustomizations = Always;
             Caption = 'Subscription Cancelled At';
             Editable = false;
         }
         field(13; "Subscription Failed At"; DateTime)
         {
+            AllowInCustomizations = Always;
             Caption = 'Subscription Failed At';
-
+            Editable = false;
         }
         field(14; "Trial Grace End Date"; Date)
         {
             Caption = 'Trial Grace End Date';
             Editable = false;
+            ToolTip = 'If the Extension is not yet Activated, this is the last date the Extension can run in Trial Mode.';
         }
         field(15; "Sandbox Grace Days"; Integer)
         {
+            AllowInCustomizations = Always;
             Caption = 'Sandbox Grace Days';
             DataClassification = SystemMetadata;
             Editable = false;
@@ -104,12 +127,14 @@ table 71033575 "SPBLIC Extension License"
             Caption = 'Extension App Id';
             DataClassification = SystemMetadata;
             Editable = false;
+            ToolTip = 'This Guid is the Extension''s App Id.';
         }
         field(20; "Subscription Email"; Text[250])
         {
             Caption = 'Subscription Email';
             DataClassification = OrganizationIdentifiableInformation;
             Editable = false;
+            ToolTip = 'This shows the email address that the License Key is registered to, in case there is a need to find it later.';
         }
         field(21; "Product URL"; Text[250])
         {
@@ -117,6 +142,7 @@ table 71033575 "SPBLIC Extension License"
             DataClassification = OrganizationIdentifiableInformation;
             Editable = false;
             ExtendedDatatype = URL;
+            ToolTip = 'The page where one can find more information about purchasing a Subscription for this Extension.';
         }
         field(22; "Support URL"; Text[250])
         {
@@ -124,6 +150,7 @@ table 71033575 "SPBLIC Extension License"
             DataClassification = OrganizationIdentifiableInformation;
             Editable = false;
             ExtendedDatatype = URL;
+            ToolTip = 'The page where one can find more information about how to get Support for the Extension.';
         }
         field(23; "Billing Support Email"; Text[250])
         {
@@ -131,9 +158,11 @@ table 71033575 "SPBLIC Extension License"
             DataClassification = OrganizationIdentifiableInformation;
             Editable = false;
             ExtendedDatatype = EMail;
+            ToolTip = 'The email address to contact with Billing related questions about this Subscription.';
         }
         field(25; "Version Check URL"; Text[250])
         {
+            AllowInCustomizations = Always;
             Caption = 'Version Check URL';
             DataClassification = SystemMetadata;
             Editable = false;
@@ -141,12 +170,14 @@ table 71033575 "SPBLIC Extension License"
         }
         field(26; "Update Available"; Boolean)
         {
+            AllowInCustomizations = Always;
             Caption = 'Update Available';
             DataClassification = SystemMetadata;
             Editable = false;
         }
         field(27; "Update News URL"; Text[250])
         {
+            AllowInCustomizations = Always;
             Caption = 'Update News URL';
             DataClassification = SystemMetadata;
             Editable = false;
@@ -157,20 +188,80 @@ table 71033575 "SPBLIC Extension License"
             Caption = 'Submodule Name';
             DataClassification = SystemMetadata;
             Editable = false;
+            ToolTip = 'If this Extension uses Module based Subscriptions, this displays which Submodule/Edition this is.';
         }
         field(30; "License Platform"; Enum "SPBLIC License Platform")
         {
             Caption = 'License Platform';
             DataClassification = SystemMetadata;
             Editable = false;
+            ToolTip = 'Specifies the value of the License Platform field.';
         }
         field(40; "Licensing ID"; Text[250])
         {
+            AllowInCustomizations = Always;
             // This is for generic storage of 3rd party system ID fields in case needed
             Caption = 'Licensing ID';
             DataClassification = CustomerContent;
             Editable = false;
         }
+        field(50; IsUsageBased; Boolean)
+        {
+            AllowInCustomizations = Always;
+            Caption = 'Is Usage Based';
+            DataClassification = SystemMetadata;
+            Editable = false;
+            ToolTip = 'Indicates if this Extension is usage based, meaning it will be billed based on usage.';
+        }
+        field(60; "Store Id"; Integer)
+        {
+            AllowInCustomizations = Always;
+            Caption = 'Store Id';
+            DataClassification = SystemMetadata;
+            Editable = false;
+            ToolTip = 'The Store ID of the store where this Extension is registered.';
+        }
+        field(70; "Order Id"; Integer)
+        {
+            AllowInCustomizations = Always;
+            Caption = 'Order Id';
+            DataClassification = SystemMetadata;
+            Editable = false;
+            ToolTip = 'The Order ID of the order where this Extension is registered.';
+        }
+        field(80; "Order Item Id"; Integer)
+        {
+            AllowInCustomizations = Always;
+            Caption = 'Order Item Id';
+            DataClassification = SystemMetadata;
+            Editable = false;
+            ToolTip = 'The Order Item ID of the order item where this Extension is registered.';
+        }
+        field(90; "Product Id"; Integer)
+        {
+            AllowInCustomizations = Always;
+            Caption = 'Product Id';
+            DataClassification = SystemMetadata;
+            Editable = false;
+            ToolTip = 'The Product ID of the product where this Extension is registered.';
+        }
+        field(100; "Subscription Item Id"; Integer)
+        {
+            AllowInCustomizations = Always;
+            Caption = 'Subscription Item Id';
+            DataClassification = SystemMetadata;
+            Editable = false;
+            ToolTip = 'The Subscription Item ID of the subscription item where this Extension is registered.';
+        }
+        field(110; ApiKeyProvider; Enum "SPBLIC ApiKeyProvider")
+        {
+            AllowInCustomizations = Always;
+            Caption = 'API Key Provider';
+            DataClassification = SystemMetadata;
+            Editable = false;
+            ToolTip = 'The API Key Provider that is used to communicate with the License Platform.';
+        }
+
     }
     keys
     {

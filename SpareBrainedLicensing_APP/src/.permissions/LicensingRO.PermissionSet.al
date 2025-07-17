@@ -1,5 +1,19 @@
+namespace SPB.Permissions;
+
+using SPB.Callables;
+using SPB.EngineLogic;
+using SPB.Extensibility;
+using SPB.InstallUpgradeBC;
+using SPB.PlatformObjects.Gumroad;
+using SPB.PlatformObjects.LemonSqueezy;
+using SPB.Storage;
+using SPB.Telemetry;
+using SPB.UserInterface;
+using SPB.Utilities;
+
 permissionset 71033576 "SPBLIC Licensing RO"
 {
+    Access = Public;
     Assignable = true;
     Caption = 'SPBLIC Licensing RO', MaxLength = 30;
     Permissions = table "SPBLIC Extension License" = X,

@@ -1,9 +1,15 @@
+namespace SPB.UserInterface;
+
+using SPB.EngineLogic;
+using SPB.Extensibility;
+using SPB.Storage;
+
 page 71033575 "SPBLIC Extension Licenses"
 {
-
     ApplicationArea = All;
     Caption = 'Extension Licenses';
     Editable = false;
+    Extensible = true;
     PageType = List;
     SourceTable = "SPBLIC Extension License";
     UsageCategory = Administration;
@@ -16,26 +22,21 @@ page 71033575 "SPBLIC Extension Licenses"
             {
                 field("Entry Id"; Rec."Entry Id")
                 {
-                    ToolTip = 'This Guid is the Subscription Entry Id.';
                     Visible = false;
                 }
                 field("Extension App Id"; Rec."Extension App Id")
                 {
-                    ToolTip = 'This Guid is the Extension''s App Id.';
                     Visible = false;
                 }
                 field("Extension Name"; Rec."Extension Name")
                 {
                     StyleExpr = SubscriptionStatusStyle;
-                    ToolTip = 'The name of the Extension that is registered to have a Subscription requirement.';
                 }
                 field("Submodule Name"; Rec."Submodule Name")
                 {
-                    ToolTip = 'If this Extension uses Module based Subscriptions, this displays which Submodule/Edition this is.';
                 }
                 field(Activated; Rec.Activated)
                 {
-                    ToolTip = 'Shows if this Extension has been Activated with a Product Key.';
                 }
                 field(UpdateLink; UpdateLink)
                 {
@@ -51,31 +52,25 @@ page 71033575 "SPBLIC Extension Licenses"
                 }
                 field("Trial Grace End Date"; Rec."Trial Grace End Date")
                 {
-                    ToolTip = 'If the Extension is not yet Activated, this is the last date the Extension can run in Trial Mode.';
                 }
                 field("Subscription Email"; Rec."Subscription Email")
                 {
                     ExtendedDatatype = EMail;
-                    ToolTip = 'This shows the email address that the License Key is registered to, in case there is a need to find it later.';
                 }
                 field("Product URL"; Rec."Product URL")
                 {
                     ExtendedDatatype = URL;
-                    ToolTip = 'The page where one can find more information about purchasing a Subscription for this Extension.';
                 }
                 field("Support URL"; Rec."Support URL")
                 {
                     ExtendedDatatype = URL;
-                    ToolTip = 'The page where one can find more information about how to get Support for the Extension.';
                 }
                 field("Billing Support Email"; Rec."Billing Support Email")
                 {
                     ExtendedDatatype = EMail;
-                    ToolTip = 'The email address to contact with Billing related questions about this Subscription.';
                 }
                 field("License Platform"; Rec."License Platform")
                 {
-                    ToolTip = 'Specifies the value of the License Platform field.';
                     Visible = false;
                 }
             }
@@ -136,7 +131,7 @@ page 71033575 "SPBLIC Extension Licenses"
     trigger OnOpenPage()
     begin
         // necessary since Enabled can't be bound to procedures.
-        UserHasWritePermission := Rec.WritePermission;
+        UserHasWritePermission := Rec.WritePermission();
 
         if UserHasWritePermission then
             CheckAllForUpdates();
@@ -154,21 +149,21 @@ page 71033575 "SPBLIC Extension Licenses"
 
     local procedure SetSubscriptionStyle()
     begin
-        SubscriptionStatusStyle := 'Standard';
+        SubscriptionStatusStyle := Format(PageStyle::Standard);
         if Rec.Activated then begin
             if (Rec."Subscription End Date" = 0DT) then
-                SubscriptionStatusStyle := 'Favorable'
+                SubscriptionStatusStyle := Format(PageStyle::Favorable)
             else
-                if (Rec."Subscription End Date" > CurrentDateTime) then
-                    SubscriptionStatusStyle := 'Attention';
+                if (Rec."Subscription End Date" > CurrentDateTime()) then
+                    SubscriptionStatusStyle := Format(PageStyle::Attention);
         end else
             if (Rec."Trial Grace End Date" <> 0D) then
-                if (Rec."Trial Grace End Date" < Today) then
-                    SubscriptionStatusStyle := 'StandardAccent'
+                if (Rec."Trial Grace End Date" < Today()) then
+                    SubscriptionStatusStyle := Format(PageStyle::StandardAccent)
                 else
-                    SubscriptionStatusStyle := 'Ambiguous'
+                    SubscriptionStatusStyle := Format(PageStyle::Ambiguous)
             else
-                SubscriptionStatusStyle := 'Unfavorable';
+                SubscriptionStatusStyle := Format(PageStyle::Unfavorable);
     end;
 
     local procedure CheckAllForUpdates()

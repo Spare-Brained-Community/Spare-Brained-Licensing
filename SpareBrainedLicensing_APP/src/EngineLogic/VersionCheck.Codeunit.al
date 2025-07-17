@@ -1,6 +1,17 @@
+namespace SPB.EngineLogic;
+
+using Microsoft.Foundation.Task;
+using SPB.Extensibility;
+using SPB.Storage;
+using SPB.Telemetry;
+using SPB.UserInterface;
+
 codeunit 71033586 "SPBLIC Version Check"
 {
     Access = Internal;
+    Permissions =
+        tabledata "SPBLIC Extension License" = RM,
+        tabledata "User Task" = RI;
 
     procedure DoVersionCheck(var SPBExtensionLicense: Record "SPBLIC Extension License")
     var
@@ -25,10 +36,10 @@ codeunit 71033586 "SPBLIC Version Check"
         ApiHttpRequestMessage.Method('GET');
 
         if ApiHttpClient.Send(ApiHttpRequestMessage, ApiHttpResponseMessage) then begin
-            if ApiHttpResponseMessage.IsSuccessStatusCode then begin
-                ApiHttpResponseMessage.Content.ReadAs(VersionResponseBody);
+            if ApiHttpResponseMessage.IsSuccessStatusCode() then begin
+                ApiHttpResponseMessage.Content().ReadAs(VersionResponseBody);
                 LatestVersion := Version.Create(VersionResponseBody);
-                if (AppInfo.AppVersion < LatestVersion) then begin
+                if (AppInfo.AppVersion() < LatestVersion) then begin
                     SPBExtensionLicense."Update Available" := true;
                     SPBExtensionLicense.Modify();
 
@@ -37,12 +48,12 @@ codeunit 71033586 "SPBLIC Version Check"
                         exit;
 
                     UserTask.Init();
-                    UserTask.Title := StrSubstNo(SubjectTok, AppInfo.Name);
+                    UserTask.Title := StrSubstNo(SubjectTok, AppInfo.Name());
                     UserTask.SetDescription(DocsTok);
                     if not IsNullGuid(SPBExtensionLicense."Activated By") then
                         UserTask."Assigned To" := SPBExtensionLicense."Activated By";
-                    UserTask."Due DateTime" := CurrentDateTime;
-                    UserTask."Start DateTime" := CurrentDateTime;
+                    UserTask."Due DateTime" := CurrentDateTime();
+                    UserTask."Start DateTime" := CurrentDateTime();
                     UserTask."Object Type" := UserTask."Object Type"::Page;
                     UserTask."Object ID" := Page::"SPBLIC Extension Licenses";
                     UserTask.Insert(true);

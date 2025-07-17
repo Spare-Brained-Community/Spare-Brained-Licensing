@@ -1,8 +1,16 @@
+namespace SPB.UserInterface;
+
+using SPB;
+using SPB.EngineLogic;
+using SPB.Extensibility;
+using SPB.Storage;
+using SPB.Utilities;
+
 page 71033576 "SPBLIC License Activation"
 {
-
     ApplicationArea = All;
     Caption = 'Licensing Activation Wizard';
+    Extensible = true;
     PageType = NavigatePage;
     SourceTable = "SPBLIC Extension License";
 
@@ -12,7 +20,9 @@ page 71033576 "SPBLIC License Activation"
         {
             group(Step1)
             {
+                ShowCaption = false;
                 Visible = Step1Visible;
+
                 group(WelcomeText)
                 {
                     Caption = 'This is the Activation Wizard for the Licensing system.';
@@ -45,6 +55,7 @@ page 71033576 "SPBLIC License Activation"
             }
             group(Step2)
             {
+                ShowCaption = false;
                 Visible = Step2Visible;
 
                 group(LicenseKeyInstruction)
@@ -65,6 +76,7 @@ page 71033576 "SPBLIC License Activation"
             }
             group(Step2Test)
             {
+                ShowCaption = false;
                 Visible = Step2TestVisible;
 
                 group(TestPathLicenseKeyInstruction)
@@ -101,7 +113,9 @@ page 71033576 "SPBLIC License Activation"
             }
             group(Step3)
             {
+                ShowCaption = false;
                 Visible = Step3Visible;
+
                 group(ActivationResultsPageText)
                 {
                     Caption = 'Activation Results';
@@ -133,7 +147,7 @@ page 71033576 "SPBLIC License Activation"
                 Image = PreviousRecord;
                 InFooterBar = true;
 
-                trigger OnAction();
+                trigger OnAction()
                 begin
                     NextStep(true);
                 end;
@@ -145,7 +159,7 @@ page 71033576 "SPBLIC License Activation"
                 Image = NextRecord;
                 InFooterBar = true;
 
-                trigger OnAction();
+                trigger OnAction()
                 begin
                     if (Step = Step::Step2) and (LicenseKey = '') then
                         Error(LicenseKeyNeededErr);
@@ -159,7 +173,7 @@ page 71033576 "SPBLIC License Activation"
                 Image = Approve;
                 InFooterBar = true;
 
-                trigger OnAction();
+                trigger OnAction()
                 begin
                     FinishAction();
                 end;
@@ -206,7 +220,7 @@ page 71033576 "SPBLIC License Activation"
         TestLicenseLinkText := TestLicenseKeyOfferTok;
     end;
 
-    local procedure EnableControls();
+    local procedure EnableControls()
     begin
         ResetControls();
 
@@ -220,12 +234,12 @@ page 71033576 "SPBLIC License Activation"
         end;
     end;
 
-    local procedure FinishAction();
+    local procedure FinishAction()
     begin
         CurrPage.Close();
     end;
 
-    local procedure NextStep(Backwards: Boolean);
+    local procedure NextStep(Backwards: Boolean)
     begin
         // Validation trigger when moving from Step2 to 3
         if (Step = Step::Step2) and not Backwards then begin
@@ -246,7 +260,7 @@ page 71033576 "SPBLIC License Activation"
         EnableControls();
     end;
 
-    local procedure ShowStep1();
+    local procedure ShowStep1()
     begin
         Step1Visible := true;
 
@@ -254,7 +268,7 @@ page 71033576 "SPBLIC License Activation"
         BackActionEnabled := false;
     end;
 
-    local procedure ShowStep2();
+    local procedure ShowStep2()
     begin
         if ShowAsTestSubscription then
             Step2TestVisible := true
@@ -262,7 +276,7 @@ page 71033576 "SPBLIC License Activation"
             Step2Visible := true;
     end;
 
-    local procedure ShowStep3();
+    local procedure ShowStep3()
     begin
         Step3Visible := true;
 
@@ -270,7 +284,7 @@ page 71033576 "SPBLIC License Activation"
         FinishActionEnabled := true;
     end;
 
-    local procedure ResetControls();
+    local procedure ResetControls()
     begin
         FinishActionEnabled := false;
         BackActionEnabled := true;

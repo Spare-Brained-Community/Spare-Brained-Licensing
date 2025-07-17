@@ -1,5 +1,15 @@
-codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommunicator", "SPBLIC ILicenseCommunicator2"
+namespace SPB.PlatformObjects.Gumroad;
+
+using SPB;
+using SPB.Extensibility;
+using SPB.Storage;
+using SPB.Utilities;
+using System.Environment.Configuration;
+using System.IO;
+
+codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommunicator", "SPBLIC ILicenseCommunicator2", "SPBLIC IUsageIntegration"
 {
+    Access = Public;
 
     var
 #pragma warning disable AA0240
@@ -13,6 +23,7 @@ codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommu
         GumroadTestProductKeyTok: Label '21E2339D-F24D4A92-9813B4F2-8ABA083C', Locked = true;
         GumroadTestProductUrlTok: Label 'https://sparebrained.gumroad.com/l/SBILicensingTest', Locked = true;
         GumroadVerifyAPITok: Label 'https://api.gumroad.com/v2/licenses/verify?product_permalink=%1&license_key=%2&increment_uses_count=%3', Comment = '%1 %2 %3', Locked = true;
+        UsageBaseBillingNotSupportedErr: Label 'Gumroad does not support Usage based billing.';
 
     procedure CallAPIForActivation(var SPBExtensionLicense: Record "SPBLIC Extension License"; var ResponseBody: Text) ResultOK: Boolean
     begin
@@ -32,13 +43,13 @@ codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommu
     begin
         // We REQUIRE HTTP access, so we'll force it on, regardless of Sandbox
         NavApp.GetCurrentModuleInfo(AppInfo);
-        if NAVAppSetting.Get(AppInfo.Id) then begin
+        if NAVAppSetting.Get(AppInfo.Id()) then begin
             if not NAVAppSetting."Allow HttpClient Requests" then begin
                 NAVAppSetting."Allow HttpClient Requests" := true;
                 NAVAppSetting.Modify();
             end
         end else begin
-            NAVAppSetting."App ID" := AppInfo.Id;
+            NAVAppSetting."App ID" := AppInfo.Id();
             NAVAppSetting."Allow HttpClient Requests" := true;
             NAVAppSetting.Insert();
         end;
@@ -48,16 +59,16 @@ codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommu
         ApiHttpRequestMessage.Method('POST');
 
         if not ApiHttpClient.Send(ApiHttpRequestMessage, ApiHttpResponseMessage) then begin
-            if ApiHttpResponseMessage.IsBlockedByEnvironment then
+            if ApiHttpResponseMessage.IsBlockedByEnvironment() then
                 Error(EnvironmentBlockErr)
             else
-                Error(WebCallErr, ApiHttpResponseMessage.HttpStatusCode, ApiHttpResponseMessage.ReasonPhrase, ApiHttpResponseMessage.Content);
+                Error(WebCallErr, ApiHttpResponseMessage.HttpStatusCode(), ApiHttpResponseMessage.ReasonPhrase(), ApiHttpResponseMessage.Content());
         end else
             if ApiHttpResponseMessage.IsSuccessStatusCode() then begin
-                ApiHttpResponseMessage.Content.ReadAs(ResponseBody);
+                ApiHttpResponseMessage.Content().ReadAs(ResponseBody);
                 exit(true);
             end else
-                Error(WebCallErr, ApiHttpResponseMessage.HttpStatusCode, ApiHttpResponseMessage.ReasonPhrase, ApiHttpResponseMessage.Content);
+                Error(WebCallErr, ApiHttpResponseMessage.HttpStatusCode(), ApiHttpResponseMessage.ReasonPhrase(), ApiHttpResponseMessage.Content());
     end;
 
     procedure CallAPIForDeactivation(var SPBExtensionLicense: Record "SPBLIC Extension License"; var ResponseBody: Text) ResultOK: Boolean
@@ -88,7 +99,7 @@ codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommu
         GumroadJson.ReadFrom(ResponseBody);
         GumroadJson.Get('success', GumroadToken);
         if not GumroadToken.AsValue().AsBoolean() then
-            Error(ActivationFailureErr, AppInfo.Publisher);
+            Error(ActivationFailureErr, AppInfo.Publisher());
         GumroadJson.Get('purchase', GumroadToken);
 
         TempJsonBuffer.ReadFromText(ResponseBody);
@@ -109,14 +120,14 @@ codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommu
         SPBExtensionLicense.CalculateEndDate();
     end;
 
-    procedure ClientSideDeactivationPossible(var SPBExtensionLicense: Record "SPBLIC Extension License"): Boolean;
+    procedure ClientSideDeactivationPossible(var SPBExtensionLicense: Record "SPBLIC Extension License"): Boolean
     begin
         // Gumroad only allows this using an API key, which is unique to each Publisher.  At this time,
         // I can't support the safe storage of that information 
         exit(false);
     end;
 
-    procedure ClientSideLicenseCount(var SPBExtensionLicense: Record "SPBLIC Extension License"): Boolean;
+    procedure ClientSideLicenseCount(var SPBExtensionLicense: Record "SPBLIC Extension License"): Boolean
     begin
         exit(true);
     end;
@@ -140,7 +151,7 @@ codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommu
         GumroadJson.Get('success', GumroadToken);
         if not GumroadToken.AsValue().AsBoolean() then begin
             NavApp.GetModuleInfo(SPBExtensionLicense."Extension App Id", AppInfo);
-            Error(GumroadErr, AppInfo.Publisher);
+            Error(GumroadErr, AppInfo.Publisher());
         end;
         GumroadJson.Get('purchase', GumroadToken);
 
@@ -185,5 +196,20 @@ codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommu
     [IntegrationEvent(false, false)]
     local procedure OnAfterThrowPossibleMisuse(SPBExtensionLicense: Record "SPBLIC Extension License")
     begin
+    end;
+
+    procedure PopulateSubscriptionItemIdFromAPI(var SPBExtensionLicense: Record "SPBLIC Extension License"; var ResponseBody: Text): Integer
+    begin
+
+    end;
+
+    procedure LogUsageIncrement(var SPBExtensionLicense: Record "SPBLIC Extension License"; UsageCount: Integer): Boolean
+    begin
+        Error(UsageBaseBillingNotSupportedErr);
+    end;
+
+    procedure LogUsageSet(var SPBExtensionLicense: Record "SPBLIC Extension License"; UsageCount: Integer): Boolean
+    begin
+        Error(UsageBaseBillingNotSupportedErr);
     end;
 }

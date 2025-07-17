@@ -1,8 +1,16 @@
+namespace SPB.InstallUpgradeBC;
+
+using SPB.EngineLogic;
+using SPB.Storage;
+using System.Environment;
+
 codeunit 71033589 "SPBLIC Environment Watcher"
 {
     Access = Internal;
+    Permissions =
+        tabledata "SPBLIC Extension License" = R;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Environment Triggers", 'OnAfterCopyEnvironmentPerDatabase', '', false, false)]
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Environment Triggers", OnAfterCopyEnvironmentPerDatabase, '', false, false)]
     local procedure DeactivateLicensesWhenEnvironmentCopied(DestinationEnvironmentType: Option Production,Sandbox)
     var
         SPBExtensionLicense: Record "SPBLIC Extension License";
@@ -15,7 +23,7 @@ codeunit 71033589 "SPBLIC Environment Watcher"
                 if DestinationEnvironmentType = DestinationEnvironmentType::Sandbox then begin
                     // Reset all licenses to Sandbox grace
                     if SPBExtensionLicense."Sandbox Grace Days" <> 0 then
-                        SPBExtensionLicense."Trial Grace End Date" := CalcDate(StrSubstNo(GraceDaysMathTok, SPBExtensionLicense."Sandbox Grace Days"), Today);
+                        SPBExtensionLicense."Trial Grace End Date" := CalcDate(StrSubstNo(GraceDaysMathTok, SPBExtensionLicense."Sandbox Grace Days"), Today());
                     SPBLICDeactivateMeth.Deactivate(SPBExtensionLicense, false);
                 end else
                     // Deactivate the licenses in general

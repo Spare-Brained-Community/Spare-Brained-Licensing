@@ -1,0 +1,663 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="de-DE" original="Spare Brained Licensing">
+    <body>
+      <group id="body">
+        <trans-unit id="Codeunit 3827207503 - NamedType 4016921347" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No License was found in the Licenses list for SubscriptionId: %1 with Submodule name: %2</source>
+          <target state="translated">Es wurde keine Lizenz in der Lizenzliste für die Abonnement-ID gefunden: %1 mit Name des Sub-Moduls: %2</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the ID of the App. %2 is the Submodule.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Check Active - NamedType NoSubscriptionFoundErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3827207503 - Method 788638224 - NamedType 345427010" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No License was found in the Licenses list for SubscriptionId: %1</source>
+          <target state="translated">Es wurde keine Lizenz in der Lizenzliste für die Abonnement-ID gefunden: %1</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the ID of the App.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Check Active - Method CheckBasic - NamedType NoSubFoundErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3827207503 - Method 430906001 - NamedType 4007641815" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The License for %1 is not Active.  Contact your system administrator to re-activate it.</source>
+          <target state="translated">Die Lizenz für %1 ist nicht aktiv.  Wenden Sie sich an Ihren Systemadministrator, um sie wieder zu aktivieren.</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the name of the Extension.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Check Active - Method DoCheckBasic - NamedType SubscriptionInactiveErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2609748313 - Method 2547612846 - NamedType 4286379137" size-unit="char" translate="yes" xml:space="preserve">
+          <source>To install this Extension, you need to update %1 to at least version %2.</source>
+          <target state="translated">Um diese Erweiterung zu installieren, müssen Sie %1 mindestens auf Version %2 aktualisieren.</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the name of licensing extension, %2 is the version number</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Extension Registration - Method CheckSupportedVersion - NamedType VersionUpdateRequiredErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1931101690 - NamedType 4016921347" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No License was found in the Licenses list for Subscription %1 with Submodule name: %2</source>
+          <target state="translated">Es wurde keine Lizenz in der Lizenzliste für Abonnement %1 mit Submodulname: %2 gefunden</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the ID of the App. %2 is the Submodule.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LogUsage - NamedType NoSubscriptionFoundErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 560441334 - Method 488700208 - NamedType 2571021891" size-unit="char" translate="yes" xml:space="preserve">
+          <source>An error occurred validating the license.  Contact %1 for assistance</source>
+          <target state="translated">Bei der Validierung der Lizenz ist ein Fehler aufgetreten.  Kontaktieren Sie %1 für Hilfe</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the App Publisher</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Activate Meth - Method CheckPlatformCanActivate - NamedType ActivationFailureErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 560441334 - Method 488700208 - NamedType 2597918364" size-unit="char" translate="yes" xml:space="preserve">
+          <source>There are no remaining uses of that license key to assign to this installation.</source>
+          <target state="translated">Es gibt keine weiteren Verwendungen dieses Lizenzschlüssels, die dieser Installation zugewiesen werden könnten.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Activate Meth - Method CheckPlatformCanActivate - NamedType NoRemainingUsesErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 560441334 - Method 2107568876 - NamedType 4258206074" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The License Key provided has already expired due to a Subscription End.  Contact %1 for assistance</source>
+          <target state="translated">Der angegebene Lizenzschlüssel ist aufgrund eines Abonnementendes bereits abgelaufen.  Kontaktieren Sie %1 für Unterstützung</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the App Publisher</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Activate Meth - Method DoActivationInLocalSystem - NamedType LicenseKeyExpiredErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 315386427 - Method 1532212514 - NamedType 1318374551" size-unit="char" translate="yes" xml:space="preserve">
+          <source>&lt;+%1D&gt;</source>
+          <target state="translated">&lt;+%1D&gt;</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the number of days</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Check Active Meth - Method DoCheckIfActive - NamedType DaysGraceTok</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 315386427 - Method 1532212514 - NamedType 3635804519" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Today is the last trial day for %1. Please purchase a License Key and Activate the subscription to continue use.</source>
+          <target state="translated">Heute ist der letzte Testtag für %1. Bitte erwerben Sie einen Lizenzschlüssel und aktivieren Sie das Abonnement, um es weiter zu nutzen.</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the name of the Extension</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Check Active Meth - Method DoCheckIfActive - NamedType GraceExpiringMsg</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1354941877 - Method 3272340085 - NamedType 1073361429" size-unit="char" translate="yes" xml:space="preserve">
+          <source>There was an issue in contacting the licensing server to deactivate this license.  Contact %1 for assistance.</source>
+          <target state="translated">Es gab ein Problem bei der Kontaktaufnahme mit dem Lizenzierungsserver, um diese Lizenz zu deaktivieren.  Kontaktieren Sie %1 für Hilfe.</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the App Publisher name</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Deactivate Meth - Method DoDeactivate - NamedType DeactivationProblemErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2130962757 - Method 2406779609 - NamedType 1913171376" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Update Extension: %1</source>
+          <target state="translated">Erweiterung aktualisieren: %1</target>
+          <note from="Developer" annotates="general" priority="2">%1 is Extension Name</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Version Check - Method DoVersionCheck - NamedType SubjectTok</note>
+        </trans-unit>
+        <trans-unit id="Enum 1909430229 - EnumValue 1009633233 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Gumroad</source>
+          <target state="translated">Gumroad</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum SPBLIC License Platform - EnumValue Gumroad - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1909430229 - EnumValue 1315004771 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>LemonSqueezy</source>
+          <target state="translated">LemonSqueezy</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum SPBLIC License Platform - EnumValue LemonSqueezy - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3327392388 - Method 875139600 - NamedType 3252658350" size-unit="char" translate="yes" xml:space="preserve">
+          <source>%1 Test Subscription</source>
+          <target state="translated">%1 Test-Abonnement</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the Licensing Extension name.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Licensing Install - Method AddTestProduct - NamedType TestLicenseNameTok</note>
+        </trans-unit>
+        <trans-unit id="PermissionSet 3713753643 - Property 2879900210" maxwidth="30" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Spare Brained Licensing Admin</source>
+          <target state="translated">Spare Brained Licensing Admin</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PermissionSet SPBLIC Licensing - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PermissionSet 12962568 - Property 2879900210" maxwidth="30" size-unit="char" translate="yes" xml:space="preserve">
+          <source>SPBLIC Licensing RO</source>
+          <target state="translated">SPBLIC Licensing RO</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PermissionSet SPBLIC Licensing RO - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 964202159 - NamedType 385219469" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The key will look like XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX.</source>
+          <target state="translated">Der Schlüssel sieht aus wie XXXXXXXX-XXXXXXXX-XXXXXXXXXX-XXXXXXXX.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Gumroad Communicator - NamedType GumroadKeyFormatTok</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 964202159 - NamedType 1516784335" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Gumroad does not support Usage based billing.</source>
+          <target state="translated">Gumroad unterstützt keine nutzungsabhängige Abrechnung.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Gumroad Communicator - NamedType UsageBaseBillingNotSupportedErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 964202159 - Method 572322412 - NamedType 2344834051" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Unable to communicate with the license server due to an environment block. Please resolve and try again.</source>
+          <target state="translated">Die Kommunikation mit dem Lizenzserver ist aufgrund einer Umgebungssperre nicht möglich. Bitte beheben Sie diese und versuchen Sie es erneut.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Gumroad Communicator - Method CallAPIForVerification - NamedType EnvironmentBlockErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 964202159 - Method 572322412 - NamedType 1832738441" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Unable to verify or activate license.\ %1: %2 \ %3</source>
+          <target state="translated">Lizenz kann nicht verifiziert oder aktiviert werden.\ %1: %2 \ %3</target>
+          <note from="Developer" annotates="general" priority="2">%1 %2 %3</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Gumroad Communicator - Method CallAPIForVerification - NamedType WebCallErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 964202159 - Method 2508294018 - NamedType 1515148142" size-unit="char" translate="yes" xml:space="preserve">
+          <source>An error occurred validating the license.  Contact %1 for assistance</source>
+          <target state="translated">Bei der Validierung der Lizenz ist ein Fehler aufgetreten.  Kontaktieren Sie %1 für Hilfe</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the App Publisher</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Gumroad Communicator - Method CheckAPILicenseCount - NamedType GumroadErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 964202159 - Method 2792865364 - NamedType 2571021891" size-unit="char" translate="yes" xml:space="preserve">
+          <source>An error occurred validating the license.  Contact %1 for assistance</source>
+          <target state="translated">Bei der Validierung der Lizenz ist ein Fehler aufgetreten.  Kontaktieren Sie %1 für Hilfe</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the App Publisher</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC Gumroad Communicator - Method PopulateSubscriptionFromResponse - NamedType ActivationFailureErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3199230408 - Method 219013742 - NamedType 250751926" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Invalid action specified. Use "increment" or "set".</source>
+          <target state="translated">Ungültige Aktion angegeben. Verwenden Sie „inkrementieren“ oder „setzen“.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LemonSqueezy Comm. - Method BuildUsageContent - NamedType InvalidActionErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3199230408 - Method 1937264269 - NamedType 2344834051" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Unable to communicate with the license server due to an environment block. Please resolve and try again.</source>
+          <target state="translated">Die Kommunikation mit dem Lizenzserver ist aufgrund einer Umgebungssperre nicht möglich. Bitte beheben Sie diese und versuchen Sie es erneut.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LemonSqueezy Comm. - Method CallLemonSqueezy - NamedType EnvironmentBlockErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3199230408 - Method 1937264269 - NamedType 1832738441" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Unable to verify or activate license.\ %1: %2 \ %3</source>
+          <target state="translated">Lizenz kann nicht verifiziert oder aktiviert werden.\ %1: %2 \ %3</target>
+          <note from="Developer" annotates="general" priority="2">%1 %2 %3</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LemonSqueezy Comm. - Method CallLemonSqueezy - NamedType WebCallErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3199230408 - Method 2792865364 - NamedType 3707967943" size-unit="char" translate="yes" xml:space="preserve">
+          <source>An error occurred communicating with the licensing platform.  Contact %1 for assistance</source>
+          <target state="translated">Bei der Kommunikation mit der Lizenzierungsplattform ist ein Fehler aufgetreten.  Kontaktieren Sie %1 für Hilfe</target>
+          <note from="Developer" annotates="general" priority="2">%1 is the App Publisher</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LemonSqueezy Comm. - Method PopulateSubscriptionFromResponse - NamedType CommunicationFailureErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3199230408 - Method 906692905 - NamedType 3887869495" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The key will look like XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX.</source>
+          <target state="translated">Der Schlüssel sieht aus wie XXXXXXXX-XXXX-XXXXXX-XXXXXXXXXXXX.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LemonSqueezy Comm. - Method SampleKeyFormatText - NamedType LemonSqueezyKeyFormatTok</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3199230408 - Method 2327657787 - NamedType 795351449" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The License %1/%2 is not usage-based and cannot be used for usage tracking.</source>
+          <target state="translated">Die Lizenz %1/%2 ist nicht nutzungsabhängig und kann nicht zur Nachverfolgung der Nutzung verwendet werden.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = the Extension Name, %2 = the Submodule Name</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LemonSqueezy Comm. - Method ValidateUsageBasedLicense - NamedType LicenseNotUsageBasedErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3199230408 - Method 2327657787 - NamedType 1585353238" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Seems like the Subscription Item ID is missing for License %1/%2. This usually means that the License was not activated yet.</source>
+          <target state="translated">Es scheint, dass die ID des Abonnementartikels für die Lizenz %1/%2 fehlt. Dies bedeutet normalerweise, dass die Lizenz noch nicht aktiviert wurde.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = the Extension Name, %2 = the Submodule Name</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit SPBLIC LemonSqueezy Comm. - Method ValidateUsageBasedLicense - NamedType SubscriptionItemIdMissingErr</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Extension License</source>
+          <target state="translated">Erweiterungslizenz</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 2520497479 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shows if this Extension has been Activated with a Product Key.</source>
+          <target state="translated">Zeigt an, ob diese Erweiterung mit einem Produktschlüssel aktiviert wurde.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Activated - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 2520497479 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Activated</source>
+          <target state="translated">Aktiviert</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Activated - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 3681468396 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Activated At</source>
+          <target state="translated">Aktiviert um</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Activated At - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 128183738 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Activated By</source>
+          <target state="translated">Aktiviert durch</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Activated By - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 375512490 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The API Key Provider that is used to communicate with the License Platform.</source>
+          <target state="translated">Der API-Schlüsselanbieter, der für die Kommunikation mit der Lizenzplattform verwendet wird.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field ApiKeyProvider - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 375512490 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>API Key Provider</source>
+          <target state="translated">API-Schlüssel-Anbieter</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field ApiKeyProvider - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 3278502036 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The email address to contact with Billing related questions about this Subscription.</source>
+          <target state="translated">Die E-Mail-Adresse, an die Sie sich bei Fragen zur Rechnungsstellung für dieses Abonnement wenden können.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Billing Support Email - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 3278502036 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Billing Support Email</source>
+          <target state="translated">E-Mail zur Unterstützung bei der Rechnungsstellung</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Billing Support Email - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 2570673311 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Created At</source>
+          <target state="translated">Erstellt in</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Created At - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 3553709163 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>This Guid is the Subscription Entry Id.</source>
+          <target state="translated">Diese Guid ist die Kennung des Abonnementeintrags.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Entry Id - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 3553709163 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Entry Id</source>
+          <target state="translated">Lfd. Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Entry Id - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 793520103 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>This Guid is the Extension's App Id.</source>
+          <target state="translated">Diese Guid ist die App-ID der Erweiterung.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Extension App Id - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 793520103 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Extension App Id</source>
+          <target state="translated">Erweiterung App Id</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Extension App Id - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 2515772770 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The name of the Extension that is registered to have a Subscription requirement.</source>
+          <target state="translated">Der Name der Erweiterung, für die eine Abonnementpflicht registriert ist.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Extension Name - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 2515772770 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Extension Name</source>
+          <target state="translated">Erweiterungsname</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Extension Name - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 3301870439 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Installed At</source>
+          <target state="translated">Installiert am</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Installed At - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 3222094634 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Indicates if this Extension is usage based, meaning it will be billed based on usage.</source>
+          <target state="translated">Gibt an, ob diese Erweiterung verbrauchsabhängig ist, d. h. sie wird nach Verbrauch abgerechnet.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field IsUsageBased - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 3222094634 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Is Usage Based</source>
+          <target state="translated">Ist nutzungsbasiert</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field IsUsageBased - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 682390464 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>License Key</source>
+          <target state="translated">Lizenzschlüssel</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field License Key - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 3482719256 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the License Platform field.</source>
+          <target state="translated">Gibt den Wert des Feldes Lizenzplattform an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field License Platform - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 3482719256 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>License Platform</source>
+          <target state="translated">Lizenz-Plattform</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field License Platform - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 3113370813 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Licensing ID</source>
+          <target state="translated">Lizenzierungs-ID</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Licensing ID - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 2070199485 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The Order ID of the order where this Extension is registered.</source>
+          <target state="translated">Die Bestell-ID der Bestellung, für die diese Erweiterung registriert ist.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Order Id - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 2070199485 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Order Id</source>
+          <target state="translated">Auftrags-ID</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Order Id - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 1791098866 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The Order Item ID of the order item where this Extension is registered.</source>
+          <target state="translated">Die Auftragspositions-ID der Auftragsposition, für die diese Erweiterung registriert ist.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Order Item Id - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 1791098866 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Order Item Id</source>
+          <target state="translated">Bestellung Artikel-ID</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Order Item Id - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 3265714202 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Product Code</source>
+          <target state="translated">Produktcode</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Product Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 459399738 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The Product ID of the product where this Extension is registered.</source>
+          <target state="translated">Die Produkt-ID des Produkts, für das diese Erweiterung registriert ist.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Product Id - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 459399738 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Product Id</source>
+          <target state="translated">Produkt-ID</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Product Id - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 1615067412 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The page where one can find more information about purchasing a Subscription for this Extension.</source>
+          <target state="translated">Die Seite, auf der Sie weitere Informationen über den Erwerb eines Abonnements für diese Erweiterung finden können.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Product URL - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 1615067412 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Product URL</source>
+          <target state="translated">Produkt-URL</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Product URL - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 251475916 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Sandbox Grace Days</source>
+          <target state="translated">Testumgebung Testzeitraum</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Sandbox Grace Days - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 1592890022 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The Store ID of the store where this Extension is registered.</source>
+          <target state="translated">Die Shop-ID des Shops, in dem diese Erweiterung registriert ist.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Store Id - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 1592890022 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Store Id</source>
+          <target state="translated">Shop-Id</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Store Id - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 66934155 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>If this Extension uses Module based Subscriptions, this displays which Submodule/Edition this is.</source>
+          <target state="translated">Wenn diese Erweiterung modulbasierte Abonnements verwendet, wird hier angezeigt, um welches Submodul/Edition es sich handelt.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Submodule Name - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 66934155 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Submodule Name</source>
+          <target state="translated">Name des Submoduls</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Submodule Name - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 3577687543 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Subscription Cancelled At</source>
+          <target state="translated">Abonnement gekündigt am</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Subscription Cancelled At - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 2993034865 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>This shows the email address that the License Key is registered to, in case there is a need to find it later.</source>
+          <target state="translated">Hier wird die E-Mail-Adresse angezeigt, auf die der Lizenzschlüssel registriert ist, falls Sie ihn später wiederfinden möchten.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Subscription Email - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 2993034865 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Subscription Email</source>
+          <target state="translated">Abonnement E-Mail</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Subscription Email - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 714177988 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Subscription End Date</source>
+          <target state="translated">Enddatum des Abonnements</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Subscription End Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 3419904252 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Subscription Ended At</source>
+          <target state="translated">Abonnement endete am</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Subscription Ended At - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 586868407 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Subscription Failed At</source>
+          <target state="translated">Subskription fehlgeschlagen am</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Subscription Failed At - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 4264822885 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The Subscription Item ID of the subscription item where this Extension is registered.</source>
+          <target state="translated">Die Abonnementartikel-ID des Abonnementartikels, in dem diese Erweiterung registriert ist.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Subscription Item Id - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 4264822885 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Subscription Item Id</source>
+          <target state="translated">Abonnement Item Id</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Subscription Item Id - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 1645510544 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The page where one can find more information about how to get Support for the Extension.</source>
+          <target state="translated">Die Seite, auf der Sie weitere Informationen darüber finden, wie Sie Unterstützung für die Erweiterung erhalten können.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Support URL - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 1645510544 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Support URL</source>
+          <target state="translated">Support-URL</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Support URL - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 3502087437 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>If the Extension is not yet Activated, this is the last date the Extension can run in Trial Mode.</source>
+          <target state="translated">Wenn die Erweiterung noch nicht aktiviert ist, ist dies das letzte Datum, an dem die Erweiterung im Testmodus ausgeführt werden kann.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Trial Grace End Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 3502087437 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Trial Grace End Date</source>
+          <target state="translated">Enddatum der Probezeit</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Trial Grace End Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 2888391108 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Update Available</source>
+          <target state="translated">Update verfügbar</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Update Available - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 1667101431 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Update News URL</source>
+          <target state="translated">URL für Aktualiserungen</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Update News URL - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 275599767 - Field 1618015777 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Version Check URL</source>
+          <target state="translated">URL für Versionsabfrage</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table SPBLIC Extension License - Field Version Check URL - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1538692962 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Extension Licenses</source>
+          <target state="translated">Erweiterungslizenzen</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC Extension Licenses - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1538692962 - NamedType 3390988340" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Available</source>
+          <target state="translated">Verfügbar</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC Extension Licenses - NamedType UpdateAvailableTok</note>
+        </trans-unit>
+        <trans-unit id="Page 1538692962 - Method 1168398803 - NamedType 3960046211" size-unit="char" translate="yes" xml:space="preserve">
+          <source>This will deactivate this license in this Business Central instance, but you will need to contact the Publisher to release the assigned license. \ \Are you sure you want to deactivate this license?</source>
+          <target state="translated">Dadurch wird diese Lizenz in dieser Business Central-Instanz deaktiviert, aber Sie müssen den Herausgeber kontaktieren, um die zugewiesene Lizenz freizugeben. \ \Sind Sie sicher, dass Sie diese Lizenz deaktivieren möchten?</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC Extension Licenses - Method DeactivateExtension - NamedType DeactivationNotPossibleWarningQst</note>
+        </trans-unit>
+        <trans-unit id="Page 1538692962 - Method 1168398803 - NamedType 1534060074" size-unit="char" translate="yes" xml:space="preserve">
+          <source>This will deactivate this license in this Business Central instance.\ \Are you sure you want to deactivate this license?</source>
+          <target state="translated">Dadurch wird diese Lizenz in dieser Business Central-Instanz deaktiviert.\ \Sind Sie sicher, dass Sie diese Lizenz deaktivieren möchten?</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC Extension Licenses - Method DeactivateExtension - NamedType DeactivationPossibleQst</note>
+        </trans-unit>
+        <trans-unit id="Page 1538692962 - Control 890477203 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>If an Update is available, this will link to where to find out more.</source>
+          <target state="translated">Wenn ein Update verfügbar ist, wird ein Link angezeigt, über den Sie weitere Informationen erhalten.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC Extension Licenses - Control UpdateLink - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1538692962 - Control 890477203 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Update News</source>
+          <target state="translated">Aktuelle Neuigkeiten</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC Extension Licenses - Control UpdateLink - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1538692962 - Action 2267293014 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Launches the Activation Wizard for this Subscription.</source>
+          <target state="translated">Startet den Aktivierungsassistenten für dieses Abonnement.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC Extension Licenses - Action ActivateProduct - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1538692962 - Action 2267293014 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Activate</source>
+          <target state="translated">Aktivieren</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC Extension Licenses - Action ActivateProduct - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1538692962 - Action 2955463525 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Forces this Subscription inactive, which will allow entry of a new License Key.</source>
+          <target state="translated">Setzt dieses Abonnement inaktiv, wodurch die Eingabe eines neuen Lizenzschlüssels möglich wird.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC Extension Licenses - Action DeactivateProduct - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1538692962 - Action 2955463525 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Deactivate</source>
+          <target state="translated">Deaktivieren</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC Extension Licenses - Action DeactivateProduct - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4006980220 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Licensing Activation Wizard</source>
+          <target state="translated">Assistent für die Lizenzaktivierung</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC License Activation - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4006980220 - NamedType 1398112590" size-unit="char" translate="yes" xml:space="preserve">
+          <source>You need to enter a License Key to continue.</source>
+          <target state="translated">Sie müssen einen Lizenzschlüssel eingeben, um fortzufahren.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC License Activation - NamedType LicenseKeyNeededErr</note>
+        </trans-unit>
+        <trans-unit id="Page 4006980220 - NamedType 1234444719" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Get License Key</source>
+          <target state="translated">Lizenzschlüssel anfordern</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC License Activation - NamedType LicenseLinkUriTok</note>
+        </trans-unit>
+        <trans-unit id="Page 4006980220 - NamedType 3119195878" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Use Test Key</source>
+          <target state="translated">Testschlüssel verwenden</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC License Activation - NamedType TestLicenseKeyOfferTok</note>
+        </trans-unit>
+        <trans-unit id="Page 4006980220 - Control 3243166786 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Start Activation</source>
+          <target state="translated">Aktivierung starten</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC License Activation - Control LetsStart - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4006980220 - Control 1201906119 - Property 1968111052" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Click Next to begin the activation process. You will need your Subscription License key.</source>
+          <target state="translated">Klicken Sie auf Weiter, um den Aktivierungsprozess zu starten. Sie benötigen Ihren Abonnement-Lizenzschlüssel.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC License Activation - Control StartText - Property InstructionalText</note>
+        </trans-unit>
+        <trans-unit id="Page 4006980220 - Control 1283650361 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>This is the Activation Wizard for the Licensing system.</source>
+          <target state="translated">Dies ist der Aktivierungsassistent für das Lizenzierungssystem.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC License Activation - Control WelcomeText - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4006980220 - Control 3817008790 - Property 1968111052" size-unit="char" translate="yes" xml:space="preserve">
+          <source>You will enter the License Key for the following License.  If you do not have a License key, please click on the "Get License Key" link.</source>
+          <target state="translated">Sie müssen den Lizenzschlüssel für die folgende Lizenz eingeben.  Wenn Sie keinen Lizenzschlüssel haben, klicken Sie bitte auf den Link „Lizenzschlüssel anfordern“.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC License Activation - Control WelcomeExplainer - Property InstructionalText</note>
+        </trans-unit>
+        <trans-unit id="Page 4006980220 - Control 426715456 - Property 1968111052" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Please enter your Subscription License Key:</source>
+          <target state="translated">Bitte geben Sie Ihren Abonnement-Lizenzschlüssel ein:</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC License Activation - Control LicenseKeyInstruction - Property InstructionalText</note>
+        </trans-unit>
+        <trans-unit id="Page 4006980220 - Control 3196012354 - Property 1968111052" size-unit="char" translate="yes" xml:space="preserve">
+          <source>This is the Test Subscription, so you can use a test License Key here by clicking:</source>
+          <target state="translated">Dies ist das Testabonnement, Sie können also einen Testlizenzschlüssel verwenden, indem Sie hier klicken:</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC License Activation - Control TestLicenseOption - Property InstructionalText</note>
+        </trans-unit>
+        <trans-unit id="Page 4006980220 - Control 2723201281 - Property 1968111052" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Please enter your Subscription License Key:</source>
+          <target state="translated">Bitte geben Sie Ihren Abonnement-Lizenzschlüssel ein:</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC License Activation - Control TestPathLicenseKeyInstruction - Property InstructionalText</note>
+        </trans-unit>
+        <trans-unit id="Page 4006980220 - Control 1755829652 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Activation Results</source>
+          <target state="translated">Aktivierungsergebnisse</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC License Activation - Control ActivationResultsPageText - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4006980220 - Control 3933190995 - Property 1968111052" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Activation Unsuccessful!</source>
+          <target state="translated">Aktivierung fehlgeschlagen!</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC License Activation - Control ActivationDidNotWork - Property InstructionalText</note>
+        </trans-unit>
+        <trans-unit id="Page 4006980220 - Control 1200239856 - Property 1968111052" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Activation Successful!</source>
+          <target state="translated">Aktivierung erfolgreich!</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC License Activation - Control ActivationWorked - Property InstructionalText</note>
+        </trans-unit>
+        <trans-unit id="Page 4006980220 - Action 2438272767 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Back</source>
+          <target state="translated">Zurück</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC License Activation - Action ActionBack - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4006980220 - Action 3259912055 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Finish</source>
+          <target state="translated">Abschließen</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC License Activation - Action ActionFinish - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4006980220 - Action 914282563 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Next</source>
+          <target state="translated">Weiter</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page SPBLIC License Activation - Action ActionNext - Property Caption</note>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

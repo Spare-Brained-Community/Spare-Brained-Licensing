@@ -1,5 +1,12 @@
+namespace SPB.Storage;
+
+using System.Environment;
+using System.Security.Encryption;
+
 codeunit 71033580 "SPBLIC IsoStore Manager"
 {
+    Access = Public;
+
     // Utility Codeunit
     var
         CryptographyManagement: Codeunit "Cryptography Management";
@@ -11,7 +18,7 @@ codeunit 71033580 "SPBLIC IsoStore Manager"
         SPBIsoStoreManager: Codeunit "SPBLIC IsoStore Manager";
         YesterdayDateTime: DateTime;
     begin
-        SPBIsoStoreManager.SetAppValue(SPBExtensionLicense, 'lastUpdated', Format(CurrentDateTime, 0, 9));
+        SPBIsoStoreManager.SetAppValue(SPBExtensionLicense, 'lastUpdated', Format(CurrentDateTime(), 0, 9));
         SPBIsoStoreManager.SetAppValue(SPBExtensionLicense, 'endDate', Format(SPBExtensionLicense."Subscription End Date", 0, 9));
         SPBIsoStoreManager.SetAppValue(SPBExtensionLicense, 'active', Format(SPBExtensionLicense.Activated, 0, 9));
         SPBIsoStoreManager.SetAppValue(SPBExtensionLicense, 'preactivationDays', Format(SPBExtensionLicense."Sandbox Grace Days", 0, 9));
@@ -37,6 +44,14 @@ codeunit 71033580 "SPBLIC IsoStore Manager"
                 StoreValue := CryptographyManagement.EncryptText(CopyStr(StoreValue, 1, 215))
             else
                 Error('To use Spare Brained Licensing On-Prem, Database Encryption must be enabled.');
+
+        IsolatedStorage.Set(StrSubstNo(NameMapTok, SPBExtensionLicense."Entry Id", StoreName), StoreValue, DataScope::Module);
+    end;
+
+    internal procedure SetAppValue(SPBExtensionLicense: Record "SPBLIC Extension License"; StoreName: Text; StoreValue: SecretText)
+    begin
+        if not IsolatedStorage.Contains(SPBExtensionLicense."Entry Id") then
+            IsolatedStorage.Set(SPBExtensionLicense."Entry Id", '', DataScope::Module);
 
         IsolatedStorage.Set(StrSubstNo(NameMapTok, SPBExtensionLicense."Entry Id", StoreName), StoreValue, DataScope::Module);
     end;

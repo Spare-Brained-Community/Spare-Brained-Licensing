@@ -1,3 +1,7 @@
+namespace SPB.Telemetry;
+
+using SPB.Storage;
+
 codeunit 71033590 "SPBLIC Telemetry"
 {
     Access = Internal;
@@ -13,24 +17,24 @@ codeunit 71033590 "SPBLIC Telemetry"
     var
         EventTagInstallMsg: Label 'Installation', Locked = true;
         EventTagInstallTok: Label 'SPBLIC1000', Locked = true;
-        EventTagUpgradeMsg: Label 'Upgraded', Locked = true;
-        EventTagUpgradeTok: Label 'SPBLIC1001', Locked = true;
-        EventTagNewExtensionMsg: Label 'New Extension License Registered', Locked = true;
-        EventTagNewExtensionTok: Label 'SPBLIC1002', Locked = true;
+        EventTagLicenseActivationFailureMsg: Label 'License Activation Failure', Locked = true;
+        EventTagLicenseActivationFailureTok: Label 'SPBLIC1100', Locked = true;
         EventTagLicenseActivationMsg: Label 'License Activated', Locked = true;
         EventTagLicenseActivationTok: Label 'SPBLIC1100', Locked = true;
+        EventTagLicenseCheckFailureMsg: Label 'License Check - Failed', Locked = true;
+        EventTagLicenseCheckFailureTok: Label 'SPBLIC1201', Locked = true;
+        EventTagLicenseCheckSuccessMsg: Label 'License Check - Success', Locked = true;
+        EventTagLicenseCheckSuccessTok: Label 'SPBLIC1200', Locked = true;
         EventTagLicenseDeactivationMsg: Label 'License Deactivated', Locked = true;
         EventTagLicenseDeactivationTok: Label 'SPBLIC1101', Locked = true;
         EventTagLicensePlatformDeactivationMsg: Label 'License Deactivated by Platform', Locked = true;
         EventTagLicensePlatformDeactivationTok: Label 'SPBLIC1102', Locked = true;
-        EventTagLicenseActivationFailureMsg: Label 'License Activation Failure', Locked = true;
-        EventTagLicenseActivationFailureTok: Label 'SPBLIC1100', Locked = true;
-        EventTagLicenseCheckSuccessMsg: Label 'License Check - Success', Locked = true;
-        EventTagLicenseCheckSuccessTok: Label 'SPBLIC1200', Locked = true;
-        EventTagLicenseCheckFailureMsg: Label 'License Check - Failed', Locked = true;
-        EventTagLicenseCheckFailureTok: Label 'SPBLIC1201', Locked = true;
         EventTagMisuseReportMsg: Label 'Misuse! Table data and IsoStorage mismatch', Locked = true;
         EventTagMisuseReportTok: Label 'SPBLIC1300', Locked = true;
+        EventTagNewExtensionMsg: Label 'New Extension License Registered', Locked = true;
+        EventTagNewExtensionTok: Label 'SPBLIC1002', Locked = true;
+        EventTagUpgradeMsg: Label 'Upgraded', Locked = true;
+        EventTagUpgradeTok: Label 'SPBLIC1001', Locked = true;
         EventTagVersionUpdateCheckMsg: Label 'Version Update Checking', Locked = true;
         EventTagVersionUpdateCheckTok: Label 'SPBLIC1400', Locked = true;
 
@@ -98,20 +102,20 @@ codeunit 71033590 "SPBLIC Telemetry"
 
     local procedure EmitTraceTag(var SPBExtensionLicense: Record "SPBLIC Extension License"; EventDescriptionText: Text; Tag: Text)
     var
-        TraceTagMessage: Text;
         TelemetryDimension: Dictionary of [Text, Text];
-        ExtensionNameLbl: Label 'ExtensionName', Locked = true;
-        ExtensionGuidLbl: Label 'ExtensionGuid', Locked = true;
-        ExtensionSubmoduleLbl: Label 'SubmoduleName', Locked = true;
+        ExtensionGuidTok: Label 'ExtensionGuid', Locked = true;
+        ExtensionNameTok: Label 'ExtensionName', Locked = true;
         ExtensionPublisherLbl: Label 'Publisher', Locked = true;
+        ExtensionSubmoduleLbl: Label 'SubmoduleName', Locked = true;
         AppInfo: ModuleInfo;
+        TraceTagMessage: Text;
     begin
         NavApp.GetModuleInfo(SPBExtensionLicense."Extension App Id", AppInfo);
         TraceTagMessage := EventDescriptionText;
-        TelemetryDimension.Add(ExtensionNameLbl, SPBExtensionLicense."Extension Name");
-        TelemetryDimension.Add(ExtensionGuidLbl, SPBExtensionLicense."Extension App Id");
-        TelemetryDimension.Add(ExtensionPublisherLbl, AppInfo.Publisher);
-        TelemetryDimension.Add(ExtensionSubmoduleLbl, CompanyName);
+        TelemetryDimension.Add(ExtensionNameTok, SPBExtensionLicense."Extension Name");
+        TelemetryDimension.Add(ExtensionGuidTok, SPBExtensionLicense."Extension App Id");
+        TelemetryDimension.Add(ExtensionPublisherLbl, AppInfo.Publisher());
+        TelemetryDimension.Add(ExtensionSubmoduleLbl, CompanyName());
         Session.LogMessage(Tag, TraceTagMessage, Verbosity::Normal, DataClassification::SystemMetadata, TelemetryScope::ExtensionPublisher, TelemetryDimension);
     end;
 }

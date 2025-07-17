@@ -1,5 +1,11 @@
+namespace SPB.Extensibility;
+
+using SPB.Storage;
+
 codeunit 71033583 "SPBLIC Events"
 {
+    Access = Public;
+
     #region UIEvents
     [IntegrationEvent(false, false)]
     internal procedure OnBeforeLaunchProductUrl(var SPBExtensionLicense: Record "SPBLIC Extension License"; var IsHandled: Boolean)
@@ -9,17 +15,22 @@ codeunit 71033583 "SPBLIC Events"
 
     #region ActiveCheckEvents
     [IntegrationEvent(false, false)]
-    internal procedure OnAfterCheckActiveBasic(var SPBExtensionLicense: Record "SPBLIC Extension License"; IsActive: Boolean);
+    internal procedure OnAfterCheckActiveBasic(var SPBExtensionLicense: Record "SPBLIC Extension License"; IsActive: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    internal procedure OnAfterCheckActiveBasicFailure(SubscriptionId: Guid; SubmoduleName: Text[100]; FailureReason: Text);
+    internal procedure OnAfterCheckActiveBasicFailure(SubscriptionId: Guid; SubmoduleName: Text[100]; FailureReason: Text)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    internal procedure OnAfterCheckActiveFailure(var SPBExtensionLicense: Record "SPBLIC Extension License"; IsActive: Boolean; FailureReason: Text);
+    internal procedure OnAfterLogUsageFailure(SubscriptionId: Guid; SubmoduleName: Text[100]; FailureReason: Text)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    internal procedure OnAfterCheckActiveFailure(var SPBExtensionLicense: Record "SPBLIC Extension License"; IsActive: Boolean; FailureReason: Text)
     begin
     end;
     #endregion ActiveCheckEvents
@@ -64,6 +75,16 @@ codeunit 71033583 "SPBLIC Events"
 
     [IntegrationEvent(false, false)]
     internal procedure OnAfterLicenseDeactivatedByPlatform(var SPBExtensionLicense: Record "SPBLIC Extension License"; ResponseBody: Text)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    internal procedure OnAfterSetUsage(var SPBExtensionLicense: Record "SPBLIC Extension License"; Quantity: Integer; var Success: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    internal procedure OnAfterLogUsage(var SPBExtensionLicense: Record "SPBLIC Extension License"; var Success: Boolean)
     begin
     end;
     #endregion DeActivation
