@@ -5,7 +5,10 @@ using SPB.PlatformObjects.LemonSqueezy;
 
 enum 71033575 "SPBLIC License Platform" implements "SPBLIC ILicenseCommunicator", "SPBLIC ILicenseCommunicator2", "SPBLIC IUsageIntegration"
 {
-    DefaultImplementation = "SPBLIC ILicenseCommunicator" = "SPBLIC Gumroad Communicator", "SPBLIC ILicenseCommunicator2" = "SPBLIC Gumroad Communicator";
+    DefaultImplementation = 
+        "SPBLIC ILicenseCommunicator" = "SPBLIC Gumroad Communicator",
+        "SPBLIC ILicenseCommunicator2" = "SPBLIC Gumroad Communicator",
+        "SPBLIC IUsageIntegration" = "SPBLIC Gumroad Communicator";
     Extensible = true;
 
     value(0; Gumroad)
