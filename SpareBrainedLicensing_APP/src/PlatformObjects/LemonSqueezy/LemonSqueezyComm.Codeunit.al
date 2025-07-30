@@ -216,9 +216,6 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         if SqueezyResponseType = SqueezyResponseType::" " then
             Error(CommunicationFailureErr, AppInfo.Publisher());
 
-        // Validate that the license key belongs to the correct product
-        this.ValidateProductMatch(SPBExtensionLicense, ResponseBody);
-
         TempJsonBuffer.ReadFromText(ResponseBody);
 
         // Update the current Subscription record
@@ -410,11 +407,13 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         JObject: JsonObject;
         Meta, ProductIdToken: JsonToken;
         ProductIdFromAPI: Text;
+        FailedJsonParsingErr: Label 'Failed to parse license validation response from licensing platform.';
+        MissingMetaErr: Label 'The license validation response does not contain the expected product information.';
         ProductMismatchErr: Label 'License key does not belong to the expected product. Expected product code %1, but license is for a different product.', Comment = '%1 is the expected Product Code';
     begin
         // Parse the response to extract product information from meta object
         if not JObject.ReadFrom(ResponseBody) then
-            exit; // Invalid JSON, let other validation handle this
+            Error(FailedJsonParsingErr);
 
         // Get the meta object which contains product validation information
         if not JObject.Get('meta', Meta) then
@@ -423,10 +422,10 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         // Extract product_id from meta object
         if Meta.AsObject().Get('product_id', ProductIdToken) then begin
             ProductIdFromAPI := ProductIdToken.AsValue().AsText();
-            
+
             // Compare with the registered Product Code
             // LemonSqueezy product_id should match the Product Code registered for this extension
-            if (SPBExtensionLicense."Product Code" <> '') and 
+            if (SPBExtensionLicense."Product Code" <> '') and
                (SPBExtensionLicense."Product Code" <> ProductIdFromAPI) then
                 Error(ProductMismatchErr, SPBExtensionLicense."Product Code");
         end;

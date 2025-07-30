@@ -91,11 +91,17 @@ codeunit 71033587 "SPBLIC Activate Meth"
     var
         LemonSqueezyComm: Codeunit "SPBLIC LemonSqueezy Comm.";
         ResponseBody: Text;
+        PreValidationFailedErr: Label 'Unable to validate license key before activation. Please check your internet connection and try again.';
+        AppInfo: ModuleInfo;
     begin
         // For LemonSqueezy platform, validate the license key first to prevent consuming it for wrong products
         if SPBExtensionLicense."License Platform" = SPBExtensionLicense."License Platform"::LemonSqueezy then begin
             if LemonSqueezyComm.CallAPIForPreActivationValidation(SPBExtensionLicense, ResponseBody) then
-                LemonSqueezyComm.ValidateProductMatch(SPBExtensionLicense, ResponseBody);
+                LemonSqueezyComm.ValidateProductMatch(SPBExtensionLicense, ResponseBody)
+            else begin
+                NavApp.GetModuleInfo(SPBExtensionLicense."Extension App Id", AppInfo);
+                Error(PreValidationFailedErr);
+            end;
         end;
         // Other platforms can add their own pre-validation logic here
     end;
