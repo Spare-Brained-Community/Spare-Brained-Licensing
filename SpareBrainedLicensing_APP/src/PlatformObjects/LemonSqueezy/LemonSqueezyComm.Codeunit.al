@@ -418,7 +418,7 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
 
         // Get the meta object which contains product validation information
         if not JObject.Get('meta', Meta) then
-            exit; // No meta object, skip validation for now
+            Error(MissingMetaErr);
 
         // Extract product_id from meta object
         if Meta.AsObject().Get('product_id', ProductIdToken) then begin
