@@ -60,6 +60,16 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         exit(CallLemonSqueezy(ResponseBody, VerifyAPI, SPBExtensionLicense.ApiKeyProvider));
     end;
 
+    internal procedure CallAPIForPreActivationValidation(var SPBExtensionLicense: Record "SPBLIC Extension License"; var ResponseBody: Text): Boolean
+    var
+        LemonSqueezyValidateOnlyAPITok: Label 'https://api.lemonsqueezy.com/v1/licenses/validate?license_key=%1', Comment = '%1 is the license key', Locked = true;
+        ValidateAPI: Text;
+    begin
+        // Validate license key without instance_id parameter for pre-activation validation
+        ValidateAPI := StrSubstNo(LemonSqueezyValidateOnlyAPITok, SPBExtensionLicense."License Key");
+        exit(this.CallLemonSqueezy(ResponseBody, ValidateAPI, SPBExtensionLicense.ApiKeyProvider));
+    end;
+
     procedure CallAPIForDeactivation(var SPBExtensionLicense: Record "SPBLIC Extension License"; var ResponseBody: Text) ResultOK: Boolean
     var
         DeactivateAPI: Text;
@@ -205,6 +215,9 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         end;
         if SqueezyResponseType = SqueezyResponseType::" " then
             Error(CommunicationFailureErr, AppInfo.Publisher());
+
+        // Validate that the license key belongs to the correct product
+        this.ValidateProductMatch(SPBExtensionLicense, ResponseBody);
 
         TempJsonBuffer.ReadFromText(ResponseBody);
 
@@ -390,5 +403,32 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         Relationships.Add('subscription-item', SubscriptionItem);
         Data.Add('relationships', Relationships);
         Result.Add('data', Data);
+    end;
+
+    internal procedure ValidateProductMatch(var SPBExtensionLicense: Record "SPBLIC Extension License"; ResponseBody: Text)
+    var
+        JObject: JsonObject;
+        Meta, ProductIdToken: JsonToken;
+        ProductIdFromAPI: Text;
+        ProductMismatchErr: Label 'License key does not belong to the expected product. Expected product code %1, but license is for a different product.', Comment = '%1 is the expected Product Code';
+    begin
+        // Parse the response to extract product information from meta object
+        if not JObject.ReadFrom(ResponseBody) then
+            exit; // Invalid JSON, let other validation handle this
+
+        // Get the meta object which contains product validation information
+        if not JObject.Get('meta', Meta) then
+            exit; // No meta object, skip validation for now
+
+        // Extract product_id from meta object
+        if Meta.AsObject().Get('product_id', ProductIdToken) then begin
+            ProductIdFromAPI := ProductIdToken.AsValue().AsText();
+            
+            // Compare with the registered Product Code
+            // LemonSqueezy product_id should match the Product Code registered for this extension
+            if (SPBExtensionLicense."Product Code" <> '') and 
+               (SPBExtensionLicense."Product Code" <> ProductIdFromAPI) then
+                Error(ProductMismatchErr, SPBExtensionLicense."Product Code");
+        end;
     end;
 }

@@ -40,6 +40,9 @@ codeunit 71033587 "SPBLIC Activate Meth"
         // We'll want the App info for events / errors:
         NavApp.GetModuleInfo(SPBExtensionLicense."Extension App Id", AppInfo);
 
+        // First validate the license key without consuming it (for LemonSqueezy)
+        ValidateBeforeActivation(SPBExtensionLicense);
+
         if LicensePlatformV2.CallAPIForActivation(SPBExtensionLicense, ResponseBody) then begin
             if LicensePlatformV2.ClientSideLicenseCount(SPBExtensionLicense) then begin
                 if LicensePlatform.CheckAPILicenseCount(SPBExtensionLicense, ResponseBody) then
@@ -82,6 +85,19 @@ codeunit 71033587 "SPBLIC Activate Meth"
         // Now pop the details into IsolatedStorage
         SPBLICIsoStoreManager.UpdateOrCreateIsoStorage(SPBExtensionLicense);
         exit(SPBExtensionLicense.Activated);
+    end;
+
+    local procedure ValidateBeforeActivation(var SPBExtensionLicense: Record "SPBLIC Extension License")
+    var
+        LemonSqueezyComm: Codeunit "SPBLIC LemonSqueezy Comm.";
+        ResponseBody: Text;
+    begin
+        // For LemonSqueezy platform, validate the license key first to prevent consuming it for wrong products
+        if SPBExtensionLicense."License Platform" = SPBExtensionLicense."License Platform"::LemonSqueezy then begin
+            if LemonSqueezyComm.CallAPIForPreActivationValidation(SPBExtensionLicense, ResponseBody) then
+                LemonSqueezyComm.ValidateProductMatch(SPBExtensionLicense, ResponseBody);
+        end;
+        // Other platforms can add their own pre-validation logic here
     end;
 
     local procedure OnAfterActivate(var SPBExtensionLicense: Record "SPBLIC Extension License")
