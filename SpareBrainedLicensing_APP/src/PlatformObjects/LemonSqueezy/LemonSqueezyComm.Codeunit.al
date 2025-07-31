@@ -447,31 +447,40 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
 
     local procedure PopulateAggregationSettings(var SPBExtensionLicense: Record "SPBLIC Extension License"; JObject: JsonObject)
     var
-        BillingAnchor: Integer;
         PriceId: Integer;
         PriceObject: JsonObject;
         TempToken: JsonToken;
         PriceApi: Text;
         ResponseBody: Text;
+        RenewalUnit: Text;
+        RenewalQuantity: Integer;
+        BillingFrequency: Text;
     begin
-        // Get billing anchor from subscription
-        if JObject.SelectToken('$.data[0].attributes.billing_anchor', TempToken) then begin
-            BillingAnchor := TempToken.AsValue().AsInteger();
-            SPBExtensionLicense."Billing Frequency" := CopyStr(Format(BillingAnchor), 1, MaxStrLen(SPBExtensionLicense."Billing Frequency"));
-        end;
-
-        // Get price_id from subscription item to fetch usage aggregation
+        // Get price_id from subscription item to fetch both usage aggregation and billing frequency
         if JObject.SelectToken('$.data[0].attributes.first_subscription_item.price_id', TempToken) then begin
             PriceId := TempToken.AsValue().AsInteger();
 
-            // Fetch Price object to get usage_aggregation
+            // Fetch Price object to get usage_aggregation and renewal interval
             PriceApi := StrSubstNo(LemonSqueezyPriceUrlTok, PriceId);
             Clear(ResponseBody);
 
             if CallLemonSqueezy(ResponseBody, 'GET', PriceApi, SPBExtensionLicense.ApiKeyProvider) then begin
                 PriceObject.ReadFrom(ResponseBody);
+                
+                // Get usage aggregation
                 if PriceObject.SelectToken('$.data.attributes.usage_aggregation', TempToken) then
                     SPBExtensionLicense."Usage Aggregation Type" := CopyStr(TempToken.AsValue().AsText(), 1, MaxStrLen(SPBExtensionLicense."Usage Aggregation Type"));
+
+                // Get billing frequency from renewal interval
+                if PriceObject.SelectToken('$.data.attributes.renewal_interval_unit', TempToken) then
+                    RenewalUnit := TempToken.AsValue().AsText();
+                    
+                if PriceObject.SelectToken('$.data.attributes.renewal_interval_quantity', TempToken) then
+                    RenewalQuantity := TempToken.AsValue().AsInteger();
+
+                // Build meaningful billing frequency description
+                BillingFrequency := BuildBillingFrequencyText(RenewalUnit, RenewalQuantity);
+                SPBExtensionLicense."Billing Frequency" := CopyStr(BillingFrequency, 1, MaxStrLen(SPBExtensionLicense."Billing Frequency"));
             end;
         end;
     end;
@@ -546,5 +555,41 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
     procedure RefreshMetadata(var SPBExtensionLicense: Record "SPBLIC Extension License"): Boolean
     begin
         exit(RefreshSubscriptionMetadata(SPBExtensionLicense));
+    end;
+
+    local procedure BuildBillingFrequencyText(RenewalUnit: Text; RenewalQuantity: Integer): Text
+    var
+        FrequencyText: Text;
+    begin
+        if (RenewalUnit = '') or (RenewalQuantity = 0) then
+            exit('Unknown');
+
+        // Handle singular vs plural and build meaningful description
+        case RenewalUnit of
+            'day':
+                if RenewalQuantity = 1 then
+                    FrequencyText := 'Daily'
+                else
+                    FrequencyText := StrSubstNo('Every %1 days', RenewalQuantity);
+            'week':
+                if RenewalQuantity = 1 then
+                    FrequencyText := 'Weekly'
+                else
+                    FrequencyText := StrSubstNo('Every %1 weeks', RenewalQuantity);
+            'month':
+                if RenewalQuantity = 1 then
+                    FrequencyText := 'Monthly'
+                else
+                    FrequencyText := StrSubstNo('Every %1 months', RenewalQuantity);
+            'year':
+                if RenewalQuantity = 1 then
+                    FrequencyText := 'Yearly'
+                else
+                    FrequencyText := StrSubstNo('Every %1 years', RenewalQuantity);
+            else
+                FrequencyText := StrSubstNo('%1 %2', RenewalQuantity, RenewalUnit);
+        end;
+
+        exit(FrequencyText);
     end;
 }
