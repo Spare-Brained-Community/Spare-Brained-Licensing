@@ -261,6 +261,30 @@ table 71033575 "SPBLIC Extension License"
             Editable = false;
             ToolTip = 'The API Key Provider that is used to communicate with the License Platform.';
         }
+        field(120; "Usage Aggregation Type"; Text[50])
+        {
+            AllowInCustomizations = Always;
+            Caption = 'Usage Aggregation Type';
+            DataClassification = SystemMetadata;
+            Editable = false;
+            ToolTip = 'The aggregation type for usage tracking (maximum_usage_during_period or sum_of_usage_during_period).';
+        }
+        field(130; "Billing Frequency"; Text[30])
+        {
+            AllowInCustomizations = Always;
+            Caption = 'Billing Frequency';
+            DataClassification = SystemMetadata;
+            Editable = false;
+            ToolTip = 'The billing frequency for the subscription (monthly, yearly, etc.).';
+        }
+        field(140; "Last Metadata Refresh"; DateTime)
+        {
+            AllowInCustomizations = Always;
+            Caption = 'Last Metadata Refresh';
+            DataClassification = SystemMetadata;
+            Editable = false;
+            ToolTip = 'The last time subscription metadata was refreshed from the license platform.';
+        }
 
     }
     keys
