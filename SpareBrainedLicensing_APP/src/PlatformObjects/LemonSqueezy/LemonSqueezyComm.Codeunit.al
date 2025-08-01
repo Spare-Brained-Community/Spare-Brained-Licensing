@@ -507,12 +507,17 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         MetadataAge: Duration;
         MetadataRefreshFailedErr: Label 'Unable to refresh license configuration automatically. This may occur if your subscription is no longer active or network connectivity issues exist. Please verify your subscription status or contact support if the issue persists.';
     begin
-        MetadataAge := CurrentDateTime() - SPBExtensionLicense."Last Metadata Refresh";
-        if (SPBExtensionLicense."Last Metadata Refresh" = 0DT) or (MetadataAge > 86400000) then // 24 hours in milliseconds
-            // First attempt: Try to refresh metadata without consuming license activations
+        // Check if metadata was never refreshed first (avoids calculation issues)
+        if SPBExtensionLicense."Last Metadata Refresh" = 0DT then begin
             if not RefreshSubscriptionMetadata(SPBExtensionLicense) then
-                // Only throw error if automatic refresh fails
                 Error(MetadataRefreshFailedErr);
+        end else begin
+            // Only calculate age if we have a valid timestamp
+            MetadataAge := CurrentDateTime() - SPBExtensionLicense."Last Metadata Refresh";
+            if MetadataAge > 86400000 then // 24 hours in milliseconds
+                if not RefreshSubscriptionMetadata(SPBExtensionLicense) then
+                    Error(MetadataRefreshFailedErr);
+        end;
     end;
 
     local procedure RefreshSubscriptionMetadata(var SPBExtensionLicense: Record "SPBLIC Extension License"): Boolean
