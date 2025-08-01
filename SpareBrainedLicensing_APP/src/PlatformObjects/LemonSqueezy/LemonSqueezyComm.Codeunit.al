@@ -504,7 +504,7 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
 
     local procedure ValidateAggregationForUsage(var SPBExtensionLicense: Record "SPBLIC Extension License")
     var
-        MetadataAge: Integer;
+        MetadataAge: Duration;
         MetadataRefreshFailedErr: Label 'Unable to refresh license configuration automatically. This may occur if your subscription is no longer active or network connectivity issues exist. Please verify your subscription status or contact support if the issue persists.';
     begin
         MetadataAge := CurrentDateTime() - SPBExtensionLicense."Last Metadata Refresh";
