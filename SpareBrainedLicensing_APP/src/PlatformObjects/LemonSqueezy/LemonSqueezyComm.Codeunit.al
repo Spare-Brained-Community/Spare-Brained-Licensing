@@ -335,7 +335,13 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         JObject.SelectToken('$.data[0].attributes.first_subscription_item.id', TempToken);
         SPBExtensionLicense."Subscription Item Id" := TempToken.AsValue().AsInteger();
 
-        PopulateAggregationSettings(SPBExtensionLicense, JObject);
+        // Check if subscription is actually usage-based according to LemonSqueezy
+        if JObject.SelectToken('$.data[0].attributes.first_subscription_item.is_usage_based', TempToken) then
+            SPBExtensionLicense."IsUsageBased" := TempToken.AsValue().AsBoolean();
+
+        // Only populate aggregation settings if this is actually a usage-based subscription
+        if SPBExtensionLicense."IsUsageBased" then
+            PopulateAggregationSettings(SPBExtensionLicense, JObject);
         SPBExtensionLicense."Last Metadata Refresh" := CurrentDateTime();
     end;
 
@@ -358,6 +364,10 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
     var
         ResponseBody: Text;
     begin
+        // Skip API call for zero usage as LemonSqueezy rejects it with 422
+        if UsageCount = 0 then
+            exit(true);
+
         // Check if license is usage-based and subscription item ID is set
         ValidateUsageBasedLicense(SPBExtensionLicense);
         // Validate aggregation settings before usage tracking
@@ -373,7 +383,13 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
     var
         LicenseNotUsageBasedErr: Label 'The License %1/%2 is not usage-based and cannot be used for usage tracking.', Comment = '%1 = the Extension Name, %2 = the Submodule Name';
         SubscriptionItemIdMissingErr: Label 'Seems like the Subscription Item ID is missing for License %1/%2. This usually means that the License was not activated yet.', Comment = '%1 = the Extension Name, %2 = the Submodule Name';
+        AutoRefreshFailedErr: Label 'Unable to automatically refresh subscription configuration for License %1/%2. The subscription may not be usage-based or there may be connectivity issues.', Comment = '%1 = the Extension Name, %2 = the Submodule Name';
     begin
+        // If the license thinks it's usage-based but has no subscription item ID, try to refresh metadata first
+        if SPBExtensionLicense."IsUsageBased" and (SPBExtensionLicense."Subscription Item Id" = 0) then
+            if not RefreshSubscriptionMetadata(SPBExtensionLicense) then
+                Error(AutoRefreshFailedErr, SPBExtensionLicense."Extension Name", SPBExtensionLicense."Submodule Name");
+
         if not SPBExtensionLicense."IsUsageBased" then
             Error(LicenseNotUsageBasedErr, SPBExtensionLicense."Extension Name", SPBExtensionLicense."Submodule Name");
 
@@ -469,7 +485,8 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
                 
                 // Get usage aggregation
                 if PriceObject.SelectToken('$.data.attributes.usage_aggregation', TempToken) then
-                    SPBExtensionLicense."Usage Aggregation Type" := CopyStr(TempToken.AsValue().AsText(), 1, MaxStrLen(SPBExtensionLicense."Usage Aggregation Type"));
+                    if not TempToken.AsValue().IsNull() then
+                        SPBExtensionLicense."Usage Aggregation Type" := CopyStr(TempToken.AsValue().AsText(), 1, MaxStrLen(SPBExtensionLicense."Usage Aggregation Type"));
 
                 // Get billing frequency from renewal interval
                 if PriceObject.SelectToken('$.data.attributes.renewal_interval_unit', TempToken) then
@@ -490,12 +507,17 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         MetadataAge: Duration;
         MetadataRefreshFailedErr: Label 'Unable to refresh license configuration automatically. This may occur if your subscription is no longer active or network connectivity issues exist. Please verify your subscription status or contact support if the issue persists.';
     begin
-        MetadataAge := CurrentDateTime() - SPBExtensionLicense."Last Metadata Refresh";
-        if (SPBExtensionLicense."Last Metadata Refresh" = 0DT) or (MetadataAge > 86400000) then // 24 hours in milliseconds
-            // First attempt: Try to refresh metadata without consuming license activations
+        // Check if metadata was never refreshed first (avoids calculation issues)
+        if SPBExtensionLicense."Last Metadata Refresh" = 0DT then begin
             if not RefreshSubscriptionMetadata(SPBExtensionLicense) then
-                // Only throw error if automatic refresh fails
                 Error(MetadataRefreshFailedErr);
+        end else begin
+            // Only calculate age if we have a valid timestamp
+            MetadataAge := CurrentDateTime() - SPBExtensionLicense."Last Metadata Refresh";
+            if MetadataAge > 86400000 then // 24 hours in milliseconds
+                if not RefreshSubscriptionMetadata(SPBExtensionLicense) then
+                    Error(MetadataRefreshFailedErr);
+        end;
     end;
 
     local procedure RefreshSubscriptionMetadata(var SPBExtensionLicense: Record "SPBLIC Extension License"): Boolean
@@ -538,8 +560,13 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         if JObject.SelectToken('$.data[0].attributes.first_subscription_item.id', TempToken) then
             SPBExtensionLicense."Subscription Item Id" := TempToken.AsValue().AsInteger();
 
-        // Refresh aggregation settings and billing information
-        PopulateAggregationSettings(SPBExtensionLicense, JObject);
+        // Check if subscription is actually usage-based according to LemonSqueezy
+        if JObject.SelectToken('$.data[0].attributes.first_subscription_item.is_usage_based', TempToken) then
+            SPBExtensionLicense."IsUsageBased" := TempToken.AsValue().AsBoolean();
+
+        // Only refresh aggregation settings if this is actually a usage-based subscription
+        if SPBExtensionLicense."IsUsageBased" then
+            PopulateAggregationSettings(SPBExtensionLicense, JObject);
         SPBExtensionLicense."Last Metadata Refresh" := CurrentDateTime();
         SPBExtensionLicense.Modify();
 
