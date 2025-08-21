@@ -37,6 +37,7 @@ codeunit 71033588 "SPBLIC Deactivate Meth"
             SPBLICTelemetry.LicensePlatformDeactivation(SPBExtensionLicense);
             SPBLICEvents.OnAfterLicenseDeactivatedByPlatform(SPBExtensionLicense, ResponseBody);
         end else begin
+            DeactivationSuccess := true;
             SPBLICTelemetry.LicenseDeactivation(SPBExtensionLicense);
             SPBLICEvents.OnAfterLicenseDeactivated(SPBExtensionLicense);
         end;
@@ -45,7 +46,6 @@ codeunit 71033588 "SPBLIC Deactivate Meth"
         ClearSubscriptionMetadata(SPBExtensionLicense);
         SPBExtensionLicense.Modify();
         SPBLICIsoStoreManager.UpdateOrCreateIsoStorage(SPBExtensionLicense);
-
     end;
 
     local procedure ClearSubscriptionMetadata(var SPBExtensionLicense: Record "SPBLIC Extension License")
