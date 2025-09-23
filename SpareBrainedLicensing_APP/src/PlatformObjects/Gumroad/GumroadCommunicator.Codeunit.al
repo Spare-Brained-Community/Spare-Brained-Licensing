@@ -212,4 +212,11 @@ codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommu
     begin
         Error(UsageBaseBillingNotSupportedErr);
     end;
+
+    procedure GetActivationLimit(LicenseKey: Text): Integer
+    begin
+        // Gumroad platform does not provide activation_limit information
+        // Return 0 to indicate this feature is not available for Gumroad licenses
+        exit(0);
+    end;
 }
