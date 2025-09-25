@@ -7,7 +7,7 @@ using System.Environment;
 using System.Environment.Configuration;
 using System.IO;
 
-codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommunicator", "SPBLIC ILicenseCommunicator2", "SPBLIC IUsageIntegration"
+codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommunicator", "SPBLIC ILicenseCommunicator2", "SPBLIC IUsageIntegration", "SPBLIC IActivationLimit"
 {
     Access = Public;
     Permissions = tabledata "SPBLIC Extension License" = RM;
@@ -231,6 +231,13 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         Evaluate(SPBExtensionLicense."Created At", TempPlaceholder);
         TempJsonBuffer.GetPropertyValueAtPath(TempPlaceholder, 'expires_at', 'license_key');
         Evaluate(SPBExtensionLicense."Subscription Ended At", TempPlaceholder);
+
+        // Parse activation_limit from the JSON response if present
+        Clear(TempPlaceholder);
+        if TempJsonBuffer.GetPropertyValueAtPath(TempPlaceholder, 'activation_limit', 'license_key') then begin
+            if TempPlaceholder <> '' then
+                Evaluate(SPBExtensionLicense."Activation Limit", TempPlaceholder);
+        end;
 
         // TODO: Pending Request to Lemon Squeezy team to add this to their API
         //TempJsonBuffer.GetPropertyValueAtPath(TempPlaceholder, 'email', 'license_key');
@@ -618,5 +625,40 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         end;
 
         exit(FrequencyText);
+    end;
+
+    procedure GetActivationLimit(LicenseKey: Text): Integer
+    var
+        SPBExtensionLicense: Record "SPBLIC Extension License";
+        ResponseBody: Text;
+        LicenseNotFoundErr: Label 'License key "%1" not found in the system.', Comment = '%1 is the license key';
+    begin
+        // Validate input parameter
+        if LicenseKey = '' then
+            exit(0);
+
+        // Find the license record by license key
+        SPBExtensionLicense.SetRange("License Key", LicenseKey);
+        if not SPBExtensionLicense.FindFirst() then begin
+            // License key not found, return 0
+            exit(0);
+        end;
+
+        // Return stored activation limit if available and valid
+        if SPBExtensionLicense."Activation Limit" > 0 then
+            exit(SPBExtensionLicense."Activation Limit");
+        
+        // If not stored locally, try to get from fresh API call
+        if CallAPIForActivation(SPBExtensionLicense, ResponseBody) then begin
+            PopulateSubscriptionFromResponse(SPBExtensionLicense, ResponseBody);
+            if SPBExtensionLicense.Modify() then begin
+                // Return the newly retrieved activation limit if it's valid
+                if SPBExtensionLicense."Activation Limit" > 0 then
+                    exit(SPBExtensionLicense."Activation Limit");
+            end;
+        end;
+        
+        // Return 0 if unable to retrieve activation limit or if the API doesn't provide this information
+        exit(0);
     end;
 }

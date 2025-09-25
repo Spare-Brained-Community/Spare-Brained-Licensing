@@ -73,6 +73,10 @@ page 71033575 "SPBLIC Extension Licenses"
                 {
                     Visible = false;
                 }
+                field("Activation Limit"; Rec."Activation Limit")
+                {
+                    ToolTip = 'The maximum number of activations allowed for this license. 0 indicates unlimited or information not available.';
+                }
             }
         }
     }

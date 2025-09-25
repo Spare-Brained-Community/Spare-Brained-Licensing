@@ -7,7 +7,7 @@ using SPB.Utilities;
 using System.Environment.Configuration;
 using System.IO;
 
-codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommunicator", "SPBLIC ILicenseCommunicator2", "SPBLIC IUsageIntegration"
+codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommunicator", "SPBLIC ILicenseCommunicator2", "SPBLIC IUsageIntegration", "SPBLIC IActivationLimit"
 {
     Access = Public;
 
@@ -211,5 +211,12 @@ codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommu
     procedure LogUsageSet(var SPBExtensionLicense: Record "SPBLIC Extension License"; UsageCount: Integer): Boolean
     begin
         Error(UsageBaseBillingNotSupportedErr);
+    end;
+
+    procedure GetActivationLimit(LicenseKey: Text): Integer
+    begin
+        // Gumroad platform does not provide activation_limit information
+        // Return 0 to indicate this feature is not available for Gumroad licenses
+        exit(0);
     end;
 }

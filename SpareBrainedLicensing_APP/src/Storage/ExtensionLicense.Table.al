@@ -285,6 +285,14 @@ table 71033575 "SPBLIC Extension License"
             Editable = false;
             ToolTip = 'The last time subscription metadata was refreshed from the license platform.';
         }
+        field(150; "Activation Limit"; Integer)
+        {
+            AllowInCustomizations = Always;
+            Caption = 'Activation Limit';
+            DataClassification = SystemMetadata;
+            Editable = false;
+            ToolTip = 'The maximum number of activations allowed for this license. 0 indicates unlimited or information not available.';
+        }
 
     }
     keys
