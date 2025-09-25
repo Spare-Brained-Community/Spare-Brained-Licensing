@@ -7,7 +7,7 @@ using SPB.Utilities;
 using System.Environment.Configuration;
 using System.IO;
 
-codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommunicator", "SPBLIC ILicenseCommunicator2", "SPBLIC IUsageIntegration"
+codeunit 71033577 "SPBLIC Gumroad Communicator" implements "SPBLIC ILicenseCommunicator", "SPBLIC ILicenseCommunicator2", "SPBLIC IUsageIntegration", "SPBLIC IActivationLimit"
 {
     Access = Public;
 

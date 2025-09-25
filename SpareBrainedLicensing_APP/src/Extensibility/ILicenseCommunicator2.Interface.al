@@ -21,6 +21,4 @@ interface "SPBLIC ILicenseCommunicator2"
     procedure GetTestSupportUrl(): Text;
 
     procedure GetTestBillingEmail(): Text;
-
-    procedure GetActivationLimit(LicenseKey: Text): Integer;
 }

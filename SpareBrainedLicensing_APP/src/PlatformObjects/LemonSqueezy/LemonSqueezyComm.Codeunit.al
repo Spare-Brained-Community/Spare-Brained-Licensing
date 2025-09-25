@@ -7,7 +7,7 @@ using System.Environment;
 using System.Environment.Configuration;
 using System.IO;
 
-codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommunicator", "SPBLIC ILicenseCommunicator2", "SPBLIC IUsageIntegration"
+codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommunicator", "SPBLIC ILicenseCommunicator2", "SPBLIC IUsageIntegration", "SPBLIC IActivationLimit"
 {
     Access = Public;
     Permissions = tabledata "SPBLIC Extension License" = RM;
