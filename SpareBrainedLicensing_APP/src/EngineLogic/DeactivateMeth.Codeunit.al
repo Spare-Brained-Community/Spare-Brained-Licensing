@@ -27,12 +27,6 @@ codeunit 71033588 "SPBLIC Deactivate Meth"
     begin
         NavApp.GetModuleInfo(SPBExtensionLicense."Extension App Id", AppInfo);
 
-        SPBExtensionLicense.Validate(Activated, false);
-        ClearSubscriptionMetadata(SPBExtensionLicense);
-        SPBExtensionLicense.Modify();
-        SPBLICIsoStoreManager.UpdateOrCreateIsoStorage(SPBExtensionLicense);
-        Commit();  // if calling the API fails, the local should still be marked as deactivated
-
         if ByPlatform then begin
             LicensePlatformV2 := SPBExtensionLicense."License Platform";
             if not LicensePlatformV2.CallAPIForDeactivation(SPBExtensionLicense, ResponseBody) then begin
@@ -43,9 +37,15 @@ codeunit 71033588 "SPBLIC Deactivate Meth"
             SPBLICTelemetry.LicensePlatformDeactivation(SPBExtensionLicense);
             SPBLICEvents.OnAfterLicenseDeactivatedByPlatform(SPBExtensionLicense, ResponseBody);
         end else begin
+            DeactivationSuccess := true;
             SPBLICTelemetry.LicenseDeactivation(SPBExtensionLicense);
             SPBLICEvents.OnAfterLicenseDeactivated(SPBExtensionLicense);
         end;
+
+        SPBExtensionLicense.Validate(Activated, false);
+        ClearSubscriptionMetadata(SPBExtensionLicense);
+        SPBExtensionLicense.Modify();
+        SPBLICIsoStoreManager.UpdateOrCreateIsoStorage(SPBExtensionLicense);
     end;
 
     local procedure ClearSubscriptionMetadata(var SPBExtensionLicense: Record "SPBLIC Extension License")

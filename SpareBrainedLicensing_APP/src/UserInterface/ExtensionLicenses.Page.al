@@ -192,19 +192,21 @@ page 71033575 "SPBLIC Extension Licenses"
     var
         SPBLICDeactivateMeth: Codeunit "SPBLIC Deactivate Meth";
         DoDeactivation: Boolean;
+        DeactivateOnPlatform: Boolean;
         LicensePlatform: Interface "SPBLIC ILicenseCommunicator2";
-        DeactivationNotPossibleWarningQst: Label 'This will deactivate this license in this Business Central instance, but you will need to contact the Publisher to release the assigned license. \ \Are you sure you want to deactivate this license?';
-        DeactivationPossibleQst: Label 'This will deactivate this license in this Business Central instance.\ \Are you sure you want to deactivate this license?';
+        PlatformDeactivationNotPossibleWarningQst: Label 'This will deactivate this license in this Business Central instance, but you will need to contact the Publisher to release the assigned license. \ \Are you sure you want to deactivate this license?';
+        PlatformDeactivationPossibleQst: Label 'This will deactivate this license in this Business Central instance.\ \Are you sure you want to deactivate this license?';
     begin
         LicensePlatform := SPBExtensionLicense."License Platform";
 
         // Depending on the platform capabilities, we give the user a different message
-        if LicensePlatform.ClientSideDeactivationPossible(SPBExtensionLicense) then
-            DoDeactivation := Confirm(DeactivationPossibleQst, false)
+        DeactivateOnPlatform := LicensePlatform.ClientSideDeactivationPossible(SPBExtensionLicense);
+        if DeactivateOnPlatform then
+            DoDeactivation := Confirm(PlatformDeactivationPossibleQst, false)
         else
-            DoDeactivation := Confirm(DeactivationNotPossibleWarningQst, false);
+            DoDeactivation := Confirm(PlatformDeactivationNotPossibleWarningQst, false);
 
         if DoDeactivation then
-            exit(SPBLICDeactivateMeth.Deactivate(SPBExtensionLicense, false));
+            exit(SPBLICDeactivateMeth.Deactivate(SPBExtensionLicense, DeactivateOnPlatform));
     end;
 }

@@ -79,6 +79,10 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         // First, we'll crosscheck that the record's license_id matches the IsoStorage one for possible tamper checking
         ValidateLicenseIdInfo(SPBExtensionLicense);
 
+        // Required values for deactivate API
+        SPBExtensionLicense.TestField("License Key");
+        SPBExtensionLicense.TestField("Licensing ID");
+
         // When verifying the License, we have to pass the instance info that we stored on the record
         DeactivateAPI := StrSubstNo(LemonSqueezyDeactivateAPITok, SPBExtensionLicense."License Key", SPBExtensionLicense."Licensing ID");
         exit(CallLemonSqueezy(ResponseBody, DeactivateAPI, SPBExtensionLicense.ApiKeyProvider));
@@ -134,7 +138,7 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         if not ApiKey.IsEmpty() then
             ApiHttpClient.DefaultRequestHeaders().Add('Authorization', SecretStrSubstNo('Bearer %1', ApiKey));
 
-        if RequestBody.Keys.Count() > 0 then begin
+        if RequestBody.Keys().Count() > 0 then begin
             RequestBody.WriteTo(ContentText);
             HttpContent.WriteFrom(ContentText);
             ApiHttpRequestMessage.Content(HttpContent);
@@ -153,11 +157,15 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
                 ApiHttpResponseMessage.Content().ReadAs(ResponseBody);
                 exit(true);
             end else
-                if (ApiHttpResponseMessage.HttpStatusCode() = 422) and
-                   (LemonSqueezyRequestUri.Contains('usage-records')) then
-                    Error(UsageError422Err)
-                else
-                    Error(WebCallErr, ApiHttpResponseMessage.HttpStatusCode(), ApiHttpResponseMessage.ReasonPhrase(), ApiHttpResponseMessage.Content());
+                case ApiHttpResponseMessage.HttpStatusCode() of
+                    422:
+                        if (LemonSqueezyRequestUri.Contains('usage-records')) then
+                            Error(UsageError422Err);
+                    404:
+                        exit(true); // Deactivate if platform license not found
+                    else
+                        Error(WebCallErr, ApiHttpResponseMessage.HttpStatusCode(), ApiHttpResponseMessage.ReasonPhrase(), ApiHttpResponseMessage.Content());
+                end;
     end;
 
     local procedure ValidateLicenseIdInfo(var SPBExtensionLicense: Record "SPBLIC Extension License")
@@ -482,7 +490,7 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
 
             if CallLemonSqueezy(ResponseBody, 'GET', PriceApi, SPBExtensionLicense.ApiKeyProvider) then begin
                 PriceObject.ReadFrom(ResponseBody);
-                
+
                 // Get usage aggregation
                 if PriceObject.SelectToken('$.data.attributes.usage_aggregation', TempToken) then
                     if not TempToken.AsValue().IsNull() then
@@ -491,7 +499,7 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
                 // Get billing frequency from renewal interval
                 if PriceObject.SelectToken('$.data.attributes.renewal_interval_unit', TempToken) then
                     RenewalUnit := TempToken.AsValue().AsText();
-                    
+
                 if PriceObject.SelectToken('$.data.attributes.renewal_interval_quantity', TempToken) then
                     RenewalQuantity := TempToken.AsValue().AsInteger();
 
