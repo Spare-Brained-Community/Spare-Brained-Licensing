@@ -103,7 +103,7 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         exit(CallLemonSqueezy(ResponseBody, 'POST', LemonSqueezyRequestUri, ApiKeyProvider, RequestBody));
     end;
 
-    local procedure CallLemonSqueezy(var ResponseBody: Text; Method: Text; LemonSqueezyRequestUri: Text; ApiKeyProvider: Interface "SPBLIC IApiKeyProvider"; RequestBody: JsonObject): Boolean
+    local procedure CallLemonSqueezy(var ResponseBody: Text; Method: Text; LemonSqueezyRequestUri: Text; ApiKeyProvider: Interface "SPBLIC IApiKeyProvider"; RequestBody: JsonObject) Success: Boolean
     var
         NAVAppSetting: Record "NAV App Setting";
         ApiHttpClient: HttpClient;
@@ -140,10 +140,9 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         ApiHttpRequestMessage.SetRequestUri(LemonSqueezyRequestUri);
         ApiHttpRequestMessage.Method(Method);
 
-        exit(
-            ApiHttpClient.Send(ApiHttpRequestMessage, ApiHttpResponseMessage) and
-            HandleApiResponse(ApiHttpResponseMessage, ResponseBody, LemonSqueezyRequestUri)
-        );
+        // Always call HandleApiResponse to ensure all error scenarios are handled
+        Success := ApiHttpClient.Send(ApiHttpRequestMessage, ApiHttpResponseMessage);
+        Success := Success and HandleApiResponse(ApiHttpResponseMessage, ResponseBody, LemonSqueezyRequestUri);
     end;
 
     local procedure HandleApiResponse(ApiHttpResponseMessage: HttpResponseMessage; var ResponseBody: Text; LemonSqueezyRequestUri: Text): Boolean
@@ -156,13 +155,13 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         StatusToken: JsonToken;
         VariantNameToken: JsonToken;
         EnvironmentBlockErr: Label 'Unable to communicate with the license server due to an environment block. Please resolve and try again.';
+        FallbackLicenseNameLbl: Label 'your license';
         FallbackWebCallErr: Label 'Unable to verify or activate license.\ HTTP Status: %1 %2', Comment = '%1 = status code, %2 = reason phrase';
         GenericLicenseErr: Label 'License verification failed: %1', Comment = '%1 = error message from API';
         LicenseDisabledErr: Label 'License verification failed for "%1": This license key is disabled.', Comment = '%1 = product name or license identifier';
         LicenseExpiredErr: Label 'License verification failed for "%1": This license key is expired.', Comment = '%1 = product name or license identifier';
         LicenseInactiveErr: Label 'License verification failed for "%1": This license key is inactive.', Comment = '%1 = product name or license identifier';
         UnexpectedLicenseStatusErr: Label 'License verification failed for "%1": Unexpected license status "%2".', Comment = '%1 = product name or license identifier, %2 = license status';
-        FallbackLicenseNameLbl: Label 'your license';
         UsageError422Err: Label 'Usage tracking failed due to configuration mismatch. This often occurs when aggregation settings have changed. Please deactivate and reactivate your license to refresh the configuration.';
         WebCallErr: Label 'Unable to verify or activate license.\ HTTP Status: %1 %2\ Error: %3', Comment = '%1 = status code, %2 = reason phrase, %3 = error message';
         ErrorMessage: Text;
@@ -193,7 +192,8 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         if ErrorJson.ReadFrom(ResponseContent) then begin
             // Check if there's an "error" field with a message
             if ErrorJson.Get('error', ErrorToken) then
-                ErrorMessage := ErrorToken.AsValue().AsText();
+                if ErrorToken.IsValue() then
+                    ErrorMessage := ErrorToken.AsValue().AsText();
 
             // Check if there's a "valid" field set to false (validation failure)
             if ErrorJson.Get('valid', ErrorToken) then
@@ -628,10 +628,12 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
 
         // Attempt to fetch current subscription data (no license activation consumed)
         if not CallLemonSqueezy(ResponseBody, 'GET', SubscriptionApi, SPBExtensionLicense.ApiKeyProvider) then
-            exit(false); // API call failed - return false to trigger error
+            // API call failed - return false to trigger error
+            exit(false);
 
         if not JObject.ReadFrom(ResponseBody) then
-            exit(false); // JSON parsing failed
+            // JSON parsing failed
+            exit(false);
 
         // Verify subscription is still active before updating metadata
         if JObject.SelectToken('$.data[0].attributes.status', TempToken) then
