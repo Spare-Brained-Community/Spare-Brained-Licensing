@@ -110,9 +110,6 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         HttpContent: HttpContent;
         ApiHttpRequestMessage: HttpRequestMessage;
         ApiHttpResponseMessage: HttpResponseMessage;
-        EnvironmentBlockErr: Label 'Unable to communicate with the license server due to an environment block. Please resolve and try again.';
-        UsageError422Err: Label 'Usage tracking failed due to configuration mismatch. This often occurs when aggregation settings have changed. Please deactivate and reactivate your license to refresh the configuration.';
-        WebCallErr: Label 'Unable to verify or activate license.\ %1: %2 \ %3', Comment = '%1 %2 %3';
         AppInfo: ModuleInfo;
         ApiKey: SecretText;
         ContentText: Text;
@@ -143,21 +140,105 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         ApiHttpRequestMessage.SetRequestUri(LemonSqueezyRequestUri);
         ApiHttpRequestMessage.Method(Method);
 
-        if not ApiHttpClient.Send(ApiHttpRequestMessage, ApiHttpResponseMessage) then begin
-            if ApiHttpResponseMessage.IsBlockedByEnvironment() then
-                Error(EnvironmentBlockErr)
-            else
-                Error(WebCallErr, ApiHttpResponseMessage.HttpStatusCode(), ApiHttpResponseMessage.ReasonPhrase(), ApiHttpResponseMessage.Content());
-        end else
-            if ApiHttpResponseMessage.IsSuccessStatusCode() then begin
-                ApiHttpResponseMessage.Content().ReadAs(ResponseBody);
-                exit(true);
-            end else
-                if (ApiHttpResponseMessage.HttpStatusCode() = 422) and
-                   (LemonSqueezyRequestUri.Contains('usage-records')) then
-                    Error(UsageError422Err)
-                else
-                    Error(WebCallErr, ApiHttpResponseMessage.HttpStatusCode(), ApiHttpResponseMessage.ReasonPhrase(), ApiHttpResponseMessage.Content());
+        exit(
+            ApiHttpClient.Send(ApiHttpRequestMessage, ApiHttpResponseMessage) and
+            HandleApiResponse(ApiHttpResponseMessage, ResponseBody, LemonSqueezyRequestUri)
+        );
+    end;
+
+    local procedure HandleApiResponse(ApiHttpResponseMessage: HttpResponseMessage; var ResponseBody: Text; LemonSqueezyRequestUri: Text): Boolean
+    var
+        ErrorJson: JsonObject;
+        ErrorToken: JsonToken;
+        LicenseKeyToken: JsonToken;
+        MetaToken: JsonToken;
+        ProductNameToken: JsonToken;
+        StatusToken: JsonToken;
+        VariantNameToken: JsonToken;
+        EnvironmentBlockErr: Label 'Unable to communicate with the license server due to an environment block. Please resolve and try again.';
+        FallbackWebCallErr: Label 'Unable to verify or activate license.\ HTTP Status: %1 %2', Comment = '%1 = status code, %2 = reason phrase';
+        GenericLicenseErr: Label 'License verification failed: %1', Comment = '%1 = error message from API';
+        LicenseDisabledErr: Label 'License verification failed for "%1": This license key is disabled.', Comment = '%1 = product name or license identifier';
+        LicenseExpiredErr: Label 'License verification failed for "%1": This license key is expired.', Comment = '%1 = product name or license identifier';
+        LicenseInactiveErr: Label 'License verification failed for "%1": This license key is inactive.', Comment = '%1 = product name or license identifier';
+        UsageError422Err: Label 'Usage tracking failed due to configuration mismatch. This often occurs when aggregation settings have changed. Please deactivate and reactivate your license to refresh the configuration.';
+        WebCallErr: Label 'Unable to verify or activate license.\ HTTP Status: %1 %2\ Error: %3', Comment = '%1 = status code, %2 = reason phrase, %3 = error message';
+        ErrorMessage: Text;
+        LicenseDisplayName: Text;
+        LicenseStatus: Text;
+        ResponseContent: Text;
+    begin
+        // Check if blocked by environment
+        if ApiHttpResponseMessage.IsBlockedByEnvironment() then
+            Error(EnvironmentBlockErr);
+
+        // Handle successful responses
+        if ApiHttpResponseMessage.IsSuccessStatusCode() then begin
+            ApiHttpResponseMessage.Content().ReadAs(ResponseBody);
+            exit(true);
+        end;
+
+        // Handle special case for usage-records 422 errors
+        if (ApiHttpResponseMessage.HttpStatusCode() = 422) and
+           (LemonSqueezyRequestUri.Contains('usage-records')) then
+            Error(UsageError422Err);
+
+        // For all other error responses, try to parse the error details from JSON
+        if not ApiHttpResponseMessage.Content().ReadAs(ResponseContent) then
+            Error(FallbackWebCallErr, ApiHttpResponseMessage.HttpStatusCode(), ApiHttpResponseMessage.ReasonPhrase());
+
+        // Try to parse JSON error response
+        if ErrorJson.ReadFrom(ResponseContent) then begin
+            // Check if there's an "error" field with a message
+            if ErrorJson.Get('error', ErrorToken) then
+                ErrorMessage := ErrorToken.AsValue().AsText();
+
+            // Check if there's a "valid" field set to false (validation failure)
+            if ErrorJson.Get('valid', ErrorToken) then
+                if not ErrorToken.AsValue().AsBoolean() then begin
+                    // Try to extract a user-friendly license identifier from meta
+                    if ErrorJson.Get('meta', MetaToken) then begin
+                        if MetaToken.AsObject().Get('product_name', ProductNameToken) then
+                            LicenseDisplayName := ProductNameToken.AsValue().AsText();
+
+                        // If we have variant info, append it
+                        if MetaToken.AsObject().Get('variant_name', VariantNameToken) then
+                            if LicenseDisplayName <> '' then
+                                LicenseDisplayName := LicenseDisplayName + ' (' + VariantNameToken.AsValue().AsText() + ')'
+                            else
+                                LicenseDisplayName := VariantNameToken.AsValue().AsText();
+                    end;
+
+                    // Fallback: if we couldn't get product name, use a generic identifier
+                    if LicenseDisplayName = '' then
+                        LicenseDisplayName := 'license';
+
+                    // Try to get more specific license status information
+                    if ErrorJson.Get('license_key', LicenseKeyToken) then
+                        if LicenseKeyToken.AsObject().Get('status', StatusToken) then begin
+                            LicenseStatus := StatusToken.AsValue().AsText();
+                            case LicenseStatus of
+                                'expired':
+                                    Error(LicenseExpiredErr, LicenseDisplayName);
+                                'disabled':
+                                    Error(LicenseDisabledErr, LicenseDisplayName);
+                                'inactive':
+                                    Error(LicenseInactiveErr, LicenseDisplayName);
+                            end;
+                        end;
+
+                    // If we have an error message but no specific status, use the error message
+                    if ErrorMessage <> '' then
+                        Error(GenericLicenseErr, ErrorMessage);
+                end;
+
+            // If we extracted an error message but didn't exit yet, show it with HTTP status
+            if ErrorMessage <> '' then
+                Error(WebCallErr, ApiHttpResponseMessage.HttpStatusCode(), ApiHttpResponseMessage.ReasonPhrase(), ErrorMessage);
+        end;
+
+        // Fallback if JSON parsing failed or no error field found
+        Error(WebCallErr, ApiHttpResponseMessage.HttpStatusCode(), ApiHttpResponseMessage.ReasonPhrase(), ResponseContent);
     end;
 
     local procedure ValidateLicenseIdInfo(var SPBExtensionLicense: Record "SPBLIC Extension License")
@@ -381,9 +462,9 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
 
     local procedure ValidateUsageBasedLicense(var SPBExtensionLicense: Record "SPBLIC Extension License")
     var
+        AutoRefreshFailedErr: Label 'Unable to automatically refresh subscription configuration for License %1/%2. The subscription may not be usage-based or there may be connectivity issues.', Comment = '%1 = the Extension Name, %2 = the Submodule Name';
         LicenseNotUsageBasedErr: Label 'The License %1/%2 is not usage-based and cannot be used for usage tracking.', Comment = '%1 = the Extension Name, %2 = the Submodule Name';
         SubscriptionItemIdMissingErr: Label 'Seems like the Subscription Item ID is missing for License %1/%2. This usually means that the License was not activated yet.', Comment = '%1 = the Extension Name, %2 = the Submodule Name';
-        AutoRefreshFailedErr: Label 'Unable to automatically refresh subscription configuration for License %1/%2. The subscription may not be usage-based or there may be connectivity issues.', Comment = '%1 = the Extension Name, %2 = the Submodule Name';
     begin
         // If the license thinks it's usage-based but has no subscription item ID, try to refresh metadata first
         if SPBExtensionLicense."IsUsageBased" and (SPBExtensionLicense."Subscription Item Id" = 0) then
@@ -464,13 +545,13 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
     local procedure PopulateAggregationSettings(var SPBExtensionLicense: Record "SPBLIC Extension License"; JObject: JsonObject)
     var
         PriceId: Integer;
+        RenewalQuantity: Integer;
         PriceObject: JsonObject;
         TempToken: JsonToken;
-        PriceApi: Text;
-        ResponseBody: Text;
-        RenewalUnit: Text;
-        RenewalQuantity: Integer;
         BillingFrequency: Text;
+        PriceApi: Text;
+        RenewalUnit: Text;
+        ResponseBody: Text;
     begin
         // Get price_id from subscription item to fetch both usage aggregation and billing frequency
         if JObject.SelectToken('$.data[0].attributes.first_subscription_item.price_id', TempToken) then begin
@@ -482,7 +563,7 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
 
             if CallLemonSqueezy(ResponseBody, 'GET', PriceApi, SPBExtensionLicense.ApiKeyProvider) then begin
                 PriceObject.ReadFrom(ResponseBody);
-                
+
                 // Get usage aggregation
                 if PriceObject.SelectToken('$.data.attributes.usage_aggregation', TempToken) then
                     if not TempToken.AsValue().IsNull() then
@@ -491,7 +572,7 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
                 // Get billing frequency from renewal interval
                 if PriceObject.SelectToken('$.data.attributes.renewal_interval_unit', TempToken) then
                     RenewalUnit := TempToken.AsValue().AsText();
-                    
+
                 if PriceObject.SelectToken('$.data.attributes.renewal_interval_quantity', TempToken) then
                     RenewalQuantity := TempToken.AsValue().AsInteger();
 
@@ -547,10 +628,18 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
 
 
 
+
+
+
+
         if not JObject.ReadFrom(ResponseBody) then
             exit(false); // JSON parsing failed
 
         // Verify subscription is still active before updating metadata
+
+
+
+
 
         if JObject.SelectToken('$.data[0].attributes.status', TempToken) then
             if TempToken.AsValue().AsText() <> 'active' then
