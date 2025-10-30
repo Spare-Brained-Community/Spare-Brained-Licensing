@@ -2,7 +2,7 @@
   "id": "5981c6d1-08c0-4f7f-8457-26b3a9e8e43b",
   "name": "SBI License Test App",
   "publisher": "Stefan Maron Consulting",
-  "version": "23.8.0.0",
+  "version": "23.9.0.0",
   "brief": "This library tests the license functionality of the AppSource app, Spare Brained Licensing",
   "description": "This library tests the license functionality of the AppSource app, Spare Brained Licensing",
   "privacyStatement": "https://stefanmaron.com/privacystatement/",
@@ -16,7 +16,7 @@
       "id": "5ddd2a5e-1b5f-47b4-b655-88d2c2a9b382",
       "name": "Spare Brained Licensing",
       "publisher": "Spare Brained Ideas AB",
-      "version": "25.8.0.0"
+      "version": "25.9.0.0"
     },
     {
       "id": "dd0be2ea-f733-4d65-bb34-a28f4624fb14",
