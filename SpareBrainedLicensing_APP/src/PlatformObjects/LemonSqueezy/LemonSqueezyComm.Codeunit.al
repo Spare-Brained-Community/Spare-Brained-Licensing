@@ -161,6 +161,8 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         LicenseDisabledErr: Label 'License verification failed for "%1": This license key is disabled.', Comment = '%1 = product name or license identifier';
         LicenseExpiredErr: Label 'License verification failed for "%1": This license key is expired.', Comment = '%1 = product name or license identifier';
         LicenseInactiveErr: Label 'License verification failed for "%1": This license key is inactive.', Comment = '%1 = product name or license identifier';
+        UnexpectedLicenseStatusErr: Label 'License verification failed for "%1": Unexpected license status "%2".', Comment = '%1 = product name or license identifier, %2 = license status';
+        FallbackLicenseNameLbl: Label 'your license';
         UsageError422Err: Label 'Usage tracking failed due to configuration mismatch. This often occurs when aggregation settings have changed. Please deactivate and reactivate your license to refresh the configuration.';
         WebCallErr: Label 'Unable to verify or activate license.\ HTTP Status: %1 %2\ Error: %3', Comment = '%1 = status code, %2 = reason phrase, %3 = error message';
         ErrorMessage: Text;
@@ -211,7 +213,7 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
 
                     // Fallback: if we couldn't get product name, use a generic identifier
                     if LicenseDisplayName = '' then
-                        LicenseDisplayName := 'license';
+                        LicenseDisplayName := FallbackLicenseNameLbl;
 
                     // Try to get more specific license status information
                     if ErrorJson.Get('license_key', LicenseKeyToken) then
@@ -224,6 +226,8 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
                                     Error(LicenseDisabledErr, LicenseDisplayName);
                                 'inactive':
                                     Error(LicenseInactiveErr, LicenseDisplayName);
+                                else
+                                    Error(UnexpectedLicenseStatusErr, LicenseDisplayName, LicenseStatus);
                             end;
                         end;
 
@@ -626,21 +630,10 @@ codeunit 71033582 "SPBLIC LemonSqueezy Comm." implements "SPBLIC ILicenseCommuni
         if not CallLemonSqueezy(ResponseBody, 'GET', SubscriptionApi, SPBExtensionLicense.ApiKeyProvider) then
             exit(false); // API call failed - return false to trigger error
 
-
-
-
-
-
-
         if not JObject.ReadFrom(ResponseBody) then
             exit(false); // JSON parsing failed
 
         // Verify subscription is still active before updating metadata
-
-
-
-
-
         if JObject.SelectToken('$.data[0].attributes.status', TempToken) then
             if TempToken.AsValue().AsText() <> 'active' then
                 exit(false); // Don't update metadata if subscription is not active
