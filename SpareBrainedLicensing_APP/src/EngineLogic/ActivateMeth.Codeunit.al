@@ -54,6 +54,7 @@ codeunit 71033587 "SPBLIC Activate Meth"
                 // if the Activation is Server Side, then the activation would have failed on a count issue
                 ActivationSuccess := true;
             LicensePlatform.PopulateSubscriptionFromResponse(SPBExtensionLicense, ResponseBody);
+            SPBExtensionLicense.Modify();
             ValidateConfigurationConsistency(SPBExtensionLicense);
         end else
             // In case of a malformed Implementation where the user is given no errors by the API call CU, we'll have a failsafe one here
