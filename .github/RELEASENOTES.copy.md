@@ -1,3 +1,357 @@
+## v10.0
+
+### AL-Go Telemetry Enhancements
+
+AL-Go now includes `RepositoryIsFork` and `GitHubHostingType` in Microsoft and partner telemetry. These identify whether the workflow repository is a fork and whether it runs on GitHub.com, GitHub Enterprise Cloud with data residency (`*.ghe.com`), or GitHub Enterprise Server. GitHub.com includes Enterprise Cloud customers hosted there; this classification does not identify subscription plans or send server hostnames. Unavailable metadata is reported as `Unknown`.
+
+Action telemetry now includes structured `ActionName` and `ActionConclusion` dimensions. The action wrapper reports `Success` or `Failure`, allowing consumers to group action outcomes without parsing message text. Handled error events do not independently mark the action as failed.
+
+### Allow pre-release packages as NuGet dependencies
+
+AL-Go now supports including pre-release versions of Business Central app packages from NuGet feeds. To enable this, append `-allowPrerelease` to the `nuGetFeedSelectMode` setting in your project configuration. For example, `LatestMatching-allowPrerelease` will select the latest matching version of the package, including pre-release versions.
+
+### New `unpublishOldVersions` setting for deployment
+
+The `DeployTo<environment>` setting now supports an opt-in `unpublishOldVersions` boolean (default `false`). When enabled, AL-Go unpublishes old, uninstalled versions of the deployed apps from the environment after a successful deployment, keeping Extension Management clean. This only applies to PTE deployments (Scope PTE / automation API), uses the Automation API v2.0 `Microsoft.NAV.unpublish` action, and is non-fatal (failures are reported as warnings and never fail the deployment).
+
+### Expanded AL-Go telemetry dashboard
+
+The starter Azure Data Explorer dashboard now includes dedicated views for workflow reliability, run exploration, test quality, workflow duration, runner efficiency, and AL-Go maintenance. It also provides repository, workflow, branch, and repository-type filtering, clearer empty states, and repository-level runtime supportability information.
+
+### Create Release checks AL-Go system file updates separately
+
+The `Create Release` workflow now checks for available AL-Go system file updates in a separate job that runs in parallel with and independently of release creation. This allows the release to be created without waiting for the update check and can reduce the overall workflow duration.
+
+### Local development environments use cacheImageName
+
+localDevEnv now passes the configured cacheImageName to Run-AlPipeline, allowing BcContainerHelper to reuse artifact-specific images.
+To retain the previous behavior, set `cacheImageName` to an empty string in .AL-Go/localDevEnv.settings.json.
+
+### Issues
+
+- Workflow finalization telemetry failures, including GitHub API errors, no longer fail an otherwise successful workflow.
+- Issue 2358 - Update AL-Go System Files no longer creates a commit or pull request when only the template SHA would change, avoiding unnecessary CI/CD runs.
+- Issue 2370 - Retry CI/CD baseline discovery when no eligible run is returned, logging result counts for diagnostics and URL-encoding query values so discovery URLs render correctly in logs. The existing full-build fallback is preserved when no baseline is found after retries.
+- Issue 2113 - Fix device-login initialization in Create Online Dev. Environment and Publish To Environment when authentication secrets are unavailable.
+- Issue 2375 - Project/App folder with umlaut breaks incremental build check
+- Issue 2381 - Dependency artifacts from the current build are not downloaded when the branch name contains glob-special characters (e.g. `,`), silently falling back to baseline artifacts
+- Issue 2389 - URLs in localdevenv and the settings schema are wrong when running a self-hosted AL-Go from a fork
+
+## v9.2
+
+### New `doNotPerformUpgrade` setting
+
+AL-Go now supports a new `doNotPerformUpgrade` setting that is passed through to `Run-AlPipeline`. Use it to skip the upgrade phase while still running the rest of the pipeline.
+
+### Workspace compilation supports framework-dependent AL Language extensions
+
+Workspace compilation now finds altool both in the platform-specific subfolder (`compiler/extension/bin/win32` or `.../linux`) and directly under `compiler/extension/bin`, so a `vsixFile` using the flat (framework-dependent / marketplace) layout no longer fails with "Could not find AL tool in the compiler folder". URL-based `customCodeCops` are likewise downloaded to the flat `bin` folder when no `Analyzers` subfolder is present. The aldoc tool used for reference documentation is resolved the same way, falling back to the flat `bin` folder when no platform subfolder is present.
+
+### `failOn: newWarning` now works with workspace compilation
+
+Previously, the `failOn: newWarning` setting (which fails a pull request when it introduces new AL compiler warnings) only took effect when compiling in a container or compiler folder. It had no effect when `workspaceCompilation` was enabled, because the new-warning comparison only ran in the `RunPipeline` action, whereas workspace compilation produces the compiler output in the `CompileApps` action. The check now also runs in `CompileApps`, so `failOn: newWarning` is honored with workspace compilation.
+
+As part of this, the warning comparison now also parses the raw AL compiler output format emitted by workspace compilation (in addition to the GitHub Actions annotation format), and it ignores embedded build version numbers in warning messages so that version differences between the baseline build and the pull request build no longer produce false "new warning" failures.
+
+### Issues
+
+- Issue 2285 - CheckForUpdates now handles settings file `$schema` reordering in a PowerShell 5-safe way to avoid writing invalid entries like `"*": null` to settings JSON files.
+- Fix "filename or extension is too long" error when validating settings on PS5.1 with large settings JSON
+- Fix dependency apps not being resolved when the branch name contains a `]` character (the dependency folder was matched as a wildcard pattern instead of enumerated literally, resulting in 0 apps being published)
+- Retry downloading dependency artifacts from the current build up to 3 times (30 seconds between attempts) to tolerate transient network errors such as "Failed to GetSignedArtifactURL: Unable to make request: ETIMEDOUT"
+- Issue 2256 - Test Result Analyzer fails if no stack trace is available
+- Issue 2302 - AlDoc does not use --packagecache when building reference documentation
+- Reference documentation no longer fails with "InvalidTocInclude: Referenced TOC file ... does not exist" for apps whose name contains an underscore (e.g. `_Exclude_*` apps). The toc.yml folder names are now derived using the same rules as the aldoc tool, which keeps underscores instead of turning them into hyphens.
+- Issue 2319 - Under workspace compilation, `enableCodeAnalyzersOnTestApps: false` now also disables custom analyzers (`customCodeCops`) for test apps and BCPT test apps, not just the built-in code analyzers.
+- Issue 2267 - `AppSourceCop.json` is now created for test apps when `enableCodeAnalyzersOnTestApps` is true.
+- Issue 2320 - Deliver to NuGet of release workflow failing with app and test app
+- Issue 2337 - Incremental builds: skipped projects re-publish Default-mode apps into ALL buildMode-specific artifacts
+
+### Valid SARIF URIs for file paths containing spaces
+
+`ProcessALCodeAnalysisLogs` now URI-encodes each segment of the artifact location path when writing SARIF (for example `1.Setup Data/Foo.al` becomes `1.Setup%20Data/Foo.al`). Paths that contain spaces or other characters that are not valid in a URI previously caused `github/codeql-action/upload-sarif` to log "is not a valid URI" warnings and could prevent AL code scanning alerts from mapping to the correct files. The `/` path separators are preserved so the path structure is unchanged.
+
+### AL alerts for the workspace compilation build
+
+The `trackALAlertsInGitHub` setting now also works when `workspaceCompilation` (preview) is enabled. When both are turned on, AL-Go passes `--errorlogdirectory` to `altool workspace compile` so each project emits an `*.errorLog.json` diagnostics file into `.buildartifacts/ErrorLogs/`, which is processed into SARIF and surfaced as code scanning alerts — matching the classic Run-AlPipeline behavior. If the consumed compiler version does not yet support `--errorlogdirectory`, the option is skipped and a warning is logged (the rest of the build is unaffected).
+
+## v9.1
+
+### Resilient Pull Request Status Check for large builds
+
+The Pull Request Status Check action no longer fails on builds with more than one page of jobs (more than 100 jobs). The jobs API call now uses `--slurp` so multi-page responses are parsed as a single JSON array (previously `gh api --paginate | ConvertFrom-Json` failed with "Invalid JSON primitive" when more than one page was returned). The call is also retried, and requests a smaller page size, to tolerate the intermittent HTTP 502 responses that the GitHub jobs endpoint returns for large builds.
+
+### Use artifact manifest to pick .NET runtime for assembly probing
+
+When compiling apps with the workspace compiler, AL-Go now reads the `dotNetVersion` from the BC artifact's `manifest.json` (copied into the compiler folder by BcContainerHelper) and selects an installed .NET runtime whose major version matches. This avoids version drift between the build agent's highest installed runtime and the platform the artifact was built against. If the manifest does not declare a `dotNetVersion`, or no installed runtime matches the required major, versioned .NET assembly probing paths are omitted (a warning is logged in the latter case).
+
+### New compiler folder hooks
+
+Two new hooks are available for customizing the compiler folder creation process when workspace compilation is enabled:
+
+- **PreNewBcCompilerFolder.ps1** - Runs before `New-BcCompilerFolder` is called. Receives a `[hashtable] $parameters` argument containing the parameters that will be passed to `New-BcCompilerFolder`. The script can modify the hashtable in-place to customize the compiler folder creation (e.g., add a `platformArtifactUrl` to use a specific platform version).
+- **PostNewBcCompilerFolder.ps1** - Runs after the compiler folder is created. Receives `[hashtable] $parameters` and `[string] $compilerFolder` arguments.
+
+Place these scripts in your project's `.AL-Go` folder to use them.
+
+### New AL-Go hooks (experimental)
+
+AL-Go for GitHub now supports a new generic hook mechanism that is independent of BcContainerHelper. A new `RunHook` action invokes scripts placed in the project's `.AL-Go` folder at well-known extension points in the workflows. The first such extension point is `BuildInitialize`, which runs in the build workflow immediately after `Read settings` (so AL-Go settings are available as environment variables).
+
+To use it, add a `.AL-Go/BuildInitialize.ps1` script that accepts a `[Hashtable] $parameters` argument. If the script does not exist, the step is a silent no-op.
+
+The hook mechanism is intended to gradually replace the BcContainerHelper-based `Run-AlPipeline` script overrides as AL-Go moves away from `Run-AlPipeline`. See [Customizing AL-Go for GitHub](https://github.com/microsoft/AL-Go/blob/main/Scenarios/CustomizingALGoForGitHub.md#al-go-hooks) for details and the list of supported hook names.
+
+> **Experimental:** the set of supported hook names, the parameters passed to hook scripts, the location and timing of hook invocations, and the names of the underlying action and helpers may all change in future versions. Anything you build on top of this first iteration may break in a later update.
+
+### Conditional settings now support workflow trigger events
+
+`ConditionalSettings` now supports a `triggers` condition, allowing you to apply settings based on `GITHUB_EVENT_NAME` values such as `push`, `pull_request`, `schedule`, and `workflow_dispatch`.
+
+Example:
+
+```json
+"ConditionalSettings": [
+  {
+    "triggers": ["schedule", "workflow_dispatch"],
+    "settings": {
+      "additionalCountries": ["de", "us"]
+    }
+  }
+]
+```
+
+### Support for workspace compilation (Continued)
+
+- Added support for upgrade tests and using previously released artifacts as baselines for appsourcecop.json
+- Added support for BCPT app compilation with workspace compilation
+- Added support for incremental builds (`modifiedApps` mode) with workspace compilation. Unmodified apps are downloaded from the baseline workflow run and excluded from workspace compilation, matching the behavior of the container-based path.
+
+### Optimized dependency artifact downloads for multi-project repositories
+
+The `DownloadProjectDependencies` action now downloads only artifacts from dependency projects instead of all workflow artifacts. For repositories with many AL-Go projects, this reduces build runner bandwidth and speeds up the dependency download step.
+
+### Issues
+
+- Issue 2276 - Mitigate intermittent artifact action failures caused by the runner Node Maglev issue by setting `ACTIONS_RUNNER_DISABLE_NODE_MAGLEV` on generated artifact download and upload steps.
+- Issue 2277 Auto-exclude the `copilot` GitHub environment from CI/CD deployments. When the GitHub Copilot coding agent is enabled on a repository, GitHub auto-creates an environment named `copilot`. AL-Go now treats it the same way as `github-pages` and never attempts to deploy to it.
+- Issue 2236 - `GetDependencies` `buildMode` prefix leaks across dependency iterations, causing incorrect artifact mask names when multiple `appDependencyProbingPaths` entries use different build modes
+- Incremental builds (`modifiedApps` mode) now correctly identify unmodified apps for projects whose `appFolders` reference paths outside the project directory (e.g. using `../`)
+- Issue 2204 - Workspace compilation ignores vsixFile setting
+- Issue 2211 - Cannot create a release if a project contains only test apps
+- Issue 2214 - Workspace compilation not working with external dependencies
+- Issue 2235 - Workspace compilation: only the first `customCodeCops` entry resolved when multiple relative paths were configured. Relative `customCodeCops` paths are now resolved against the project folder before being passed to the compiler.
+- Issue 2265 - Creating a Performance Test App fails on Linux due to case-sensitive path lookup for the Performance Toolkit sample app
+- Issue 2284 - GitHub App authentication fails with `401 (Unauthorized)` on runners with minor clock drift. The JWT `iat` claim is now backdated by 60 seconds instead of 10, as recommended by GitHub, to tolerate runners whose clock runs slightly ahead of GitHub.
+
+## v9.0
+
+### Needs Context in Build job moved from environment variable to file
+
+`NeedsContext` is currently available as an environment variable in the build step of AL-Go. In some cases on repos with a large amount of projects, it's possible for this variable to exceed the max size GitHub allows for such variables. To work around this issue, we now place the contents of `NeedsContext` in a json file, where `NeedsContext` is the path to that file.
+
+If you have any custom processes that uses `NeedsContext`, those needs to be updated to now first read the contents of the json file. The structure of the json is identical to what was previously in the variable, so only extra step is to read the file.
+
+### Added support for workspace compilation
+
+With v28 of Business Central, the ALTool now also provides the ability to compile workspaces of apps. This has the added advantage that the ALTool can compute the dependency graph for the apps in the workspace and compile apps in parallel (if possible). For AL-Go projects with large amounts of apps that can save a lot of time. If you want to try this out you can enable it via the following setting
+
+```json
+  "workspaceCompilation": {
+    "enabled": true
+  }
+```
+
+By default apps are compiled sequentially but this can be changed via the parallelism property. This allows you to configure the maximum amount of parallel compilation processes. Set to 0 or -1 to use all available processors.
+
+```json
+  "workspaceCompilation": {
+    "enabled": true,
+    "parallelism": 4
+  }
+```
+
+### Test Projects — split builds and tests for faster feedback
+
+AL-Go now supports **test projects**: a new project type that separates test execution from compilation. A test project does not build any apps itself — instead it depends on one or more regular projects, installs the apps they produce, and runs tests against them.
+
+This lets you re-run tests without waiting for a full recompilation, and makes it easy to organize large repositories where builds and test suites have different scopes or cadences.
+
+**Getting started**
+
+Add a `projectsToTest` setting to the project-level `.AL-Go/settings.json` of an empty project (no `appFolders` or `testFolders`):
+
+```json
+{
+  "projectsToTest": ["build/projects/MyProject"]
+}
+```
+
+AL-Go will automatically:
+
+- Resolve the dependency so the test project always builds after its target project(s).
+- Install the Test Runner, Test Framework, and Test Libraries into the container.
+- Run all tests from the installed test apps.
+
+**Key rules**
+
+- A test project must **not** contain buildable code (no `appFolders`, `testFolders`, or `bcptTestFolders`). AL-Go will fail with a clear error if it detects both `projectsToTest` and buildable folders.
+- A test project cannot depend on another test project.
+- You can target multiple projects: `"projectsToTest": ["build/projects/ProjectA", "build/projects/ProjectB"]`.
+- Use full project paths as they appear in the repository.
+
+### Improving error detection and build reliability when downloading project dependencies
+
+The `DownloadProjectDependencies` action now downloads app files from URLs specified in the `installApps` and `installTestApps` settings upfront, rather than validating URLs at build time. This change provides:
+
+- Earlier detection of inaccessible or misconfigured URLs
+- Clearer error messages when secrets are missing or URLs are invalid
+- Warnings for potential issues like duplicate filenames
+
+### Improve overall performance by postponing projects with no dependants
+
+The time it takes to build projects can vary significantly depending on factors such as whether you are using Linux or Windows, Containers or CompilerFolders, and whether apps are being published or tests are being run.
+
+By default, projects are built according to their dependency order. As soon as all dependencies for a project are satisfied, the project is added to the next layer of jobs.
+
+The new setting `postponeProjectInBuildOrder` allows you to delay long running jobs (f.ex. test runs) with no dependants until the final layer of the build order. This can improve overall build performance by preventing subsequent layers from waiting on projects that take longer to complete but are not required for further dependencies.
+
+### Issues
+
+- Attempt to start docker service in case it is not running
+- NextMajor (v28) fails when downloading dependencies from NuGet-feed
+- Issue 2084 Multiple artifacts failure if you re-run failed jobs after flaky tests
+- Issue 2085 Projects that doesn't contain both Apps and TestApps are wrongly seen as not built.
+- Issue 2086 Postpone jobs, which doesn't have any dependents to the end of the build order.
+- Rework input handling of workflow 'Update AL-Go System Files' for trigger 'workflow_call'
+
+### New Settings
+
+- `postponeProjectInBuildOrder` is a new project setting, which will (if set to true) cause the project to be postponed until the last build job when possible. If set on test projects, then all tests can be deferred until all builds have succeeded.
+
+## v8.3
+
+### Issues
+
+- Issue 2107 Publish a specific build mode to an environment
+- Issue 1915 CICD fails on releases/26.x branch - '26.x' cannot be recognized as a semantic version string
+
+### The default pull request trigger is changing
+
+AL-Go for GitHub is transitioning from the pull_request_target trigger to the more secure pull_request trigger. This is a step we are taking to make AL-Go for GitHub more secure by default. If you are used to working from branches within the repository you may not notice any difference. If you get pull requests from forks, those pull requests will no longer be able to access secrets. If that is blocking for your repository, you will need to update your settings to use the pull_request_target trigger.
+
+**How do I revert back to pull_request_target?**
+
+Add the following setting to one of your settings files and run the Update AL-Go System Files workflow:
+
+```json
+  "pullRequestTrigger": "pull_request_target"
+```
+
+## v8.2
+
+### Issues
+
+- Issue 2095 DeliverToAppSource.ProductId needs to be specified (Library app)
+- Issue 2082 Sign action no longer fails when repository is empty or no artifacts are generated
+- Issue 2078 Workflows run since January 14th '26 have space before CI/CD removed
+- Issue 2070 Support public GitHub Packages feeds without requiring a Personal Access Token (PAT)
+- Issue 2004 PublishToAppSource workflow publishes multi-app repos in alphabetical order instead of dependency order
+- Issue 2045 DateTime parsing fails on non-US locale runners in WorkflowPostProcess.ps1
+- Issue 2055 When using versioningStrategy 3+16, you get an error when building
+- Issue 2094 PR into release branch gets wrong previous release
+- AL-Go repositories with large amounts of projects may run into issues with too large environment variables
+- Discussion 1855 Add trigger 'workflow_call' to workflow 'Update AL-Go System Files' for reusability
+- Issue 2050 Publish To Environment creates mistyped environment
+
+### Publish To Environment no longer creates unknown environments by default
+
+Previously, when running the "Publish To Environment" workflow with an environment name that doesn't exist in GitHub or AL-Go settings, the workflow would automatically create a new GitHub environment. This could lead to problems when environment names were mistyped, as the bogus environment would then cause subsequent CI/CD workflows to fail.
+
+Now, the workflow will fail with a clear error message if the specified environment doesn't exist. If you intentionally want to deploy to a new environment that hasn't been configured yet, you can check the **Create environment if it does not exist** checkbox when running the workflow.
+
+### Set default values for workflow inputs
+
+The `workflowDefaultInputs` setting now also applies to `workflow_call` inputs when an input with the same name exists for `workflow_dispatch`.
+This ensures consistent default values across both manual workflow runs and reusable workflow calls.
+
+Read more at [workflowDefaultInputs](https://aka.ms/algosettings#workflowDefaultInputs).
+
+### Merge queue support
+
+AL-Go now supports GitHub's merge queue feature out of the box! The `merge_group` trigger has been added to the Pull Request Build workflow, enabling seamless integration with merge queues. When you have the merge queue feature enabled in your repo, multiple PRs will automatically be validated together. Read more about merge queues [here](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue).
+
+> [!WARNING]
+> If you rely on a custom workflow for merge queue validation, you may need to adjust your setup to avoid duplicate builds.
+
+### AL-Go Telemetry updates
+
+AL-Go telemetry now includes test results so you can more easily see how many AL tests, Page Scripting tests and BCPT tests ran in your workflows across all your repositories. Documentation for this can be found on [this article](https://github.com/microsoft/AL-Go/blob/main/Scenarios/EnablingTelemetry.md) on enabling telemetry.
+
+## v8.1
+
+### Custom AL-Go files
+
+AL-Go for GitHub now supports updating files from your custom templates via the new `customALGoFiles` setting. Read more at [customALGoFiles](https://aka.ms/algosettings#customALGoFiles).
+
+### Set default values for workflow inputs
+
+A new setting `workflowDefaultInputs` allows you to configure default values for workflow_dispatch inputs. This makes it easier to run workflows manually with consistent settings across your team.
+
+When you add this setting to your AL-Go settings file and run the "Update AL-Go System Files" workflow, the default values will be automatically applied to the workflow YAML files in your repository.
+The default values must match the input types (boolean, number, string, or choice) defined in the workflow YAML files.
+
+Example configuration:
+
+```json
+{
+  "workflowDefaultInputs": [
+    { "name": "directCommit", "value": true },
+    { "name": "useGhTokenWorkflow", "value": true }
+  ]
+}
+```
+
+This setting can be used on its own in repository settings to apply defaults to all workflows with matching input names. Alternatively, you can use it within [conditional settings](https://aka.ms/algosettings#conditional-settings) to apply defaults only to specific workflows, branches, or other conditions.
+
+Example using conditional settings to target specific workflows:
+
+```json
+{
+  "conditionalSettings": [
+    {
+      "workflows": ["Create Release"],
+      "settings": {
+        "workflowDefaultInputs": [
+          { "name": "directCommit", "value": true },
+          { "name": "releaseType", "value": "Prerelease" }
+        ]
+      }
+    }
+  ]
+}
+```
+
+**Important:** When multiple conditional settings blocks match and both define `workflowDefaultInputs`, the arrays are merged following AL-Go's standard behavior for complex setting types (all entries are kept). If the same input name appears in multiple entries, the last matching entry takes precedence.
+
+Read more at [workflowDefaultInputs](https://aka.ms/algosettings#workflowDefaultInputs).
+
+### Issues
+
+- Issue 2039 Error when deploy to environment: NewTemporaryFolder is not recognized
+- Issue 1961 KeyVault access in PR pipeline
+- Discussion 1911 Add support for reportSuppressedDiagnostics
+- Discussion 1968 Parameter for settings passed to CreateDevEnv
+- Issue 1945 Deploy Reference Documentation fails for CI/CD
+- Use Runner_Temp instead of GetTempFolder whenever possible
+- Issue 2016 Running Update AL-Go system files with branches wildcard `*` tries to update _origin_
+- Issue 1960 Deploy Reference Documentation fails
+- Discussion 1952 Set default values on workflow_dispatch input
+
+### Deprecations
+
+- `unusedALGoSystemFiles` will be removed after October 1st 2026. Please use [`customALGoFiles.filesToExclude`](https://aka.ms/algosettings#customALGoFiles) instead.
+
 ## v8.0
 
 ### Mechanism to overwrite complex settings type
@@ -917,7 +1271,7 @@ Setting the repo setting "runs-on" to "Ubuntu-latest", followed by running Updat
 ### Issues
 
 - Issue #143 Commit Message for **Increment Version Number** workflow
-- Issue #160 Create local DevEnv aith appDependencyProbingPaths
+- Issue #160 Create local DevEnv with appDependencyProbingPaths
 - Issue #156 Versioningstrategy 2 doesn't use 24h format
 - Issue #155 Initial Add existing app fails with "Cannot find path"
 - Issue #152 Error when loading dependencies from releases
